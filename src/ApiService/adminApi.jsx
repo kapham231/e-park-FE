@@ -6,7 +6,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL;
 // USER MANAGEMENT
 export const getAllUserWithRole = async () => {
     try {
-        const response = await axios.get(`${baseURL}generalUser`);
+        const response = await axios.get(`${baseURL}/generalUser`);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -16,7 +16,7 @@ export const getAllUserWithRole = async () => {
 
 export const getUserNameById = async (userId) => {
     try {
-        const response = await axios.get(`${baseURL}generalUser/getId/${userId}`);
+        const response = await axios.get(`${baseURL}/generalUser/getId/${userId}`);
         console.log(response.data.data);
 
         return response.data.data;
@@ -48,7 +48,7 @@ export const addUserWithRole = async (user) => {
     }
 
     try {
-        const response = await axios.post(`${baseURL}generalUser/create`, formattedUser);
+        const response = await axios.post(`${baseURL}/generalUser/create`, formattedUser);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -78,7 +78,7 @@ export const updateUserbyId = async (user, userId) => {
     }
 
     try {
-        const response = await axios.put(`${baseURL}generalUser/update/${userId}`, formattedUser);
+        const response = await axios.put(`${baseURL}/generalUser/update/${userId}`, formattedUser);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -88,7 +88,7 @@ export const updateUserbyId = async (user, userId) => {
 
 export const deleteUserbyId = async (userId) => {
     try {
-        const response = await axios.delete(`${baseURL}generalUser/${userId}`);
+        const response = await axios.delete(`${baseURL}/generalUser/${userId}`);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -99,7 +99,7 @@ export const deleteUserbyId = async (userId) => {
 // TICKET MANAGEMENT
 export const getAllTicket = async () => {
     try {
-        const response = await axios.get(`${baseURL}ticket`);
+        const response = await axios.get(`${baseURL}/ticket`);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -109,7 +109,7 @@ export const getAllTicket = async () => {
 
 export const createTicket = async (ticket) => {
     try {
-        const response = await axios.post(`${baseURL}ticket/create`, ticket);
+        const response = await axios.post(`${baseURL}/ticket/create`, ticket);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -119,7 +119,7 @@ export const createTicket = async (ticket) => {
 
 export const updateTicketbyId = async (ticketId, updatedticket) => {
     try {
-        const response = await axios.put(`${baseURL}ticket/update/${ticketId}`, updatedticket);
+        const response = await axios.put(`${baseURL}/ticket/update/${ticketId}`, updatedticket);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -129,7 +129,7 @@ export const updateTicketbyId = async (ticketId, updatedticket) => {
 
 export const deleteTicketbyId = async (ticketID) => {
     try {
-        const response = await axios.delete(`${baseURL}ticket/${ticketID}`);
+        const response = await axios.delete(`${baseURL}/ticket/${ticketID}`);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -140,7 +140,7 @@ export const deleteTicketbyId = async (ticketID) => {
 export const createTicketForNewMember = async (ticket, quantity, bonus) => {
     // console.log(ticket, quantity, bonus);
     try {
-        const response = await axios.post(`${baseURL}ticket/calculateForNewMember`, {
+        const response = await axios.post(`${baseURL}/ticket/calculateForNewMember`, {
             tickets: [{
                 "ticketId": ticket._id,
                 "quantity": quantity,

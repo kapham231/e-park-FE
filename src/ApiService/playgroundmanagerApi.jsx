@@ -6,7 +6,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL;
 // EVENT
 export const getAllEvent = async () => {
     try {
-        const response = await axios.get(`${baseURL}event`);
+        const response = await axios.get(`${baseURL}/event`);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -16,7 +16,7 @@ export const getAllEvent = async () => {
 
 export const getUpcomingEvent = async () => {
     try {
-        const response = await axios.get(`${baseURL}event/upcoming`);
+        const response = await axios.get(`${baseURL}/event/upcoming`);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -26,7 +26,7 @@ export const getUpcomingEvent = async () => {
 
 export const getOngoingEvent = async () => {
     try {
-        const response = await axios.get(`${baseURL}event/ongoing`);
+        const response = await axios.get(`${baseURL}/event/ongoing`);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -36,7 +36,7 @@ export const getOngoingEvent = async () => {
 
 export const getEvent = async (id) => {
     try {
-        const response = await axios.get(`${baseURL}event/getId/${id}`);
+        const response = await axios.get(`${baseURL}/event/getId/${id}`);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -50,7 +50,7 @@ export const createEvent = async (newEvent) => {
         // console.log('End Date', newEvent.endDate);
 
 
-        const response = await axios.post(`${baseURL}event/create`, newEvent);
+        const response = await axios.post(`${baseURL}/event/create`, newEvent);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -63,7 +63,7 @@ export const updateEventById = async (eventId, updatedEvent) => {
     // console.log('updatedEvent', updatedEvent);
 
     try {
-        const response = await axios.put(`${baseURL}event/update/${eventId}`, updatedEvent);
+        const response = await axios.put(`${baseURL}/event/update/${eventId}`, updatedEvent);
         return response.data;
     }
     catch (error) {
@@ -74,7 +74,7 @@ export const updateEventById = async (eventId, updatedEvent) => {
 
 export const deleteEventById = async (eventId) => {
     try {
-        const response = await axios.delete(`${baseURL}event/${eventId}`);
+        const response = await axios.delete(`${baseURL}/event/${eventId}`);
         return response.data;
     }
     catch (error) {
@@ -86,7 +86,7 @@ export const deleteEventById = async (eventId) => {
 // SUPPLIER
 export const getAllSupplier = async () => {
     try {
-        const response = await axios.get(`${baseURL}supplier`);
+        const response = await axios.get(`${baseURL}/supplier`);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -99,7 +99,7 @@ export const getSupplier = async (id) => {
         if (!id) {
             return;
         }
-        const response = await axios.get(`${baseURL}supplier/getId/${id}`);
+        const response = await axios.get(`${baseURL}/supplier/getId/${id}`);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -109,7 +109,7 @@ export const getSupplier = async (id) => {
 
 export const createSupplier = async (newSupplier) => {
     try {
-        const response = await axios.post(`${baseURL}supplier/create`, newSupplier);
+        const response = await axios.post(`${baseURL}/supplier/create`, newSupplier);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -119,7 +119,7 @@ export const createSupplier = async (newSupplier) => {
 
 export const updateSupplierById = async (supplierId, updatedSupplier) => {
     try {
-        const response = await axios.put(`${baseURL}supplier/update/${supplierId}`, updatedSupplier);
+        const response = await axios.put(`${baseURL}/supplier/update/${supplierId}`, updatedSupplier);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -129,7 +129,7 @@ export const updateSupplierById = async (supplierId, updatedSupplier) => {
 
 export const deleteSupplierById = async (supplierId) => {
     try {
-        const response = await axios.delete(`${baseURL}supplier/${supplierId}`);
+        const response = await axios.delete(`${baseURL}/supplier/${supplierId}`);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -140,7 +140,7 @@ export const deleteSupplierById = async (supplierId) => {
 //DEVICE
 export const getAllDevice = async () => {
     try {
-        const response = await axios.get(`${baseURL}equipment`);
+        const response = await axios.get(`${baseURL}/equipment`);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -150,7 +150,7 @@ export const getAllDevice = async () => {
 
 export const getDevice = async (id) => {
     try {
-        const response = await axios.get(`${baseURL}equipment/getId/${id}`);
+        const response = await axios.get(`${baseURL}/equipment/getId/${id}`);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -160,7 +160,7 @@ export const getDevice = async (id) => {
 
 export const getDeviceByStatus = async (status) => {
     try {
-        const response = await axios.get(`${baseURL}equipment/status/${status}`);
+        const response = await axios.get(`${baseURL}/equipment/status/${status}`);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -170,7 +170,7 @@ export const getDeviceByStatus = async (status) => {
 
 export const createDevice = async (newDevice) => {
     try {
-        const response = await axios.post(`${baseURL}equipment/create`, newDevice);
+        const response = await axios.post(`${baseURL}/equipment/create`, newDevice);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -183,7 +183,7 @@ export const updateDeviceById = async (deviceId, updatedDevice) => {
         // console.log('deviceId', deviceId);
         // console.log('updatedDevice', updatedDevice);
 
-        const response = await axios.put(`${baseURL}equipment/update/${deviceId}`, updatedDevice);
+        const response = await axios.put(`${baseURL}/equipment/update/${deviceId}`, updatedDevice);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -193,7 +193,7 @@ export const updateDeviceById = async (deviceId, updatedDevice) => {
 
 export const deleteDeviceById = async (deviceId) => {
     try {
-        const response = await axios.delete(`${baseURL}equipment/${deviceId}`);
+        const response = await axios.delete(`${baseURL}/equipment/${deviceId}`);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -203,7 +203,7 @@ export const deleteDeviceById = async (deviceId) => {
 
 export const getDeviceBySupplierId = async (supplierId) => {
     try {
-        const response = await axios.get(`${baseURL}device/supplier/${supplierId}`);
+        const response = await axios.get(`${baseURL}/device/supplier/${supplierId}`);
         return response.data;
     }
     catch (error) {
@@ -215,7 +215,7 @@ export const getDeviceBySupplierId = async (supplierId) => {
 // DEVICE TYPE
 export const getAllType = async () => {
     try {
-        const response = await axios.get(`${baseURL}type`);
+        const response = await axios.get(`${baseURL}/type`);
         return response.data;
     }
     catch (error) {
@@ -226,7 +226,7 @@ export const getAllType = async () => {
 
 export const createType = async (newType) => {
     try {
-        const response = await axios.post(`${baseURL}type/create`, newType);
+        const response = await axios.post(`${baseURL}/type/create`, newType);
         return response.data;
     }
     catch (error) {
@@ -237,7 +237,7 @@ export const createType = async (newType) => {
 
 export const updateTypeById = async (typeId, updatedType) => {
     try {
-        const response = await axios.put(`${baseURL}type/update/${typeId}`, updatedType);
+        const response = await axios.put(`${baseURL}/type/update/${typeId}`, updatedType);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -247,7 +247,7 @@ export const updateTypeById = async (typeId, updatedType) => {
 
 export const deleteTypeById = async (typeId) => {
     try {
-        const response = await axios.delete(`${baseURL}type/${typeId}`);
+        const response = await axios.delete(`${baseURL}/type/${typeId}`);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -259,7 +259,7 @@ export const calculatePriceMaintenanceEquipment = async (deviceId) => {
     try {
         const device = await getDevice(deviceId);
         // console.log('device', device);
-        const response = await axios.post(`${baseURL}equipment/calculatePriceMaintenance`, {
+        const response = await axios.post(`${baseURL}/equipment/calculatePriceMaintenance`, {
             "title": `Price Maintenance for ${device.typeName} `,
             "supplierId": device.supplierId,
             "equipments": [{

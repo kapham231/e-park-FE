@@ -6,7 +6,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL;
 
 export const bookingPrice = async (tickets, customerId) => {
     try {
-        const response = await axios.post(`${baseURL}ticket/calculateTicketPrice`, {
+        const response = await axios.post(`${baseURL}/ticket/calculateTicketPrice`, {
             tickets: [
                 {
                     ticketId: tickets.ticketId,
@@ -27,7 +27,7 @@ export const bookingPrice = async (tickets, customerId) => {
 // Invoice 
 export const getAllInvoice = async () => {
     try {
-        const response = await axios.get(`${baseURL}invoice`);
+        const response = await axios.get(`${baseURL}/invoice`);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -37,7 +37,7 @@ export const getAllInvoice = async () => {
 
 export const getAllInvoiceWithPaidStatus = async () => {
     try {
-        const response = await axios.get(`${baseURL}invoice`);
+        const response = await axios.get(`${baseURL}/invoice`);
         const invoices = response.data;
         const paidInvoices = invoices.filter(invoice => invoice.status === "PAID");
         return paidInvoices;
@@ -49,7 +49,7 @@ export const getAllInvoiceWithPaidStatus = async () => {
 
 export const getInvoice = async (invoiceId) => {
     try {
-        const response = await axios.get(`${baseURL}invoice/getId/${invoiceId}`);
+        const response = await axios.get(`${baseURL}/invoice/getId/${invoiceId}`);
         // console.log(response.data);
 
         return response.data;
@@ -61,7 +61,7 @@ export const getInvoice = async (invoiceId) => {
 
 export const findInvoice = async (orderCode) => {
     try {
-        const response = await axios.get(`${baseURL}invoice/find/${orderCode}`);
+        const response = await axios.get(`${baseURL}/invoice/find/${orderCode}`);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -71,7 +71,7 @@ export const findInvoice = async (orderCode) => {
 
 export const changeInvoiceStatus = async (invoiceId) => {
     try {
-        const response = await axios.post(`${baseURL}payment/webhook`, { invoiceId, status: "PAID" });
+        const response = await axios.post(`${baseURL}/payment/webhook`, { invoiceId, status: "PAID" });
         return response;
     } catch (error) {
         console.error('Error:', error);
@@ -81,7 +81,7 @@ export const changeInvoiceStatus = async (invoiceId) => {
 
 export const updateInvoice = async (invoiceId, updatedInvoice) => {
     try {
-        const response = await axios.put(`${baseURL}invoice/update/${invoiceId}`, updatedInvoice);
+        const response = await axios.put(`${baseURL}/invoice/update/${invoiceId}`, updatedInvoice);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -93,7 +93,7 @@ export const updateInvoice = async (invoiceId, updatedInvoice) => {
 export const createPayOS = async (invoiceId, cancelUrl, returnUrl) => {
     try {
         // const invoiceId = "67ee9a48ed4d1b666b1f9e8b"
-        const response = await axios.post(`${baseURL}payment/create/${invoiceId}`);
+        const response = await axios.post(`${baseURL}/payment/create/${invoiceId}`);
         // console.log(response.data);
         // return response.data;
         if (response.data.success) {

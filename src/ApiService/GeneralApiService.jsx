@@ -5,7 +5,7 @@ const baseURL = process.env.REACT_APP_API_BASE_URL;
 
 export const UserLogin = async (username, password) => {
     try {
-        const response = await axios.post(`${baseURL}users/login`, {
+        const response = await axios.post(`${baseURL}/generalUser/login`, {
             username,
             password,
         });
