@@ -1,0 +1,10 @@
+.assign-button {
+    background-color: #46bfc5;
+    color: white;
+}
+
+.assign-button:hover {
+    background-color: white;
+    color: #46bfc5 !important;
+    border: #46bfc5 1px solid !important;
+}

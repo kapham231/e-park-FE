@@ -1,0 +1,32 @@
+.AD-add-user-button {
+    background-color: #2eebf5;
+    color: white;
+}
+
+.AD-add-user-button:hover {
+    background-color: white;
+    color: #2eebf5 !important;
+    border: #2eebf5 1px solid !important;
+}
+
+.edit-button {
+    background-color: #ffae4c;
+    color: white;
+}
+
+.edit-button:hover {
+    background-color: white;
+    color: #ffae4c !important;
+    border: #ffae4c 1px solid !important;
+}
+
+.delete-button {
+    background-color: #f66e6e;
+    color: white;
+}
+
+.delete-button:hover {
+    background-color: white;
+    color: #f66e6e !important;
+    border: #f66e6e 1px solid !important;
+}

@@ -1,0 +1,105 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;700&display=swap");
+
+.ticket-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    /* width: calc(100% - 16px); */
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.ticket-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 12px;
+    width: 700px;
+    padding: 15px 20px;
+    position: relative;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 789px) {
+    .ticket-content {
+        width: 70vw;
+        padding: 20px;
+        flex-direction: column;
+    }
+
+    .ticket-icon {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 0 !important;
+    }
+}
+
+.ticket-icon {
+    font-size: 2rem;
+}
+
+.ticket-text {
+    font-size: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.ticket-price {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 5px 10px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    width: 160px;
+    text-align: center;
+}
+
+.ticket-edit-button {
+    background-color: rgba(255, 255, 255, 0.3);
+    border: none;
+    color: white;
+}
+
+.ticket-edit-button:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.ticket-delete-button {
+    background-color: rgba(255, 0, 0, 0.5);
+    border: none;
+    color: white;
+}
+
+.ticket-delete-button:hover {
+    background-color: rgba(255, 0, 0, 0.9);
+}
+
+.ticket-pdf-button {
+    background-color: rgba(0, 123, 255, 0.5);
+    border: none;
+    color: white;
+}
+
+.ticket-pdf-button:hover {
+    background-color: rgba(0, 123, 255, 0.9);
+}
+
+
+/* Răng cưa hai bên */
+.ticket-cut-right {
+    width: 20px;
+    height: 100%;
+    background: radial-gradient(circle, white 40%, transparent 40%);
+    background-size: 20px 20px;
+    position: absolute;
+}
+
+.ticket-cut-right {
+    right: -10px;
+}

@@ -1,0 +1,90 @@
+.us-avt-container {
+    text-align: center;
+    position: relative;
+    padding: 20px;
+    background: #1bc2c88b;
+    border-radius: 10px;
+    color: #fff;
+}
+
+.us-child-name {
+    font-weight: bold;
+    font-size: 28px;
+    margin: 10px 10px;
+}
+
+.us-child-role {
+    color: #333;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.us-child-bio {
+    color: #666;
+    font-size: 16px;
+    margin: 10px 10px;
+}
+
+.us-edit-btn-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+.us-edit-btn {
+    width: auto;
+}
+
+.us-cancel-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+}
+
+.us-cancel-btn:hover {
+    background-color: #d32f2f;
+}
+
+@media screen and (max-width: 480px) {
+    .us-avt-container {
+        width: 100%;
+        text-align: center;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 16px;
+    }
+
+    .us-child-name {
+        font-size: 24px;
+    }
+
+    .us-child-role {
+        font-size: 18px;
+    }
+
+    .us-child-bio {
+        font-size: 14px;
+    }
+
+    .ant-row {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .ant-col {
+        width: 100% !important;
+    }
+
+    .us-edit-btn-container {
+        text-align: center;
+        margin-top: 16px;
+    }
+
+    .us-edit-btn {
+        width: 100%;
+    }
+
+    .us-cancel-btn {
+        width: 100%;
+    }
+}

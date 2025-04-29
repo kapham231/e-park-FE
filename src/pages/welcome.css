@@ -1,0 +1,106 @@
+.welcome-container {
+    text-align: center;
+    /*background: url("https://images.unsplash.com/photo-1478915765319-04e68e890018?q=80&w=2053&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D") no-repeat center center;*/
+    background: url("/src/Assets/img/welcome-image.jpg") no-repeat center center fixed;
+    background-size: cover; /* Ensure the background image covers the entire container */
+    padding: 12px;
+    height: 100vh;
+}
+
+.welcome-content {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.welcome-modal {
+    /*max-width: 50%;*/
+    text-align: left;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    padding: 50px;
+    margin: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+    .welcome-modal {
+        padding: 20px;
+    }
+
+}
+
+.welcome-modal h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.welcome-modal .highlight {
+    color: #6e90c5;
+}
+
+.welcome-modal p {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #555;
+    text-align: center;
+}
+
+.button-group {
+    display: flex;
+    flex-direction: column;
+    /* Chuyển sang dạng cột */
+    gap: 10px;
+    /* Khoảng cách giữa các nút */
+}
+
+.button-group button {
+    margin: 8px;
+    border: none;
+    padding: 8px 0;
+    font-size: 1.2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button-group button:hover {
+    color: #000 !important;
+}
+
+.button-group .operator-button {
+    background-color: #ff8c8c;
+}
+
+.button-group .operator-button:hover {
+    background-color: #ff9595 !important;
+}
+
+.button-group .user-button {
+    background-color: #3ad4d4;
+}
+
+.button-group .user-button:hover {
+    background-color: #51d9d9 !important;
+}
+
+.button-group .guest-button {
+    background-color: #dfe9f4;
+}
+
+.button-group .guest-button:hover {
+    background-color: #e4edf6 !important;
+}
+
+.welcome-image img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-top: 12px;
+}

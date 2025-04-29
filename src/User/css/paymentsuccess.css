@@ -1,0 +1,57 @@
+.payment-success-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    text-align: center;
+    padding: 1rem;
+}
+
+@media (min-width: 768px) {
+    .payment-success-wrapper {
+        padding: 1.5rem;
+    }
+}
+
+.payment-success-icon {
+    height: 4rem;
+    width: 4rem;
+    color: #10b981;
+}
+
+.payment-success-header {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.payment-success-subtext {
+    margin-top: 0.5rem;
+    color: #6b7280;
+}
+
+@media (prefers-color-scheme: dark) {
+    .payment-success-subtext {
+        color: #9ca3af;
+    }
+}
+
+.payment-success-details {
+    margin-top: 1.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    width: 100%;
+    max-width: 28rem;
+}
+
+.payment-success-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+}
+
+.payment-success-item .item-value {
+    font-weight: 500;
+}

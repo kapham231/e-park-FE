@@ -1,0 +1,21 @@
+.payment-cancel-wrapper {
+    padding: 50px;
+    text-align: center;
+}
+
+.payment-cancel-icon {
+    height: 4rem;
+    width: 4rem;
+    color: #FF0B55;
+}
+
+.payment-cancel-header {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.payment-cancel-text {
+    margin-top: 0.5rem;
+    color: #6b7280;
+}

@@ -1,0 +1,65 @@
+.carousel-3d .slick-slide {
+    transform: scale(0.6);
+    transition: transform 0.5s;
+    filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px; /* Default height for mobile */
+    z-index: 1;
+    position: relative;
+    user-focus: none;
+}
+
+.carousel-3d .slick-center {
+    transform: scale(1);
+    filter: none;
+    z-index: 2;
+    position: relative;
+}
+
+.carousel-3d-slide {
+    perspective: 1000px;
+}
+
+.carousel-3d-slide img {
+    cursor: pointer;
+    width: 210px; /* Default width for mobile */
+    aspect-ratio: 5 / 3;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
+}
+
+/* Tablet styles */
+@media (min-width: 481px) {
+    .carousel-3d .slick-slide {
+        height: 350px;
+    }
+
+    .carousel-3d-slide img {
+        width: 500px;
+    }
+}
+
+/* Small desktop styles */
+@media (min-width: 769px) {
+    .carousel-3d .slick-slide {
+        height: 400px;
+    }
+
+    .carousel-3d-slide img {
+        width: 550px;
+    }
+}
+
+/* Large desktop styles */
+@media (min-width: 1025px) {
+    .carousel-3d .slick-slide {
+        height: 450px;
+    }
+
+    .carousel-3d-slide img {
+        width: 700px;
+    }
+}

@@ -1,0 +1,124 @@
+.about-us-background {
+    /* background: url("https://tophinhanhdep.com/wp-content/uploads/2021/10/Light-Blue-Plain-Wallpapers.jpg") no-repeat center/cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center; */
+
+    background-color: "#f0f2f5";
+    background-image: linear-gradient(to bottom, #c5f1fff5, #dbf2fd);
+}
+
+.about-us-container {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.about-us-section {
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); */
+}
+
+.about-us-container h1,
+.about-us-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.about-us-container p {
+    text-align: justify;
+    margin-bottom: 20px;
+}
+
+.about-us-title,
+.about-us-section h2 {
+    font-family: 'Comic Sans MS';
+    color: #a678de;
+    /* hoặc #a678de nếu bạn thích tím pastel hơn */
+    text-shadow: 1px 1px #ffffff70;
+    font-size: 36px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.about-us-section h2::before {
+    content: '🎈';
+    font-size: 28px;
+}
+
+.about-us-title::before {
+    content: '🌟';
+    font-size: 28px;
+}
+
+.about-us-section p {
+    color: #2b3a67;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.about-us-title:hover,
+.about-us-section h2:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s ease-in-out;
+}
+
+.team-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+}
+
+.team-member {
+    flex: 1 1 300px;
+    max-width: 300px;
+}
+
+.about-us-container .ant-card-meta-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.about-us-container .ant-card-meta-description p {
+    margin: 0;
+}
+
+.mission-container,
+.vision-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.mission-image,
+.vision-image {
+    max-width: 260px;
+    border-radius: 10px;
+}
+
+.mission-content,
+.vision-content {
+    width: 100%;
+    text-align: justify;
+}
+
+@media (max-width: 768px) {
+
+    .mission-container,
+    .vision-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .mission-image,
+    .vision-image {
+        display: none;
+    }
+}
