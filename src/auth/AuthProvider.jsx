@@ -21,7 +21,7 @@ const AuthProvider = ({ children }) => {
 		if (userId && !user && token) {
 			setLoading(true);
 			axios
-				.get(`${baseURL}/api/generalUser/getId/${userId}`)
+				.get(`${baseURL}/generalUser/getId/${userId}`)
 				.then(res => {
 					const { success, message, data } = res.data;
 					setUser(data);
@@ -42,7 +42,7 @@ const AuthProvider = ({ children }) => {
 		const { remember } = data;
 		setLoading(true);
 		axios
-			.post("/api/generalUser/login", data)
+			.post(`${baseURL}/generalUser/login`, data)
 			.then((res) => {
 				const { success, message, data } = res.data;
 				if (success) {
