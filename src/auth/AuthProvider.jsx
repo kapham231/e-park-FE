@@ -6,6 +6,8 @@ import axios from "axios";
 // import useToken from "../hooks/useToken";
 import { useEffect, useState } from "react";
 
+const baseURL = process.env.REACT_APP_API_BASE_URL;
+
 const AuthProvider = ({ children }) => {
 	const [token, setToken] = useState(() => localStorage.getItem('token') || sessionStorage.getItem('token'));
 	const [userId, setUserId] = useState(() => localStorage.getItem('userId') || sessionStorage.getItem('userId'));
@@ -19,7 +21,7 @@ const AuthProvider = ({ children }) => {
 		if (userId && !user && token) {
 			setLoading(true);
 			axios
-				.get(`/api/generalUser/getId/${userId}`)
+				.get(`${baseURL}/api/generalUser/getId/${userId}`)
 				.then(res => {
 					const { success, message, data } = res.data;
 					setUser(data);
