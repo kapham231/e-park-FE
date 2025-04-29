@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const baseURL = 'http://localhost:3333/api/';
+const baseURL = process.env.REACT_APP_API_BASE_URL;
+
 
 // EVENT
 export const getAllEvent = async () => {
