@@ -2,6 +2,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Alert, Button, Card, DatePicker, Form, Input, InputNumber, Typography } from "antd";
 import { UserOutlined, PhoneOutlined, MailOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
+import moment from "moment";
+import dayjs from "dayjs";
 import { getAllTicket } from "../../ApiService/adminApi";
 import '../css/userregister.css';
 
@@ -49,15 +51,22 @@ const UserRegister = () => {
 
     const handleRegister = () => {
         form.validateFields().then((values) => {
-            console.log(values);
+            console.log("Form values:", values);
 
             if (!selectedTicket) {
                 alert("Please select a date to book a ticket.");
                 return;
             }
 
+            const bookingDate = values.bookingDate
+                ? dayjs(values.bookingDate).toISOString() // Chuyển thành chuỗi ISO
+                : null;
+
+            console.log("Formatted bookingDate:", bookingDate);
+
             const order = {
                 ...values,
+                bookingDate,
                 ticketId: selectedTicket._id,
                 customerId: user._id,
                 ticketType: selectedTicket.ticketType,
@@ -94,7 +103,13 @@ const UserRegister = () => {
                         </Form.Item>
 
                         <Form.Item label="Select Date" name="bookingDate" rules={[{ required: true, message: "Please select a date to book a ticket" }]}>
-                            <DatePicker onChange={handleDateChange} style={{ width: "100%" }} />
+                            <DatePicker
+                                onChange={handleDateChange}
+                                style={{ width: "100%" }}
+                                disabledDate={(current) => {
+                                    // Disable all dates in the past
+                                    return current && current < moment().startOf('day');
+                                }} />
                         </Form.Item>
 
                         {selectedTicket && (

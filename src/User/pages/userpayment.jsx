@@ -1,7 +1,8 @@
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button, Card, Divider, Typography, Alert, message } from "antd";
-import { UserOutlined, PhoneOutlined, MailOutlined } from "@ant-design/icons";
+import { UserOutlined, PhoneOutlined, MailOutlined, ClockCircleOutlined } from "@ant-design/icons";
 import jsPDF from "jspdf";
+import dayjs from "dayjs";
 // import { autoTable as jsPDFAutoTable } from "jspdf-autotable";
 // import html2canvas from "html2canvas";
 import { useEffect, useState } from "react";
@@ -30,6 +31,9 @@ const UserPayment = () => {
 	const { state } = useLocation();
 	const navigate = useNavigate();
 	const order = state?.order;
+
+	console.log("Order:", order);
+
 
 	const [totalPrice, setTotalPrice] = useState(0);
 	const [invoiceId, setInvoiceId] = useState(null);
@@ -80,6 +84,14 @@ const UserPayment = () => {
 		}
 	};
 
+	const formatDate = (dateString) => {
+		if (!dateString || !dayjs(dateString).isValid()) {
+			console.error("Invalid dateString:", dateString); // Log giá trị không hợp lệ
+			return "N/A"; // Trả về "N/A" nếu không có ngày hoặc ngày không hợp lệ
+		}
+		return dayjs(dateString).format('DD/MM/YYYY');
+	};
+
 	const handlePlaceOrder = async (invoiceId) => {
 		const invoice = await getInvoice(invoiceId);
 		console.log("invoice", invoice);
@@ -103,6 +115,7 @@ const UserPayment = () => {
 		}
 	}
 
+
 	const generatePDF = (invoiceData) => {
 		// Tạo một instance của jsPDF
 		const doc = new jsPDF();
@@ -121,7 +134,7 @@ const UserPayment = () => {
 		doc.setFontSize(12);
 		doc.setFont("helvetica", "normal");
 		const today = new Date().toLocaleDateString("vi-VN");
-		doc.text(`Date: ${today}`, 165, 45);
+		// doc.text(`Date: ${today}`, 20, 50);
 
 		// Trạng thái thanh toán
 		const statusText = invoiceData.status === "PAID" ? "PAID" : "UNPAID";
@@ -149,14 +162,15 @@ const UserPayment = () => {
 		doc.text(`Customer Name: ${order.name}`, 20, 70);
 		doc.text(`Phone: ${order.phone}`, 20, 78);
 		doc.text(`Email: ${order.email}`, 20, 86);
+		doc.text(`Booking Date: ${today}`, 20, 94);
 
 		// Divider
 		doc.setDrawColor(0);
 		doc.setLineWidth(0.5);
-		doc.line(20, 92, 190, 92);
+		doc.line(20, 100, 190, 100);
 
 		// Thông tin vé
-		let startY = 100;
+		let startY = 110;
 		doc.setFontSize(14);
 		doc.setFont("helvetica", "bold");
 		doc.text("Ticket Details", 20, startY);
@@ -250,6 +264,7 @@ const UserPayment = () => {
 					<Text style={{ fontSize: "16px" }}><UserOutlined /> <strong>Name:</strong> {order.name}</Text><br />
 					<Text style={{ fontSize: "16px" }}><PhoneOutlined /> <strong>Phone:</strong> {order.phone}</Text><br />
 					<Text style={{ fontSize: "16px" }}><MailOutlined /> <strong>Email:</strong> {order.email}</Text><br />
+					<Text style={{ fontSize: "16px" }}><ClockCircleOutlined /> <strong>Order Date:</strong> {formatDate(order.bookingDate)}</Text><br />
 					<Divider />
 					<Title level={4}>🎟️ Tickets Quantity</Title>
 					<Text style={{ fontSize: "16px", display: "block" }}>
