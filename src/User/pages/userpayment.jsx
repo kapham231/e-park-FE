@@ -163,14 +163,15 @@ const UserPayment = () => {
 		doc.text(`Phone: ${order.phone}`, 20, 78);
 		doc.text(`Email: ${order.email}`, 20, 86);
 		doc.text(`Booking Date: ${today}`, 20, 94);
+		doc.text(`Location: Central E-park, Vincom Vo Van Ngan, Thu Duc, Ho Chi Minh`, 20, 102);
 
 		// Divider
 		doc.setDrawColor(0);
 		doc.setLineWidth(0.5);
-		doc.line(20, 100, 190, 100);
+		doc.line(20, 108, 190, 108);
 
 		// Thông tin vé
-		let startY = 110;
+		let startY = 118;
 		doc.setFontSize(14);
 		doc.setFont("helvetica", "bold");
 		doc.text("Ticket Details", 20, startY);

@@ -72,8 +72,17 @@ const UserFooter = () => {
 							<h3>Talk to us</h3>
 						</div>
 						<ul>
-							<li>Contact Us</li>
-							<li>Find Us</li>
+							<li>📍
+								<a
+									href="https://maps.app.goo.gl/8q6uco1LAWJvHEZS9"
+									target="_blank"
+									rel="noopener noreferrer"
+									style={{ textDecoration: "none", color: "inherit" }}
+								>
+									Central E-park, Vincom Vo Van Ngan, Thu Duc, Ho Chi Minh
+								</a>
+							</li>
+							<li>📞 1900 8888</li>
 						</ul>
 					</div>
 					<div className="footer-section support">

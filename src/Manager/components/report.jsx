@@ -19,18 +19,6 @@ const ReportContent = () => {
     const [selectedTransaction, setSelectedTransaction] = useState(null);
     const [filterRange, setFilterRange] = useState(null);
 
-    // const transactions = [
-    //     {id: 1, description: "Bán vé sự kiện", date: "2024-09-28", amount: 100000},
-    //     {id: 2, description: "Bán vé sự kiện", date: "2024-09-29", amount: 80000},
-    //     {id: 3, description: "Bán vé sự kiện", date: "2024-09-30", amount: 90000},
-    //     {id: 4, description: "Bán vé sự kiện", date: "2024-10-01", amount: 750000},
-    //     {id: 5, description: "Bán vé sự kiện", date: "2024-10-02", amount: 850000},
-    //     {id: 6, description: "Mua vật tư", date: "2024-09-28", amount: -50000},
-    //     {id: 7, description: "Bán vé VIP", date: "2024-09-28", amount: 200000},
-    //     {id: 8, description: "Bán vé VIP", date: "2024-09-30", amount: 150000},
-    //     {id: 9, description: "Chi phí tổ chức", date: "2024-09-28", amount: -100000},
-    // ];
-
     useEffect(() => {
         fetchTransactions()
     }, []);
@@ -53,6 +41,9 @@ const ReportContent = () => {
                 console.log("Fetch transactions completed");
             })
     }
+
+    console.log(transactions);
+
 
     const DATE_FORMAT = "DD-MM-YYYY";
 
@@ -110,6 +101,8 @@ const ReportContent = () => {
     );
 
     const renderInvoiceDetail = (amount) => {
+        console.log(amount);
+
         return <Text>{amount.toLocaleString()} VND</Text>
     }
 
