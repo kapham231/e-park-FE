@@ -2,14 +2,12 @@ import { Button, Card, Col, Divider, Pagination, Row, Typography, Tooltip, Selec
 import { useNavigate } from "react-router-dom";
 import "../css/userevent.css";
 import React, { useEffect, useState } from "react";
-import { getAllEvent, getOngoingEvent, getUpcomingEvent } from "../../ApiService/playgroundmanagerApi";
-import { useAuth } from "../../auth/authContext";
+import { getOngoingEvent, getUpcomingEvent } from "../../ApiService/playgroundmanagerApi";
 import moment from "moment/moment";
 const { Title } = Typography;
 
 const UserEventContent = () => {
 	const navigate = useNavigate();
-	const { user } = useAuth();
 	const [events, setEvents] = useState([]);
 	const [filter, setFilter] = useState("all");
 	const [filterRange, setFilterRange] = useState(null);
@@ -32,10 +30,14 @@ const UserEventContent = () => {
 					});
 				break;
 			default:
-				getAllEvent()
-					.then((events) => {
-						setEvents(events);
-					});
+				const upcomingEvents = getUpcomingEvent();
+				const ongoingEvents = getOngoingEvent();
+
+				Promise.all([upcomingEvents, ongoingEvents])
+					.then((res) => {
+						const allEvents = [...res[0].data, ...res[1].data];
+						setEvents(allEvents);
+					})
 		}
 	}, [filter]);
 

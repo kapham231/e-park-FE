@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, DatePicker, Descriptions, Divider, Empty, Flex, List, Modal, Select, Typography } from "antd";
 import useCheckMobile from "../../hooks/useCheckMobile";
-import { getAllEvent, getOngoingEvent, getUpcomingEvent } from "../../ApiService/playgroundmanagerApi";
+import { getOngoingEvent, getUpcomingEvent } from "../../ApiService/playgroundmanagerApi";
 import moment from "moment";
 
 const { Title, Text } = Typography;
@@ -33,10 +33,14 @@ const EventContent = () => {
                     });
                 break;
             default:
-                getAllEvent()
-                    .then((events) => {
-                        setEvents(events);
-                    });
+                const upcomingEvents = getUpcomingEvent();
+                const ongoingEvents = getOngoingEvent();
+
+                Promise.all([upcomingEvents, ongoingEvents])
+                    .then((res) => {
+                        const allEvents = [...res[0].data, ...res[1].data];
+                        setEvents(allEvents);
+                    })
         }
     }, [typeFilter]);
 
