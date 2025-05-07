@@ -12,11 +12,12 @@ import {
 } from 'mdb-react-ui-kit';
 import useCheckMobile from "../../hooks/useCheckMobile";
 
-const UserHeader = ({ isGuest }) => {
+const UserHeader = () => {
     const isMobile = useCheckMobile();
     const location = useLocation();
     const [showNav, setShowNav] = useState(false);
     const auth = useAuth();
+    const isAuth = auth?.user;
     const navigate = useNavigate();
     const activeTab = location.pathname.startsWith('/user/event') ? '/user/event' : location.pathname;
     const membershipTier = auth?.user?.cardType || "Silver";
@@ -77,7 +78,7 @@ const UserHeader = ({ isGuest }) => {
                         </Link>
                     </div>
 
-                    {!isGuest && (
+                    {!!isAuth && (
                         <Space style={{ fontWeight: 'bold', marginRight: '8px', flex: isMobile ? '1' : '0' }}>
                             <Button
                                 color="cyan"
@@ -90,7 +91,7 @@ const UserHeader = ({ isGuest }) => {
                         </Space>
                     )}
 
-                    {!isGuest ? (
+                    {!!isAuth ? (
                         <>
                             <Tag color={
                                 membershipTier === "Gold"
@@ -124,14 +125,14 @@ const UserHeader = ({ isGuest }) => {
                         placement="bottomLeft"
                     >
                         <div className="d-flex align-items-center">
-                            {!isGuest ? <i className="fas fa-bell me-3" size="lg" style={{ cursor: 'pointer' }} /> : null}
+                            {!!isAuth ? <i className="fas fa-bell me-3" size="lg" style={{ cursor: 'pointer' }} /> : null}
                             <span style={{ whiteSpace: 'nowrap' }}>
-                                {isGuest ? (
-                                    'Hello Guest'
-                                ) : (
+                                {!!isAuth ? (
                                     <>
                                         Hello {auth?.user?.lastName}
                                     </>
+                                ) : (
+                                    'Hello Guest'
                                 )}
                             </span>
                         </div>

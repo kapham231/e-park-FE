@@ -71,10 +71,7 @@ const WelcomePage = () => {
                             type="default"
                             size="large"
                             className="guest-button"
-                            onClick={() => {
-                                localStorage.setItem("isGuest", "1");
-                                navigate("/user/homepage");
-                            }}
+                            onClick={() => navigate("/user/homepage")}
                         >
                             Guest
                             <SmileOutlined />

@@ -46,6 +46,12 @@
     max-width: 28rem;
 }
 
+.helper-text {
+    font-size: 0.875rem;
+    color: #6b7280;
+    text-align: justify;
+}
+
 .payment-success-item {
     display: flex;
     justify-content: space-between;

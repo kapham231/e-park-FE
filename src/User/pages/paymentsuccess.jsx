@@ -1,9 +1,9 @@
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { Button, Divider } from "antd";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { Button } from "antd";
 import React, { useEffect, useState } from "react";
 
 import "../css/paymentsuccess.css"
-import { changeInvoiceStatus, findInvoice, getInvoice } from "../../ApiService/userApi";
+import { changeInvoiceStatus, findInvoice } from "../../ApiService/userApi";
 import jsPDF from "jspdf";
 import { useAuth } from "../../auth/authContext";
 import logo from "../../Assets/img/logo.png";
@@ -15,7 +15,7 @@ const PaymentSuccess = () => {
 	const [eventDiscountPrice, setEventDiscountPrice] = useState(0);
 	const { user } = useAuth();
 
-	const [searchParams, setSearchParams] = useSearchParams();
+	const [searchParams] = useSearchParams();
 	useEffect(() => {
 
 		const fetchInvoice = async () => {
@@ -45,7 +45,7 @@ const PaymentSuccess = () => {
 		}
 
 		fetchInvoice();
-	}, []);
+	}, [searchParams]);
 
 	const paymentAmountTransform = (amount) => {
 		if (amount) {
@@ -65,9 +65,9 @@ const PaymentSuccess = () => {
 		});
 	}
 
-	const formatCurrency = (amount) => {
-		return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(amount);
-	};
+	// const formatCurrency = (amount) => {
+	// 	return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(amount);
+	// };
 
 	const formatCurrencyForPDF = (amount) => {
 		return amount.toLocaleString("vi-VN") + " VND";
@@ -195,6 +195,12 @@ const PaymentSuccess = () => {
 		doc.save(`invoice_${invoiceData.invoiceNumber}.pdf`);
 	};
 
+	useEffect(() => {
+		if (invoice) {
+			generatePDF(invoice)
+		}
+	}, [invoice]);
+
 	return (
 		<div className="payment-success-wrapper">
 			<CircleCheckIcon className="payment-success-icon" />
@@ -202,7 +208,7 @@ const PaymentSuccess = () => {
 			<p className="payment-success-subtext">Thank you for your purchase!</p>
 			<div className="payment-success-details">
 				<p className="helper-text">
-
+					You must bring your ticket to the playground to receive your ticket, otherwise we will not be able to issue you a ticket. Tickets are downloading automatically after payment. If dowloading does not work, please click the button below to download the ticket.
 				</p>
 				<Button onClick={() => generatePDF(invoice)} type="primary" className="download-invoice-button">
 					Download Invoice

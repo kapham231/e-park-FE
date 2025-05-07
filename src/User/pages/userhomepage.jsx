@@ -17,28 +17,13 @@ import UserTerm from "./userterm";
 // import PaymentSuccess from "./paymentsuccess";
 
 const UserHomepage = () => {
-    const [isGuest, setIsGuest] = useState(localStorage.getItem('isGuest'));
     // console.log(user);
 
     // console.log(isGuest);
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            localStorage.setItem('isGuest', null);
-            setIsGuest(null);
-        }
-        else {
-            const guestStatus = localStorage.getItem('isGuest');
-            setIsGuest(guestStatus);
-            // console.log(guestStatus);
-        }
-
-    }, []);
-
     return (
         <>
-            <UserHeader isGuest={isGuest} />
+            <UserHeader />
 
             {/* <div className="mt-4"> */}
             <Routes>
