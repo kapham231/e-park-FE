@@ -11,6 +11,7 @@ import {
     MDBNavbarToggler,
 } from 'mdb-react-ui-kit';
 import useCheckMobile from "../../hooks/useCheckMobile";
+import DefaultButton from "../../components/DefaultButton";
 
 const UserHeader = () => {
     const isMobile = useCheckMobile();
@@ -80,14 +81,21 @@ const UserHeader = () => {
 
                     {!!isAuth && (
                         <Space style={{ fontWeight: 'bold', marginRight: '8px', flex: isMobile ? '1' : '0' }}>
-                            <Button
-                                color="cyan"
-                                variant="solid"
-                                size="large"
+                            {/*<Button*/}
+                            {/*    color="cyan"*/}
+                            {/*    variant="solid"*/}
+                            {/*    size="large"*/}
+                            {/*    onClick={() => navigate("/user/register", { state: { user: auth?.user } })}*/}
+                            {/*>*/}
+                            {/*    Book Ticket*/}
+                            {/*</Button>*/}
+                            <DefaultButton
+                                type="cyan"
+                                size="sm"
                                 onClick={() => navigate("/user/register", { state: { user: auth?.user } })}
                             >
                                 Book Ticket
-                            </Button>
+                            </DefaultButton>
                         </Space>
                     )}
 

@@ -38,15 +38,26 @@
 }
 
 .payment-success-details {
-    margin-top: 1.5rem;
+    margin-top: 1rem;
     border: 1px solid #e5e7eb;
     border-radius: 0.5rem;
     padding: 1rem;
     width: 100%;
-    max-width: 28rem;
+    max-width: 48rem;
+}
+
+.payment-success-details.helper {
+    background-color: #EDFFEA;
+    border-color: #D0F5BE;
+}
+
+.payment-success-details.details {
+    background-color: #f9fafb;
+    border-color: #d1d5db;
 }
 
 .helper-text {
+    margin-left: 1rem;
     font-size: 0.875rem;
     color: #6b7280;
     text-align: justify;
@@ -60,4 +71,12 @@
 
 .payment-success-item .item-value {
     font-weight: 500;
+}
+
+.download-invoice-button {
+    background-color: #FFC5C5;
+}
+
+.back-to-home-button {
+    background-color: transparent;
 }

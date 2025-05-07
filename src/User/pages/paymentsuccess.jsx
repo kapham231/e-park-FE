@@ -1,12 +1,13 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Button } from "antd";
-import React, { useEffect, useState } from "react";
+// import { Button } from "antd";
+import React, {useCallback, useEffect, useState} from "react";
 
 import "../css/paymentsuccess.css"
 import { changeInvoiceStatus, findInvoice } from "../../ApiService/userApi";
 import jsPDF from "jspdf";
 import { useAuth } from "../../auth/authContext";
 import logo from "../../Assets/img/logo.png";
+import DefaultButton from "../../components/DefaultButton";
 
 const PaymentSuccess = () => {
 	const navigate = useNavigate();
@@ -73,7 +74,7 @@ const PaymentSuccess = () => {
 		return amount.toLocaleString("vi-VN") + " VND";
 	};
 
-	const generatePDF = (invoiceData) => {
+	const generatePDF = useCallback((invoiceData) => {
 		// Tạo một instance của jsPDF
 		const doc = new jsPDF();
 
@@ -193,28 +194,41 @@ const PaymentSuccess = () => {
 
 		// Xuất file PDF
 		doc.save(`invoice_${invoiceData.invoiceNumber}.pdf`);
-	};
+	}, [invoice]);
 
 	useEffect(() => {
 		if (invoice) {
 			generatePDF(invoice)
 		}
-	}, [invoice]);
+	}, [invoice, generatePDF]);
 
 	return (
 		<div className="payment-success-wrapper">
 			<CircleCheckIcon className="payment-success-icon" />
 			<h1 className="payment-success-header">Payment Successful</h1>
 			<p className="payment-success-subtext">Thank you for your purchase!</p>
-			<div className="payment-success-details">
-				<p className="helper-text">
-					You must bring your ticket to the playground to receive your ticket, otherwise we will not be able to issue you a ticket. Tickets are downloading automatically after payment. If dowloading does not work, please click the button below to download the ticket.
-				</p>
-				<Button onClick={() => generatePDF(invoice)} type="primary" className="download-invoice-button">
-					Download Invoice
-				</Button>
-			</div>
-			<div className="payment-success-details">
+			<ul className="payment-success-details helper">
+				<li className="helper-text">
+					You must bring your ticket to the playground to receive your ticket, otherwise we will not be able to issue you a ticket.
+				</li>
+				<li className="helper-text">
+					Tickets are downloading automatically after payment.
+				</li>
+				<li className="helper-text">
+					If downloading does not work, please click the button below to download the ticket.
+				</li>
+				{/*<Button onClick={() => generatePDF(invoice)} type="primary" className="download-invoice-button">*/}
+				{/*	Download Invoice*/}
+				{/*</Button>*/}
+			</ul>
+			<DefaultButton
+				type="danger"
+				style={{ marginTop: "20px" }}
+				onClick={() => generatePDF(invoice)}
+			>
+				Download Invoice
+			</DefaultButton>
+			<div className="payment-success-details details">
 				<div className="payment-success-item">
 					<span>Amount Paid:</span>
 					<span className="item-value">{paymentAmountTransform(invoice?.subtotal)} VND</span>
@@ -224,13 +238,21 @@ const PaymentSuccess = () => {
 					<span className="item-value">{formatISOTime(invoice?.createdAt)}</span>
 				</div>
 			</div>
-			<Button
+			{/*<Button*/}
+			{/*	type="primary"*/}
+			{/*	style={{ marginTop: "20px" }}*/}
+			{/*	onClick={() => navigate("/user/homepage")}*/}
+			{/*	className="back-to-home-button"*/}
+			{/*>*/}
+			{/*	Back to Homepage*/}
+			{/*</Button>*/}
+			<DefaultButton
 				type="primary"
 				style={{ marginTop: "20px" }}
 				onClick={() => navigate("/user/homepage")}
 			>
 				Back to Homepage
-			</Button>
+			</DefaultButton>
 		</div>
 	);
 };
