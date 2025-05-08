@@ -4,7 +4,7 @@ import axios from 'axios';
 const baseURL = process.env.REACT_APP_API_BASE_URL;
 
 
-export const bookingPrice = async (tickets, customerId) => {
+export const bookingPrice = async (tickets, customerId, date) => {
     try {
         const response = await axios.post(`${baseURL}/ticket/calculateTicketPrice`, {
             tickets: [
@@ -14,7 +14,8 @@ export const bookingPrice = async (tickets, customerId) => {
                     bonus: tickets.bonus
                 }
             ],
-            customerId
+            customerId,
+            date,
         });
         // console.log(response.data.data);
         return response.data.data;

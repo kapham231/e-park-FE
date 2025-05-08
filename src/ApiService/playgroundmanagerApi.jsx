@@ -44,6 +44,16 @@ export const getEvent = async (id) => {
     }
 }
 
+export const getEventByDate = async (date) => {
+    try {
+        const response = await axios.get(`${baseURL}/event/getEventByDate/${date}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error;
+    }
+}
+
 export const createEvent = async (newEvent) => {
     try {
         // console.log('Start Date', newEvent.startDate);

@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { Button, Input, message, Card, Tag, Row, Col } from 'antd';
+import {Button, Input, message, Card, Tag, Row, Col, List} from 'antd';
 import { changeInvoiceStatus, findInvoice } from '../../ApiService/userApi';
 import { getUserNameById } from '../../ApiService/adminApi';
 import Title from 'antd/es/typography/Title';
+import {getEventByDate} from "../../ApiService/playgroundmanagerApi";
+import useCheckMobile from "../../hooks/useCheckMobile";
 
 const CheckTicket = () => {
+    const isMobile = useCheckMobile();
     const [invoiceOderCode, setInvoiceOrderCode] = useState('');
     const [invoice, setInvoice] = useState(null);
+    const [events, setEvents] = useState([]);
     const [customerName, setCustomerName] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -20,17 +23,19 @@ const CheckTicket = () => {
         setLoading(true);
         try {
             const invoice = await findInvoice(invoiceOderCode);
-            console.log(invoice);
+            console.log("invoice: ", invoice);
+            const events = await getEventByDate(invoice.bookingDate);
+            console.log("event: ", events.data);
 
             const customer = await getUserNameById(invoice.customer);
-            console.log(customer);
+            console.log("customer: ", customer);
 
             const customerName = `${customer.firstName} ${customer.lastName}`;
-            console.log(customerName);
+            console.log("customerName: ", customerName);
+
             setCustomerName(customerName);
-
-
             setInvoice(invoice);
+            setEvents(events.data);
         } catch (error) {
             message.error('Invoice not found');
             setInvoice(null);
@@ -55,7 +60,7 @@ const CheckTicket = () => {
     };
 
     return (
-        <div style={{ padding: 24 }}>
+        <div style={{ padding: isMobile ? '8px' : '24px', margin: 'auto' }}>
             <Row justify="center">
                 <Col xs={22} sm={20} md={16} lg={12} xl={10}>
                     <Title level={2} style={{ textAlign: 'center', marginTop: 32 }}>
@@ -74,7 +79,7 @@ const CheckTicket = () => {
             </Row>
 
             {invoice && (
-                <Row justify="center">
+                <Row gutter={[16, 16]} justify="center" style={{ marginTop: 20 }}>
                     <Col xs={24} sm={20} md={16} lg={12} xl={10}>
                         <Card>
                             <Title level={4}>Invoice #{invoice.invoiceNumber}</Title>
@@ -102,6 +107,33 @@ const CheckTicket = () => {
                                 </Button>
                             )}
                         </Card>
+                    </Col>
+                    <Col xs={24} sm={20} md={16} lg={12} xl={10}>
+                            {events.length > 0 ? (
+                                <List
+                                    itemLayout="horizontal"
+                                    dataSource={events}
+                                    renderItem={event => (
+                                        <Card>
+                                            <List.Item>
+                                                <List.Item.Meta
+                                                    title={event.eventTitle}
+                                                    description={
+                                                        <>
+                                                            <span><strong>Start date:</strong> {event.startDate}</span>
+                                                            <p><strong>End date:</strong> {event.endDate}</p>
+                                                        </>
+                                                    }
+                                                />
+                                            </List.Item>
+                                        </Card>
+                                    )}
+                                />
+                            ) : (
+                                <Card>
+                                    <p>No events found for this invoice.</p>
+                                </Card>
+                            )}
                     </Col>
                 </Row>
             )}

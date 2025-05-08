@@ -207,7 +207,7 @@ const ReportErrorContent = () => {
             <Table
                 columns={columns} // Pass the column definitions
                 dataSource={filteredEquipment} // Pass the data array
-                rowKey="id" // IMPORTANT: Tell the table how to uniquely identify rows
+                rowKey="code" // IMPORTANT: Tell the table how to uniquely identify rows
                 loading={loading} // Show loading indicator on the table itself
                 pagination={{
                     pageSize: 10,

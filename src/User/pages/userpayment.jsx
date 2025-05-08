@@ -68,7 +68,7 @@ const UserPayment = () => {
 				quantity: order.quantity,
 				bonus: order.bonus
 			};
-			const response = await bookingPrice(ticket, order.customerId);
+			const response = await bookingPrice(ticket, order.customerId, order.bookingDate);
 			console.log(response);
 
 
