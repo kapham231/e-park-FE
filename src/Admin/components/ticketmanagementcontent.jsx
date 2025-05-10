@@ -56,6 +56,7 @@ const TicketManagementContent = () => {
             <Button
                 onClick={handleAddTicket}
                 className="AD-add-user-button"
+                disabled
             >
                 Add Ticket
             </Button>
