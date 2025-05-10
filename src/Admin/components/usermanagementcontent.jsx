@@ -1,6 +1,7 @@
 import { Button, Table, Space, message, Popconfirm, Select, Tag } from "antd";
 import { useEffect, useState } from "react";
 import AddUserModal from "./addusermodal";
+import ForgotPasswordModal from "./forgotpasswordmodal";
 
 import '../css/usermanagement.css';
 import { deleteUserbyId, getAllUserWithRole } from "../../ApiService/adminApi";
@@ -8,6 +9,8 @@ import { deleteUserbyId, getAllUserWithRole } from "../../ApiService/adminApi";
 const { Option } = Select;
 const UserManagementContent = () => {
     const [users, setUsers] = useState([]);
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] = useState(false);
     const [roleFilter, setRoleFilter] = useState('All');
     useEffect(() => {
         fetchUsers();
@@ -84,6 +87,7 @@ const UserManagementContent = () => {
             render: (_, record) => (
                 <Space size="middle">
                     <Button className="edit-button" onClick={() => showEditUserModal(record)}>Edit</Button>
+                    <Button className="recoverpassword-button" onClick={() => handleRecoverPassword(record)}>Recover Password</Button>
                     <Popconfirm
                         title="Delete the user"
                         description="Are you sure to delete this user?"
@@ -145,6 +149,17 @@ const UserManagementContent = () => {
         }
     };
 
+    const handleRecoverPassword = (user) => {
+        setSelectedUser(user); // Lưu thông tin người dùng được chọn
+        setIsForgotPasswordModalOpen(true); // Mở modal
+    };
+
+    const handleForgotPasswordModalClose = () => {
+        setIsForgotPasswordModalOpen(false); // Đóng modal
+        setSelectedUser(null); // Xóa thông tin người dùng được chọn
+    };
+
+
     const handleDeleteUser = async (id, confirm) => {
         try {
             if (confirm) {
@@ -199,6 +214,12 @@ const UserManagementContent = () => {
                 onAddUser={handleAddUser}
                 onEditUser={handleEditUser}
                 editingUser={editingUser}
+            />
+
+            <ForgotPasswordModal
+                visible={isForgotPasswordModalOpen}
+                onClose={handleForgotPasswordModalClose}
+                initialValues={selectedUser}
             />
         </>
     );

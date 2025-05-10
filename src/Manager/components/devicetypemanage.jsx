@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Button, Table, Popconfirm, message, Tag } from "antd";
+import { useEffect, useState } from "react";
+import { Button, Table, Popconfirm, message } from "antd";
 import { getAllType, createType, deleteTypeById, updateTypeById } from "../../ApiService/playgroundmanagerApi";
 import DeviceTypeModal from "./devicetypemodal";
 
@@ -25,9 +25,9 @@ const DeviceTypeManagement = () => {
         },
         {
             title: "Quantity",
-            dataIndex: "count",
-            key: "count",
-            sorter: (a, b) => a.count - b.count,
+            dataIndex: "quantity",
+            key: "quantity",
+            sorter: (a, b) => a.quantity - b.quantity,
         },
         {
             title: "Action",
@@ -55,10 +55,12 @@ const DeviceTypeManagement = () => {
 
     useEffect(() => {
         fetchTypeList();
-    }, [typeList]);
+    }, []);
 
     const fetchTypeList = async () => {
         const typeList = await getAllType();
+        console.log("typeList: ", typeList);
+
 
         if (typeList.length === 0) {
             console.log("No type found");

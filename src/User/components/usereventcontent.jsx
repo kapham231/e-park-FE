@@ -1,4 +1,4 @@
-import { Button, Card, Col, Divider, Pagination, Row, Typography, Tooltip, Select, DatePicker, Empty } from "antd";
+import { Button, Card, Col, Divider, Pagination, Row, Typography, Tooltip, Select, DatePicker, Empty, Spin } from "antd";
 import { useNavigate } from "react-router-dom";
 import "../css/userevent.css";
 import React, { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ const { Title } = Typography;
 const UserEventContent = () => {
 	const navigate = useNavigate();
 	const [events, setEvents] = useState([]);
+	const [loading, setLoading] = useState(true);
 	const [filter, setFilter] = useState("all");
 	const [filterRange, setFilterRange] = useState(null);
 	const [height, setHeight] = useState(window.innerHeight);
@@ -16,18 +17,21 @@ const UserEventContent = () => {
 	const eventsPerPage = 8;
 
 	useEffect(() => {
+		setLoading(true);
 		switch (filter) {
 			case "upcoming":
 				getUpcomingEvent()
 					.then((res) => {
 						setEvents(res.data);
-					});
+					})
+					.finally(() => setLoading(false));
 				break;
 			case "ongoing":
 				getOngoingEvent()
 					.then((res) => {
 						setEvents(res.data);
-					});
+					})
+					.finally(() => setLoading(false));
 				break;
 			default:
 				const upcomingEvents = getUpcomingEvent();
@@ -38,6 +42,7 @@ const UserEventContent = () => {
 						const allEvents = [...res[0].data, ...res[1].data];
 						setEvents(allEvents);
 					})
+					.finally(() => setLoading(false));
 		}
 	}, [filter]);
 
@@ -102,19 +107,24 @@ const UserEventContent = () => {
 					]}
 				/>
 			</div>
-			{filterEventsByDate.length === 0 ? (
+
+			{loading ? (
+				<div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "300px" }}>
+					<Spin size="large" tip="Loading events..." />
+				</div>
+			) : filterEventsByDate.length === 0 ? (
 				<Empty
 					description={
 						<span>
 							No events found. Check back later for upcoming events!
 						</span>
 					}
-					style={{ margin: '40px 0' }}
+					style={{ margin: "40px 0" }}
 				/>
 			) : (
 				<>
 					<Row gutter={[24, 24]} style={{ alignItems: "stretch" }}>
-						{filterEventsByDate.map(event => (
+						{filterEventsByDate.map((event) => (
 							<Col xs={24} sm={12} md={8} lg={6} key={event._id}>
 								<Card
 									hoverable
@@ -131,21 +141,28 @@ const UserEventContent = () => {
 									}}
 									className="event-card"
 								>
-									<div style={{
-										display: "flex",
-										flexDirection: "column",
-										justifyContent: "space-between",
-										height: "100%",
-									}}>
+									<div
+										style={{
+											display: "flex",
+											flexDirection: "column",
+											justifyContent: "space-between",
+											height: "100%",
+										}}
+									>
 										<Tooltip title={event.eventTitle}>
-											<Title level={4} ellipsis={true} className="event-title">{event.eventTitle}</Title>
+											<Title level={4} ellipsis={true} className="event-title">
+												{event.eventTitle}
+											</Title>
 										</Tooltip>
 
 										<Divider style={{ margin: "12px 0" }} />
 
-										<p className="event-date"><strong>📅 Start Date:</strong> {event.startDate}</p>
-										<p className="event-date"><strong>📅 End Date:</strong> {event.endDate}</p>
-										{/* <p className="event-location"><strong>📍 Location:</strong> {event.location}</p> */}
+										<p className="event-date">
+											<strong>📅 Start Date:</strong> {event.startDate}
+										</p>
+										<p className="event-date">
+											<strong>📅 End Date:</strong> {event.endDate}
+										</p>
 										<div className="event-btn-container">
 											<Button
 												color="danger"

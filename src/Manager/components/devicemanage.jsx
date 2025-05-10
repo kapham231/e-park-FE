@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Table, Popconfirm, message, Tag } from "antd";
 import { getAllDevice, createDevice, deleteDeviceById, updateDeviceById, getAllSupplier } from "../../ApiService/playgroundmanagerApi";
 import DeviceModal from "./devicemodal";
-import DeviceTypeModal from "./devicetypemodal";
+// import DeviceTypeModal from "./devicetypemodal";
 
 
 const DeviceManagement = () => {
@@ -61,6 +61,12 @@ const DeviceManagement = () => {
             dataIndex: "status",
             key: "status",
             align: 'center',
+            filters: [
+                { text: 'Available', value: 'available' },
+                { text: 'Error', value: 'error' },
+                { text: 'Maintenance', value: 'maintenance' },
+            ],
+            onFilter: (value, record) => record.status?.toLowerCase() === value,
             render: (status) => ( // Use render to display the Tag component
                 <Tag color={getStatusTagColor(status)} key={status}>
                     {status || 'Unknown'}
@@ -160,6 +166,7 @@ const DeviceManagement = () => {
             >
                 Add Device
             </Button>
+
             <Table
                 columns={columns}
                 dataSource={deviceList}

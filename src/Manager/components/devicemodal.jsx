@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Form, Input, Select, Button, InputNumber } from "antd";
-import {getAllSupplier, getAllType} from "../../ApiService/playgroundmanagerApi";
+import { getAllSupplier, getAllType } from "../../ApiService/playgroundmanagerApi";
 
 const { Option } = Select;
 
@@ -44,7 +44,7 @@ const DeviceModal = ({ visible, onClose, onSubmit, initialValues }) => {
     const handleSubmit = () => {
         form.validateFields()
             .then((values) => {
-                console.log("Form values:", values); // In ra giá trị form để kiểm tra
+                // console.log("Form values:", values); 
 
                 onSubmit(values); // Gửi dữ liệu thiết bị mới hoặc đã chỉnh sửa lên component cha
                 form.resetFields(); // Reset form sau khi thêm hoặc chỉnh sửa thành công

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import {Button, Input, message, Card, Tag, Row, Col, List} from 'antd';
+import { Button, Input, message, Card, Tag, Row, Col, List } from 'antd';
 import { changeInvoiceStatus, findInvoice } from '../../ApiService/userApi';
 import { getUserNameById } from '../../ApiService/adminApi';
 import Title from 'antd/es/typography/Title';
-import {getEventByDate} from "../../ApiService/playgroundmanagerApi";
+import { getEventByDate } from "../../ApiService/playgroundmanagerApi";
 import useCheckMobile from "../../hooks/useCheckMobile";
 
 const CheckTicket = () => {
@@ -91,7 +91,7 @@ const CheckTicket = () => {
                                 {invoice.tickets.map((ticket, index) => (
                                     <React.Fragment key={index}>
                                         <li>{ticket.ticketType} - {ticket.quantity} tickets</li>
-                                        {ticket.bonus && (
+                                        {ticket.bonus > 0 && (
                                             <li>Bonus for this Type: {ticket.bonus} parent</li>
                                         )}
                                     </React.Fragment>
@@ -109,31 +109,31 @@ const CheckTicket = () => {
                         </Card>
                     </Col>
                     <Col xs={24} sm={20} md={16} lg={12} xl={10}>
-                            {events.length > 0 ? (
-                                <List
-                                    itemLayout="horizontal"
-                                    dataSource={events}
-                                    renderItem={event => (
-                                        <Card>
-                                            <List.Item>
-                                                <List.Item.Meta
-                                                    title={event.eventTitle}
-                                                    description={
-                                                        <>
-                                                            <span><strong>Start date:</strong> {event.startDate}</span>
-                                                            <p><strong>End date:</strong> {event.endDate}</p>
-                                                        </>
-                                                    }
-                                                />
-                                            </List.Item>
-                                        </Card>
-                                    )}
-                                />
-                            ) : (
-                                <Card>
-                                    <p>No events found for this invoice.</p>
-                                </Card>
-                            )}
+                        {events.length > 0 ? (
+                            <List
+                                itemLayout="horizontal"
+                                dataSource={events}
+                                renderItem={event => (
+                                    <Card>
+                                        <List.Item>
+                                            <List.Item.Meta
+                                                title={event.eventTitle}
+                                                description={
+                                                    <>
+                                                        <span><strong>Start date:</strong> {event.startDate}</span>
+                                                        <p><strong>End date:</strong> {event.endDate}</p>
+                                                    </>
+                                                }
+                                            />
+                                        </List.Item>
+                                    </Card>
+                                )}
+                            />
+                        ) : (
+                            <Card>
+                                <p>No events found for this invoice.</p>
+                            </Card>
+                        )}
                     </Col>
                 </Row>
             )}

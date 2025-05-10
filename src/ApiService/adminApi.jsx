@@ -86,6 +86,20 @@ export const updateUserbyId = async (user, userId) => {
     }
 }
 
+export const handleRecoverPassword = async (username, password) => {
+    try {
+        console.log("Vao day roi` ne`");
+
+        const response = await axios.post(`${baseURL}/generalUser/forgot-password`, {
+            username: username,
+            password: password
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error;
+    }
+}
 export const deleteUserbyId = async (userId) => {
     try {
         const response = await axios.delete(`${baseURL}/generalUser/${userId}`);

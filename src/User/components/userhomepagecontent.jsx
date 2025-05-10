@@ -1,4 +1,4 @@
-import { Button, Card, Divider, Tooltip } from "antd";
+import { Button, Card, Divider } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import value1 from '../../Assets/img/value1.jpg';
 import value2 from '../../Assets/img/value2.jpg';
@@ -50,6 +50,7 @@ const UserHomepageContent = () => {
 			title: "Silver Member",
 			benefits: [
 				"Decrease 5% in total bill",
+				"Buy ticket bigger or equal 10.000 VND will get 1 loyalty point for each 10.000 VND",
 			],
 			image: "https://i.pinimg.com/736x/b8/1f/a0/b81fa051818c3397233076a51f70c7e0.jpg"
 		},
@@ -58,6 +59,8 @@ const UserHomepageContent = () => {
 			title: "Platinum Member",
 			benefits: [
 				"Decrease 15% in total bill",
+				"Buy ticket bigger or equal 10.000 VND will get 1 loyalty point for each 10.000 VND",
+
 			],
 			image: "https://i.pinimg.com/736x/00/4c/5b/004c5b6d9e87e4a762be7039405ba2be.jpg"
 		},
@@ -66,6 +69,8 @@ const UserHomepageContent = () => {
 			title: "Gold Member",
 			benefits: [
 				"Decrease 10% in total bill",
+				"Buy ticket bigger or equal 10.000 VND will get 1 loyalty point for each 10.000 VND",
+
 			],
 			image: "https://i.pinimg.com/736x/49/c7/2a/49c72aefa242ffa7a6ece45371ee291b.jpg"
 		}
@@ -150,7 +155,6 @@ const UserHomepageContent = () => {
 
 							<p className="event-date"><strong>📅 Start date:</strong> {event.startDate}</p>
 							<p className="event-date"><strong>📅 End date:</strong> {event.endDate}</p>
-							<p className="event-location"><strong>📍Location:</strong> {event.location}</p>
 
 							<Divider style={{ margin: "12px 0" }} />
 

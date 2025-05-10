@@ -157,7 +157,7 @@ const ReportContent = () => {
 
     const renderMaintenance = (selectInvoice) => {
         const { invoiceNumber, __t, status, createdAt, totalItems, subtotal, supplierId, title, equipments } = selectInvoice;
-        console.log(supplierId);
+        // console.log(supplierId);
         fetchSupplier(supplierId);
         return (
             <div>
@@ -231,7 +231,12 @@ const ReportContent = () => {
             dataIndex: "__t",
             key: "invoiceType",
             render: renderType,
-            align: "center"
+            align: "center",
+            filters: [
+                { text: "Booking", value: "invoicebooking" },
+                { text: "Maintenance", value: "invoicemaintenance" },
+            ],
+            onFilter: (value, record) => record.__t.toLowerCase().includes(value),
         },
         {
             title: "Status",
@@ -361,7 +366,10 @@ const ReportContent = () => {
                 dataSource={filteredTransactions}
                 columns={columns}
                 rowKey="invoiceNumber"
-                pagination={false}
+                pagination={{
+                    pageSize: 15, // Hiển thị 15 hóa đơn mỗi trang
+                    showSizeChanger: false, // Ẩn tùy chọn thay đổi số lượng mục trên mỗi trang
+                }}
                 onRow={(record) => ({ onClick: () => handleRowClick(record) })}
                 scroll={{
                     x: 'max-content',

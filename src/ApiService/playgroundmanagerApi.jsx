@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { changeInvoiceStatus } from './userApi';
 
 const baseURL = process.env.REACT_APP_API_BASE_URL;
 
@@ -35,6 +36,8 @@ export const getOngoingEvent = async () => {
 }
 
 export const getEvent = async (id) => {
+    console.log(id);
+
     try {
         const response = await axios.get(`${baseURL}/event/getId/${id}`);
         return response.data;
@@ -181,6 +184,12 @@ export const getDeviceByStatus = async (status) => {
 export const createDevice = async (newDevice) => {
     try {
         const response = await axios.post(`${baseURL}/equipment/create`, newDevice);
+        // console.log('New Device', response.data);
+        // console.log(response.data.data.invoice);
+
+
+        await changeInvoiceStatus(response.data.data.invoice._id);
+
         return response.data;
     } catch (error) {
         console.error('Error:', error);

@@ -20,6 +20,17 @@
     border: #ffae4c 1px solid !important;
 }
 
+.recoverpassword-button {
+    background-color: #a09e9e;
+    color: white;
+}
+
+.recoverpassword-button:hover {
+    background-color: white;
+    color: #a09e9e !important;
+    border: #a09e9e 1px solid !important;
+}
+
 .delete-button {
     background-color: #f66e6e;
     color: white;

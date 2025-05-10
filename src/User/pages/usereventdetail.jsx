@@ -5,6 +5,7 @@ import '../css/usereventdetail.css';
 import { useEffect, useState } from "react";
 import { getEvent } from "../../ApiService/playgroundmanagerApi";
 import { useAuth } from "../../auth/authContext";
+import Description from "../../utils/description";
 
 const UserEventDetail = () => {
 	const navigate = useNavigate();
@@ -17,7 +18,7 @@ const UserEventDetail = () => {
 
 	useEffect(() => {
 		fetchEvents();
-	}, [id]);
+	}, [event]);
 
 	const fetchEvents = async () => {
 		try {
@@ -32,6 +33,8 @@ const UserEventDetail = () => {
 	if (!event) {
 		return <h2>Event not found for ID {id}</h2>;
 	}
+	console.log(event);
+
 
 	const handleImageError = (e) => {
 		e.target.src = "https://i.pinimg.com/736x/1e/8f/91/1e8f91aa672419128d45ad4a64e36c62.jpg";
@@ -53,7 +56,11 @@ const UserEventDetail = () => {
 					</div>
 
 					<Card className="us-event-description-card mt-4">
-						<p><strong>Description: </strong>{event.eventDescription}</p>
+						{event.eventDescription ? (
+							<Description text={event.eventDescription} />
+						) : (
+							<p>Loading description...</p> // hoặc để trống
+						)}
 					</Card>
 
 					<Card className="us-event-info-card mt-4">

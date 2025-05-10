@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Card, DatePicker, Descriptions, Divider, Empty, Flex, List, Modal, Select, Typography } from "antd";
 import useCheckMobile from "../../hooks/useCheckMobile";
 import { getOngoingEvent, getUpcomingEvent } from "../../ApiService/playgroundmanagerApi";
+import Description from "../../utils/description";
 import moment from "moment";
 
 const { Title, Text } = Typography;
@@ -136,7 +137,10 @@ const EventContent = () => {
                         <Descriptions.Item label="Start Date">{selectedEvent.startDate}</Descriptions.Item>
                         <Descriptions.Item label="End Date">{selectedEvent.endDate}</Descriptions.Item>
                         {/* <Descriptions.Item label="Location">{selectedEvent.location}</Descriptions.Item> */}
-                        <Descriptions.Item label="Description">{selectedEvent.eventDescription}</Descriptions.Item>
+                        <Descriptions.Item label="Description">
+                            <Description text={selectedEvent.eventDescription} />
+                        </Descriptions.Item>
+
                         <Descriptions.Item label="Discount Rate">{selectedEvent.discountRate}%</Descriptions.Item>
                     </Descriptions>
                 ) : ""}
