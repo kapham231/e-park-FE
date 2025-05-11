@@ -79,41 +79,40 @@ const UserHeader = () => {
                         </Link>
                     </div>
 
-                    {!!isAuth && (
-                        <Space style={{ fontWeight: 'bold', marginRight: '8px', flex: isMobile ? '1' : '0' }}>
-                            {/*<Button*/}
-                            {/*    color="cyan"*/}
-                            {/*    variant="solid"*/}
-                            {/*    size="large"*/}
-                            {/*    onClick={() => navigate("/user/register", { state: { user: auth?.user } })}*/}
-                            {/*>*/}
-                            {/*    Book Ticket*/}
-                            {/*</Button>*/}
-                            <DefaultButton
-                                type="cyan"
-                                size="sm"
-                                onClick={() => navigate("/user/register", { state: { user: auth?.user } })}
-                            >
-                                Book Ticket
-                            </DefaultButton>
-                        </Space>
-                    )}
-
                     {!!isAuth ? (
                         <>
-                            <Tag color={
-                                membershipTier === "Gold"
-                                    ? "gold"
-                                    : membershipTier === "Platinum"
-                                        ? "cyan" // Màu cho Platinum
-                                        : "silver"
-                            } style={{ marginLeft: "8px", marginInlineEnd: 0 }}>
-                                {membershipTier}
-                            </Tag>
-                            <Divider type="vertical" />
-                            <Tag color="green" style={{ marginRight: "8px" }}>
-                                {loyaltyPoints} Points
-                            </Tag>
+                            <Space style={{ fontWeight: 'bold', marginRight: '8px', flex: isMobile ? '1' : '0' }}>
+                                {/*<Button*/}
+                                {/*    color="cyan"*/}
+                                {/*    variant="solid"*/}
+                                {/*    size="large"*/}
+                                {/*    onClick={() => navigate("/user/register", { state: { user: auth?.user } })}*/}
+                                {/*>*/}
+                                {/*    Book Ticket*/}
+                                {/*</Button>*/}
+                                <DefaultButton
+                                    type="cyan"
+                                    size="sm"
+                                    onClick={() => navigate("/user/register", { state: { user: auth?.user } })}
+                                >
+                                    Book Ticket
+                                </DefaultButton>
+                            </Space>
+                            <div style={{ display: isMobile ? 'none' : 'flex' }}>
+                                <Tag color={
+                                    membershipTier === "Gold"
+                                        ? "gold"
+                                        : membershipTier === "Platinum"
+                                            ? "cyan" // Màu cho Platinum
+                                            : "silver"
+                                } style={{ marginLeft: "8px", marginInlineEnd: 0 }}>
+                                    {membershipTier}
+                                </Tag>
+                                <Divider type="vertical" />
+                                <Tag color="green" style={{ marginRight: "8px" }}>
+                                    {loyaltyPoints} Points
+                                </Tag>
+                            </div>
                         </>
                     ) : null}
 
@@ -128,6 +127,30 @@ const UserHeader = () => {
                                         </Button>
                                     ),
                                 },
+                                ...(isMobile ? [
+                                    {
+                                        key: '2',
+                                        label: (
+                                            <Tag color={
+                                                membershipTier === "Gold"
+                                                    ? "gold"
+                                                    : membershipTier === "Platinum"
+                                                        ? "cyan" // Màu cho Platinum
+                                                        : "silver"
+                                            }>
+                                                {membershipTier}
+                                            </Tag>
+                                        ),
+                                    },
+                                    {
+                                        key: '3',
+                                        label: (
+                                            <Tag color="green">
+                                                {loyaltyPoints} Points
+                                            </Tag>
+                                        ),
+                                    }
+                                ] : [])
                             ],
                         }}
                         placement="bottomLeft"

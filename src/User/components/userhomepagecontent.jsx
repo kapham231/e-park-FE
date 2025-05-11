@@ -14,12 +14,12 @@ import CustomSlider from "./customslider";
 import TicketSection from "./ticket-section";
 import { useEffect, useState } from "react";
 import { getUpcomingEvent } from "../../ApiService/playgroundmanagerApi";
-import { useAuth } from "../../auth/authContext";
+// import { useAuth } from "../../auth/authContext";
 
 const UserHomepageContent = () => {
 	const navigate = useNavigate();
 	const [events, setEvents] = useState([]);
-	const { user } = useAuth();
+	// const { user } = useAuth();
 	// console.log(user);
 
 	useEffect(() => {

@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import UserHeader from "../components/userheader";
 import UserEventContent from "../components/usereventcontent";
 import UserProfileContent from "../components/userprofilecontent";
