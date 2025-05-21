@@ -55,7 +55,7 @@ const ForgotPasswordModal = ({ visible, onClose, initialValues }) => {
                 <Form.Item
                     label="Temporary Password"
                     name="tmppassword"
-                    rules={[{ required: true, message: "Please enter your temporary password" }]}
+                    rules={[{ required: true, message: "The new password must be at least 6 characters", min: 6 }]}
                 >
                     <Input
                         placeholder="Enter your temporary password"

@@ -1,6 +1,6 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 // import { Button } from "antd";
-import React, {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
 import "../css/paymentsuccess.css"
 import { changeInvoiceStatus, findInvoice } from "../../ApiService/userApi";
@@ -20,14 +20,20 @@ const PaymentSuccess = () => {
 
 		const fetchInvoice = async () => {
 			try {
-				console.log(searchParams.get("orderCode"));
+				const orderCode = searchParams.get("orderCode");
+				console.log(orderCode);
 
-				const invoice = await findInvoice(searchParams.get("orderCode"));
+
+				let invoice = await findInvoice(orderCode);
 				console.log(invoice);
+
 
 				await changeInvoiceStatus(invoice._id);
 				// console.log(orderCode);
 
+				invoice = await findInvoice(orderCode);
+
+				console.log("invoice", invoice);
 
 				if (invoice) {
 					setInvoice(invoice);

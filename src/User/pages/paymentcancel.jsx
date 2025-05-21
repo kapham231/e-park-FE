@@ -2,6 +2,7 @@ import { Button } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/paymentcancel.css";
+import DefaultButton from "../../components/DefaultButton";
 
 const PaymentCancel = () => {
     const navigate = useNavigate();
@@ -18,14 +19,21 @@ const PaymentCancel = () => {
             <p className="payment-cancel-text">
                 Your payment has been canceled. If you have any questions, please contact our support team.
             </p>
-            <Button
+            {/* <Button
                 className="back-to-homepage-button"
                 type="primary"
                 style={{ marginTop: "20px" }}
                 onClick={() => navigate("/user/homepage")}
             >
                 Back to Homepage
-            </Button>
+            </Button> */}
+            <DefaultButton
+                type="primary"
+                style={{ marginTop: "20px" }}
+                onClick={() => navigate("/user/homepage")}
+            >
+                Back to Homepage
+            </DefaultButton>
         </div>
     );
 };

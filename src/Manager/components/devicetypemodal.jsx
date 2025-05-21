@@ -50,14 +50,28 @@ const DeviceTypeModal = ({ visible, onClose, onSubmit, initialValues }) => {
                     name="typeName"
                     rules={[{ required: true, message: "Please enter the device type name!" }]}
                 >
-                    <Input placeholder="Enter device type name" />
+                    <Input
+                        placeholder="Enter device type name"
+                        onBlur={(e) => {
+                            const value = e.target.value;
+                            const sanitizedValue = value.replace(/\s{2,}/g, " ").trim(); // Loại bỏ khoảng trắng thừa
+                            form.setFieldValue("typeName", sanitizedValue); // Cập nhật giá trị vào form
+                        }}
+                    />
                 </Form.Item>
                 <Form.Item
                     label="Type code"
                     name="code"
                     rules={[{ required: true, message: "Please enter the device type code!" }]}
                 >
-                    <Input placeholder="Enter device type code" />
+                    <Input
+                        placeholder="Enter device type code"
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            const sanitizedValue = value.replace(/\s/g, " ").trim(); // Loại bỏ khoảng trắng thừa
+                            form.setFieldValue("code", sanitizedValue); // Cập nhật giá trị vào form
+                        }}
+                    />
                 </Form.Item>
             </Form>
         </Modal>

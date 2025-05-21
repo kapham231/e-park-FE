@@ -53,7 +53,7 @@ const DeviceReportsTab = () => {
 		const status = "Error"; // Trạng thái thiết bị cần tìm
 		fetchErrorDevices(status);
 		const invoice = (await calculatePriceMaintenanceEquipment(deviceId)).invoice;
-		console.log(invoice);
+		// console.log(invoice);
 		const newInvoice = await updateInvoice(invoice._id, {
 			status: "PAID",
 		});

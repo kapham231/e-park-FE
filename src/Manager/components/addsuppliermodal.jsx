@@ -45,7 +45,14 @@ const AddSupplierModal = ({ visible, onClose, onSubmit, initialValues }) => {
                     name="name"
                     rules={[{ required: true, message: "Please enter the supplier's name!" }]}
                 >
-                    <Input placeholder="Enter supplier name" />
+                    <Input
+                        placeholder="Enter supplier name"
+                        onBlur={(e) => {
+                            const value = e.target.value;
+                            const sanitizedValue = value.replace(/\s{2,}/g, ' ').trim(); // Loại bỏ khoảng trắng thừa
+                            form.setFieldValue('name', sanitizedValue); // Cập nhật giá trị vào form
+                        }}
+                    />
                 </Form.Item>
                 <Form.Item
                     label="Email"

@@ -72,7 +72,11 @@ export const findInvoice = async (orderCode) => {
 
 export const changeInvoiceStatus = async (invoiceId) => {
     try {
+        console.log("Da thay doi status cho invoiceId", invoiceId);
+
         const response = await axios.post(`${baseURL}/payment/webhook`, { invoiceId, status: "PAID" });
+        console.log(response.data);
+
         return response;
     } catch (error) {
         console.error('Error:', error);

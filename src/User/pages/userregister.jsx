@@ -158,7 +158,7 @@ const UserRegister = () => {
                                     }
                                     name="bonus"
                                 >
-                                    <InputNumber prefix={<UsergroupAddOutlined />} min={0} placeholder="Enter quantity" style={{ width: "100%" }} />
+                                    <InputNumber prefix={<UsergroupAddOutlined />} min={0} max={5} placeholder="Enter quantity" style={{ width: "100%" }} />
                                 </Form.Item>
                             </>
                         )}

@@ -182,7 +182,7 @@ const Ticket = ({ ticket, onEdit, onDelete }) => {
 
         // Trạng thái thanh toán
         const statusText = "PAID";
-        const statusColor = invoiceData.status === "PAID" ? [40, 167, 69] : [220, 53, 69]; // Xanh lá hoặc đỏ
+        const statusColor = invoiceData.status === "PAID" ? [220, 53, 69] : [40, 167, 69]; // Xanh lá hoặc đỏ
 
         // Vẽ hộp trạng thái
         doc.setFillColor(...statusColor);
@@ -359,7 +359,7 @@ const Ticket = ({ ticket, onEdit, onDelete }) => {
                 <br />
 
                 <p className="mt-2">Bonus Parent:</p>
-                <InputNumber min={0} value={bonus} onChange={(value) => setBonus(value)} />
+                <InputNumber min={0} max={5} value={bonus} onChange={(value) => setBonus(value)} />
                 <span style={{ marginLeft: "12px", fontWeight: "bold", color: "#1890ff" }}>
                     x {ticket.bonus.toLocaleString()} VND
                 </span>

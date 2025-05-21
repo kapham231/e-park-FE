@@ -137,7 +137,7 @@ const UserManagementContent = () => {
             if (updatedUser) {
                 setUsers((prevUsers) =>
                     prevUsers.map((user) =>
-                        user.id === updatedUser.id ? { ...user, ...updatedUser } : user
+                        user._id === updatedUser._id ? { ...user, ...updatedUser } : user
                     )
                 );
                 await fetchUsers();

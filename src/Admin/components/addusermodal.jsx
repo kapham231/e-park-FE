@@ -204,21 +204,35 @@ const AddUserModal = ({ isModalOpen, onClose, onAddUser, onEditUser, editingUser
                     form={form}
                     layout="vertical"
                     name="user_form"
-                    onValuesChange={() => handleFieldChange}
+                    onValuesChange={handleFieldChange}
                 >
                     <Form.Item
                         label="First Name"
                         name="firstName"
                         rules={[{ required: true, message: "Please enter first name!" }]}
                     >
-                        <Input placeholder="Enter First Name" />
+                        <Input
+                            placeholder="Enter First Name"
+                            onBlur={(e) => {
+                                const value = e.target.value;
+                                const sanitizedValue = value.replace(/\s{2,}/g, ' ').trim(); // Loại bỏ khoảng trắng thừa
+                                form.setFieldValue('firstName', sanitizedValue); // Cập nhật giá trị vào form
+                            }}
+                        />
                     </Form.Item>
                     <Form.Item
                         label="Last Name"
                         name="lastName"
                         rules={[{ required: true, message: "Please enter last name!" }]}
                     >
-                        <Input placeholder="Enter Last Name" />
+                        <Input
+                            placeholder="Enter Last Name"
+                            onBlur={(e) => {
+                                const value = e.target.value;
+                                const sanitizedValue = value.replace(/\s{2,}/g, ' ').trim(); // Loại bỏ khoảng trắng thừa
+                                form.setFieldValue('lastName', sanitizedValue); // Cập nhật giá trị vào form
+                            }}
+                        />
                     </Form.Item>
                     <Form.Item
                         label="Username"
@@ -253,7 +267,12 @@ const AddUserModal = ({ isModalOpen, onClose, onAddUser, onEditUser, editingUser
                         label="Date of Birth"
                         name="dateOfBirth"
                         rules={[{ type: "object", required: true, message: "Please enter the date of birth!" }]}>
-                        <DatePicker placeholder="Select date of birth" style={{ width: '100%' }} format="YYYY-MM-DD" />
+                        <DatePicker
+                            placeholder="Select date of birth"
+                            style={{ width: '100%' }}
+                            format="YYYY-MM-DD"
+                            disabledDate={(current) => current && current > dayjs().endOf('day')} // Ngăn chọn ngày trong tương lai
+                        />
                     </Form.Item>
                     <Form.Item
                         label="Gender"
