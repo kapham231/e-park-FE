@@ -51,6 +51,7 @@ const UserHomepageContent = () => {
 			benefits: [
 				"Decrease 5% in total bill",
 				"Buy ticket bigger or equal 10.000 VND will get 1 loyalty point for each 10.000 VND",
+				"Get 1 ice cream for free with each 15 loyalty points",
 			],
 			image: "https://i.pinimg.com/736x/b8/1f/a0/b81fa051818c3397233076a51f70c7e0.jpg"
 		},
@@ -59,7 +60,9 @@ const UserHomepageContent = () => {
 			title: "Platinum Member",
 			benefits: [
 				"Decrease 15% in total bill",
-				"Buy ticket bigger or equal 10.000 VND will get 1 loyalty point for each 10.000 VND",
+				"Buy ticket bigger or equal 10.000 VND will get 1 loyalty point for each 5.000 VND",
+				"Get 1 mini toy and 1 ice cream for free with each 10 loyalty points",
+
 
 			],
 			image: "https://i.pinimg.com/736x/00/4c/5b/004c5b6d9e87e4a762be7039405ba2be.jpg"
@@ -69,7 +72,8 @@ const UserHomepageContent = () => {
 			title: "Gold Member",
 			benefits: [
 				"Decrease 10% in total bill",
-				"Buy ticket bigger or equal 10.000 VND will get 1 loyalty point for each 10.000 VND",
+				"Buy ticket bigger or equal 10.000 VND will get 1 loyalty point for each 7.500 VND",
+				"Get 1 mini toy for free with each 12 loyalty points",
 
 			],
 			image: "https://i.pinimg.com/736x/49/c7/2a/49c72aefa242ffa7a6ece45371ee291b.jpg"

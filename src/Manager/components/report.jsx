@@ -18,12 +18,14 @@ const ReportContent = () => {
     const [visible, setVisible] = useState(false);
     const [selectedTransaction, setSelectedTransaction] = useState(null);
     const [filterRange, setFilterRange] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         fetchTransactions()
     }, []);
 
     const fetchTransactions = () => {
+        setLoading(true);
         getAllInvoiceWithPaidStatus()
             .then((res) => {
                 console.log(res);
@@ -33,11 +35,14 @@ const ReportContent = () => {
                 }
 
                 setTransactions(res.map(transaction => formatAmount(transaction)));
+                setLoading(false);
+
             })
             .catch((err) => {
                 console.log(err);
             })
             .finally(() => {
+                // setLoading(false);
                 console.log("Fetch transactions completed");
             })
     }
@@ -146,6 +151,7 @@ const ReportContent = () => {
                     return;
                 }
                 setSupplierName(res.name);
+
             })
             .catch((err) => {
                 console.log(err)
@@ -366,6 +372,7 @@ const ReportContent = () => {
                 dataSource={filteredTransactions}
                 columns={columns}
                 rowKey="invoiceNumber"
+                loading={loading}
                 pagination={{
                     pageSize: 15, // Hiển thị 15 hóa đơn mỗi trang
                     showSizeChanger: false, // Ẩn tùy chọn thay đổi số lượng mục trên mỗi trang
