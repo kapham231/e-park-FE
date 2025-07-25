@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, Col, DatePicker, Modal, Row, Statistic, Table, Tag, Typography } from "antd";
 import { ArrowDownOutlined, ArrowUpOutlined, FileExcelOutlined } from '@ant-design/icons';
 import * as XLSX from "xlsx";
@@ -47,9 +47,6 @@ const ReportContent = () => {
             })
     }
 
-    console.log(transactions);
-
-
     const DATE_FORMAT = "DD-MM-YYYY";
 
     const parseWithDayjs = (dateString) => {
@@ -88,10 +85,10 @@ const ReportContent = () => {
 
     const exportToExcel = () => {
         const ws = XLSX.utils.json_to_sheet(transactions.map(({ invoiceNumber, __t, createdAt, subtotal }) => ({
-            ["ID"]: invoiceNumber,
-            ["Loại"]: __t,
-            ["Ngày giao dịch"]: createdAt,
-            ["Số tiền"]: subtotal > 0 ? `+${subtotal} VND` : `${subtotal} VND`,
+            "ID": invoiceNumber,
+            "Loại": __t,
+            "Ngày giao dịch": createdAt,
+            "Số tiền": subtotal > 0 ? `+${subtotal}` : `${subtotal}`,
         })));
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Report");
