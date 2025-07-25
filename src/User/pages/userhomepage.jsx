@@ -14,38 +14,43 @@ import PaymentCancel from "./paymentcancel";
 import PaymentSuccess from "./paymentsuccess";
 import UserFAQ from "./userfaq";
 import UserTerm from "./userterm";
+import Product from "./Product";
+import Cart from "./Cart";
 // import PaymentSuccess from "./paymentsuccess";
 
 const UserHomepage = () => {
-    // console.log(user);
+  // console.log(user);
 
-    // console.log(isGuest);
+  // console.log(isGuest);
 
-    return (
-        <>
-            <UserHeader />
+  return (
+    <>
+      <UserHeader />
 
-            {/* <div className="mt-4"> */}
-            <Routes>
-                <Route path="homepage" element={<UserHomepageContent />} />
-                <Route path="event" element={<UserEventContent />} />
-                <Route path="about-us" element={<AboutUs />} />
-                <Route path="profile" element={<UserProfileContent />} />
-                <Route path="history" element={<UserHistoryContent />} />
-                <Route path="register" element={<UserRegister />} />
-                <Route path="event/:id" element={<UserEventDetail />} />
-                <Route path="register/payment" element={<UserPayment />} />
-                <Route path="payment/cancel" element={<PaymentCancel />} />
-                <Route path="payment/success" element={<PaymentSuccess />} />
-                <Route path="faq" element={<UserFAQ />} />
-                <Route path="term" element={<UserTerm />} />
-                <Route path="*" element={<Navigate to="homepage" />} /> {/* Mặc định chuyển đến Homepage */}
-            </Routes>
-            {/* </div> */}
+      {/* <div className="mt-4"> */}
+      <Routes>
+        <Route path="homepage" element={<UserHomepageContent />} />
+        <Route path="event" element={<UserEventContent />} />
+        <Route path="about-us" element={<AboutUs />} />
+        <Route path="profile" element={<UserProfileContent />} />
+        <Route path="history" element={<UserHistoryContent />} />
+        <Route path="register" element={<UserRegister />} />
+        <Route path="event/:id" element={<UserEventDetail />} />
+        <Route path="register/payment" element={<UserPayment />} />
+        <Route path="payment/cancel" element={<PaymentCancel />} />
+        <Route path="payment/success" element={<PaymentSuccess />} />
+        <Route path="faq" element={<UserFAQ />} />
+        <Route path="term" element={<UserTerm />} />
+        <Route path="product" element={<Product />} />
+        <Route path="cart" element={<Cart />} />
+        <Route path="*" element={<Navigate to="homepage" />} />{" "}
+        {/* Mặc định chuyển đến Homepage */}
+      </Routes>
+      {/* </div> */}
 
-            <UserFooter />
-        </>
-    );
+      <UserFooter />
+    </>
+  );
 };
 
 export default UserHomepage;
