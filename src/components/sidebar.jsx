@@ -8,7 +8,8 @@ import {
 	MenuUnfoldOutlined,
 	ToolOutlined,
 	UserOutlined,
-	SolutionOutlined
+	SolutionOutlined,
+	ProductOutlined
 } from '@ant-design/icons';
 import { Button, Layout, Menu, theme } from 'antd';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
@@ -24,7 +25,8 @@ import ReportContent from '../Manager/components/report';
 import useCheckMobile from "../hooks/useCheckMobile";
 import TicketManagementContent from '../Admin/components/ticketmanagementcontent';
 import CheckTicket from '../Staff/components/checkticket';
-import {useAuth} from "../auth/authContext";
+import { useAuth } from "../auth/authContext";
+import ProductManagement from '../Manager/pages/productmanagement';
 
 const { Header, Content, Sider } = Layout;
 const roleBasedItems = {
@@ -43,6 +45,7 @@ const roleBasedItems = {
 		{ key: '/manager/event-management', icon: <ContainerOutlined />, label: 'Event' },
 		{ key: '/manager/device-management', icon: <ToolOutlined />, label: 'Device Management' },
 		// { key: '/manager/manager-dashboard', icon: <AreaChartOutlined />, label: 'Dashboard' },
+		{ key: '/manager/product-management', icon: <ProductOutlined />, label: 'Product Management' },
 		{ key: '/manager/report', icon: <FundViewOutlined />, label: 'Report' },
 		{ key: 'logout', icon: <LogoutOutlined />, label: 'Logout', style: { color: 'red' } },
 	],
@@ -186,6 +189,7 @@ const ContentOfPage = ({ role }) => {
 			<Route path='/event-management/:eventId' element={<EventDetail />} />
 			<Route path='/device-management' element={<DeviceManagementContent />} />
 			{/* <Route path='/manager-dashboard' element={<ManagerDashboardContent />} /> */}
+			<Route path='/product-management' element={<ProductManagement />} />
 			<Route path='/report' element={<ReportContent />} />
 		</Routes>
 	);
