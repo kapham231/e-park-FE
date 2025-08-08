@@ -234,7 +234,7 @@ export const getDeviceBySupplierId = async (supplierId) => {
 // DEVICE TYPE
 export const getAllType = async () => {
     try {
-        const response = await axios.get(`${baseURL}/type`);
+        const response = await axios.get(`${baseURL}/typeEquipment`);
         return response.data;
     }
     catch (error) {
@@ -245,7 +245,7 @@ export const getAllType = async () => {
 
 export const createType = async (newType) => {
     try {
-        const response = await axios.post(`${baseURL}/type/create`, newType);
+        const response = await axios.post(`${baseURL}/typeEquipment/create`, newType);
         return response.data;
     }
     catch (error) {
@@ -256,7 +256,7 @@ export const createType = async (newType) => {
 
 export const updateTypeById = async (typeId, updatedType) => {
     try {
-        const response = await axios.put(`${baseURL}/type/update/${typeId}`, updatedType);
+        const response = await axios.put(`${baseURL}/typeEquipment/update/${typeId}`, updatedType);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -266,7 +266,7 @@ export const updateTypeById = async (typeId, updatedType) => {
 
 export const deleteTypeById = async (typeId) => {
     try {
-        const response = await axios.delete(`${baseURL}/type/${typeId}`);
+        const response = await axios.delete(`${baseURL}/typeEquipment/${typeId}`);
         return response.data;
     } catch (error) {
         console.error('Error:', error);
@@ -290,6 +290,94 @@ export const calculatePriceMaintenanceEquipment = async (deviceId) => {
         });
         //console.log('Maintainence Bill', response.data.data);
         return response.data.data;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error;
+    }
+}
+
+// PRODUCT TYPE
+export const getAllProductType = async () => {
+    try {
+        const response = await axios.get(`${baseURL}/typeProduct`); //Sau sua lai thanh` get type rieng cua product
+        return response.data;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error;
+    }
+}
+
+export const createProductType = async (newType) => {
+    try {
+        const response = await axios.post(`${baseURL}/typeProduct/create`, newType);
+        return response.data;
+    }
+    catch (error) {
+        console.error('Error:', error);
+        throw error;
+    }
+}
+
+export const updateProductTypeById = async (typeId, updatedType) => {
+    try {
+        const response = await axios.put(`${baseURL}/typeProduct/update/${typeId}`, updatedType);
+        return response.data;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error;
+    }
+}
+
+export const deleteProductTypeById = async (typeId) => {
+    try {
+        // console.log('Deleting Product Type with ID:', typeId);
+
+        const response = await axios.delete(`${baseURL}/typeProduct/${typeId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error;
+    }
+}
+
+// PRODUCT
+export const getAllProduct = async () => {
+    try {
+        const response = await axios.get(`${baseURL}/product`);
+        return response.data;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error;
+    }
+}
+
+export const createProduct = async (newProduct) => {
+    try {
+        console.log('New Product', newProduct);
+        const response = await axios.post(`${baseURL}/product/create`, newProduct);
+        return response.data;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error;
+    }
+}
+
+export const updateProductById = async (productId, updatedProduct) => {
+    try {
+        // console.log('Product ID:', productId);
+        // console.log('Updated Product:', updatedProduct);
+        const response = await axios.put(`${baseURL}/product/update/${productId}`, updatedProduct);
+        return response.data;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error;
+    }
+}
+
+export const deleteProductById = async (productId) => {
+    try {
+        const response = await axios.delete(`${baseURL}/product/${productId}`);
+        return response.data;
     } catch (error) {
         console.error('Error:', error);
         throw error;

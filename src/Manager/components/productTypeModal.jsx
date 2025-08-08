@@ -7,18 +7,12 @@ const ProductTypeModal = ({ visible, onClose, onSubmit, initialValues }) => {
     useEffect(() => {
         if (initialValues) {
             form.setFieldsValue(initialValues);
-        } else {
-            form.setFieldsValue({ quantity: 0 }); // Default value when adding
         }
     }, [initialValues, form, visible]);
 
     const handleOk = () => {
         form.validateFields().then((values) => {
-            const finalValues = {
-                ...values,
-                quantity: initialValues ? values.quantity : 0, // Always ensure quantity = 0 if adding
-            };
-            onSubmit(finalValues);
+            onSubmit(values);
             form.resetFields();
             onClose();
         });
@@ -40,22 +34,20 @@ const ProductTypeModal = ({ visible, onClose, onSubmit, initialValues }) => {
         >
             <Form form={form} layout="vertical">
                 <Form.Item
-                    name="name"
+                    name="typeName"
                     label="Type Name"
                     rules={[{ required: true, message: 'Please input the type name!' }]}
                 >
                     <Input />
                 </Form.Item>
 
-                {initialValues && (
-                    <Form.Item
-                        name="quantity"
-                        label="Quantity"
-                        rules={[{ required: true, message: 'Please input the quantity!' }]}
-                    >
-                        <InputNumber min={0} />
-                    </Form.Item>
-                )}
+                <Form.Item
+                    name="code"
+                    label="Type Code"
+                    rules={[{ required: true, message: 'Please input the type code!' }]}
+                >
+                    <Input />
+                </Form.Item>
             </Form>
         </Modal>
     );

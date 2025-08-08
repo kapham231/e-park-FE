@@ -1,44 +1,38 @@
 import React from 'react';
 import { Button, Table, Popconfirm } from 'antd';
 import ProductTypeModal from './productTypeModal';
+import { createProductType, deleteProductTypeById, getAllProductType, updateProductTypeById } from '../../ApiService/playgroundmanagerApi';
 
 const ProductTypeList = () => {
     const [isModalVisible, setIsModalVisible] = React.useState(false);
     const [editingType, setEditingType] = React.useState(null);
 
-    const productTypeExample = [
-        {
-            id: 1,
-            name: "Food",
-            quantity: 100,
-        },
-        {
-            id: 2,
-            name: "Drink",
-            quantity: 50,
-        },
-        {
-            id: 3,
-            name: "Snack",
-            quantity: 200,
-        }
-    ];
-
-    const [productTypes, setProductTypes] = React.useState(productTypeExample);
+    const [productTypeList, setProductTypeList] = React.useState(null);
+    React.useEffect(() => {
+        const fetchProductTypes = async () => {
+            try {
+                const pTypeList = await getAllProductType();
+                setProductTypeList(pTypeList);
+            } catch (error) {
+                console.error('Error fetching product types:', error);
+            }
+        };
+        fetchProductTypes();
+    }, []);
 
     const columns = [
         {
             title: "Product Type Name",
-            dataIndex: "name",
+            dataIndex: "typeName",
             key: "type",
             defaultSortOrder: "ascend",
-            sorter: (a, b) => a.name.localeCompare(b.name),
+            sorter: (a, b) => a.typeName.localeCompare(b.typeName),
         },
         {
-            title: "Quantity",
-            dataIndex: "quantity",
-            key: "quantity",
-            sorter: (a, b) => a.quantity - b.quantity,
+            title: "Type Code",
+            dataIndex: "code",
+            key: "code",
+            sorter: (a, b) => a.code.localeCompare(b.code),
         },
         {
             title: "Action",
@@ -51,7 +45,7 @@ const ProductTypeList = () => {
                     </Button>
                     <Popconfirm
                         title="Are you sure to delete this device?"
-                        onConfirm={() => handleDeleteType(record._id)}
+                        onConfirm={() => handleDeleteType(record.id)}
                         okText="Yes"
                         cancelText="No"
                     >
@@ -77,14 +71,17 @@ const ProductTypeList = () => {
         setIsModalVisible(true);
     }
 
-    const handleSubmitType = (values) => {
+    const handleSubmitType = async (values) => {
         if (editingType) {
             // Logic to update the existing product type
-            setProductTypes(productTypes.map(type => type.id === editingType.id ? { ...type, ...values } : type));
+            const updatedType = await updateProductTypeById(editingType.id, values);
+            const updatedList = productTypeList.map(type => type.id === editingType.id ? { ...type, ...updatedType } : type);
+            setProductTypeList(updatedList);
         } else {
             // Logic to add a new product type
-            const newType = { id: Date.now(), ...values }; // Using Date.now() as a simple unique ID
-            setProductTypes([...productTypes, newType]);
+            const newType = await createProductType(values);
+            const newTypeList = [...productTypeList, newType];
+            setProductTypeList(newTypeList);
         }
         setIsModalVisible(false);
         setEditingType(null);
@@ -95,8 +92,13 @@ const ProductTypeList = () => {
         setIsModalVisible(true);
     }
 
-    const handleDeleteType = (id) => {
-        setProductTypes(productTypes.filter(type => type.id !== id));
+    const handleDeleteType = async (id) => {
+        const deleletedType = await deleteProductTypeById(id);
+        if (deleletedType) {
+            const updatedList = productTypeList.filter(type => type.id !== id);
+            setProductTypeList(updatedList);
+        }
+
     }
 
     return (
@@ -108,7 +110,7 @@ const ProductTypeList = () => {
                 Add Type
             </Button>
 
-            <Table columns={columns} dataSource={productTypes} rowKey="id" />
+            <Table columns={columns} dataSource={productTypeList} rowKey="id" />
 
             <ProductTypeModal
                 visible={isModalVisible}

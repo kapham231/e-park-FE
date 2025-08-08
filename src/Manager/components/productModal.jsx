@@ -1,13 +1,36 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Modal, Form, Input, InputNumber, Select } from "antd";
+
+import { getAllProductType, getAllSupplier } from "../../ApiService/playgroundmanagerApi";
 
 const ProductModal = ({ visible, onClose, onSubmit, initialValues }) => {
     const [form] = Form.useForm();
-    const productTypes = [
-        { label: "Food", value: "food" },
-        { label: "Drink", value: "drink" },
-        { label: "Snack", value: "snack" },
-    ]
+    const [productTypes, setProductTypes] = useState([]);
+    const [supplierList, setSupplierList] = useState([]);
+    useEffect(() => {
+        const fetchProductTypes = async () => {
+            // Fetch product types from the API or context
+            const response = await getAllProductType();
+            console.log(response);
+            // Assuming response is an array of product types
+            setProductTypes(response.map(type => ({ label: type.typeName, value: type.typeName })));
+        }
+
+        fetchProductTypes();
+    }, []);
+
+    useEffect(() => {
+        const fetchSupplier = async () => {
+            // Fetch product types from the API or context
+            const response = await getAllSupplier();
+            // console.log(response);
+            // Assuming response is an array of product types
+            setSupplierList(response.map(supplier => ({ label: supplier.name, value: supplier._id })));
+        }
+
+        fetchSupplier();
+    }, []);
+
 
     useEffect(() => {
         if (initialValues) {
@@ -57,6 +80,33 @@ const ProductModal = ({ visible, onClose, onSubmit, initialValues }) => {
                 </Form.Item>
 
                 <Form.Item
+                    name="description"
+                    label="Description"
+                    rules={[{ required: true, message: "Please input the product description!" }]}
+                >
+                    <Input.TextArea rows={4} />
+                </Form.Item>
+
+                <Form.Item
+                    name="background"
+                    label="Background Image URL"
+                    rules={[{ required: true, message: "Please input the background image URL!" }]}
+                >
+                    <>
+                        <Input />
+                        {initialValues?.background && (
+                            <div style={{ marginTop: 8 }}>
+                                <img
+                                    src={initialValues.background}
+                                    alt="Background Preview"
+                                    style={{ maxWidth: "200px", border: "1px solid #ddd", borderRadius: 4 }}
+                                />
+                            </div>
+                        )}
+                    </>
+                </Form.Item>
+
+                <Form.Item
                     name="quantity"
                     label="Quantity"
                     rules={[{ required: true, message: "Please input the quantity!" }]}
@@ -65,7 +115,7 @@ const ProductModal = ({ visible, onClose, onSubmit, initialValues }) => {
                 </Form.Item>
 
                 <Form.Item
-                    name="salePrice"
+                    name="purchasePrice"
                     label="Sale Price"
                     rules={[{ required: true, message: "Please input the sale price!" }]}
                 >
@@ -79,6 +129,14 @@ const ProductModal = ({ visible, onClose, onSubmit, initialValues }) => {
                         }
                         style={{ width: "100%" }}
                     />
+                </Form.Item>
+
+                <Form.Item
+                    name="supplierId"
+                    label="Supplier"
+                    rules={[{ required: true, message: "Please select the supplier!" }]}
+                >
+                    <Select placeholder="Select supplier" options={supplierList} />
                 </Form.Item>
             </Form>
         </Modal>

@@ -1,33 +1,27 @@
 import React from "react";
 import { Table, Button, Popconfirm } from "antd";
 import ProductModal from "./productModal";
+import { createProduct, deleteProductById, getAllProduct, updateProductById } from "../../ApiService/playgroundmanagerApi";
 
 const ProductList = () => {
+    const [productList, setProductList] = React.useState(null);
     const [editingProduct, setEditingProduct] = React.useState(null);
     const [isModalVisible, setIsModalVisible] = React.useState(false);
-    const productListExample = [
-        {
-            id: 1,
-            name: "Burger",
-            quantity: 100,
-            typeName: "Food",
-            salePrice: 15000
-        },
-        {
-            id: 2,
-            name: "Coke",
-            quantity: 50,
-            typeName: "Drink",
-            salePrice: 10000
-        },
-        {
-            id: 3,
-            name: "Lays",
-            quantity: 200,
-            typeName: "Snack",
-            salePrice: 5000
-        }
-    ];
+
+    React.useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const productList = await getAllProduct();
+                console.log(productList);
+
+                setProductList(productList);
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
+        };
+        fetchProducts();
+    }, []);
+
 
     const columns = [
         {
@@ -48,10 +42,15 @@ const ProductList = () => {
         },
         {
             title: "Sale Price",
-            dataIndex: "salePrice",
-            key: "salePrice",
-            sorter: (a, b) => a.salePrice - b.salePrice,
+            dataIndex: "purchasePrice",
+            key: "purchasePrice",
+            sorter: (a, b) => a.purchasePrice - b.purchasePrice,
             render: (text) => `${Number(text).toLocaleString("vi-VN")} VND`
+        },
+        {
+            title: "Description",
+            dataIndex: "description",
+            key: "description",
         },
         {
             title: "Action",
@@ -64,7 +63,7 @@ const ProductList = () => {
                     </Button>
                     <Popconfirm
                         title="Are you sure to delete this product?"
-                        onConfirm={() => handleDeleteProduct(record.id)}
+                        onConfirm={() => handleDeleteProduct(record._id)}
                         okText="Yes"
                         cancelText="No"
                     >
@@ -76,18 +75,22 @@ const ProductList = () => {
             ),
         },
     ];
-    const [productList, setProductList] = React.useState(productListExample);
 
     const handleCreateProduct = () => {
         setEditingProduct(null);
         setIsModalVisible(true);
     };
 
-    const handleSubmitProduct = (values) => {
+    const handleSubmitProduct = async (values) => {
         if (editingProduct) {
-            setProductList(productList.map(product => product.id === editingProduct.id ? { ...product, ...values } : product));
+            const updatedProduct = await updateProductById(editingProduct._id, values);
+            const newProductList = productList.map(product => product.id === editingProduct.id ? { ...product, ...updatedProduct } : product);
+            setProductList(newProductList);
         } else {
-            setProductList([...productList, { ...values, id: productList.length + 1 }]);
+            const newProduct = await createProduct(values);
+            // const newProductList = [...productList, newProduct];
+            // setProductList(newProductList);
+            await getAllProduct().then(setProductList);
         }
         setIsModalVisible(false);
         setEditingProduct(null);
@@ -97,8 +100,10 @@ const ProductList = () => {
         setEditingProduct(record);
         setIsModalVisible(true);
     };
-    const handleDeleteProduct = (id) => {
-        setProductList(productList.filter(product => product.id !== id));
+    const handleDeleteProduct = async (id) => {
+        const deleteProduct = await deleteProductById(id);
+        const newProductList = productList.filter(product => product._id !== id);
+        setProductList(newProductList);
     };
 
 
