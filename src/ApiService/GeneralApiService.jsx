@@ -1,19 +1,18 @@
-import axios from 'axios';
+import axios from 'axios'
 
-const baseURL = process.env.REACT_APP_API_BASE_URL;
+const baseURL = import.meta.env.VITE_API_BASE_URL
 
+console.log(baseURL)
 
 export const UserLogin = async (username, password) => {
-    try {
-        const response = await axios.post(`${baseURL}/generalUser/login`, {
-            username,
-            password,
-        });
-        return response.data;
-    } catch (error) {
-        console.error('Error:', error);
-        throw error;
-    }
-};
-
-
+  try {
+    const response = await axios.post(`${baseURL}/generalUser/login`, {
+      username,
+      password
+    })
+    return response.data
+  } catch (error) {
+    console.error('Error:', error)
+    throw error
+  }
+}

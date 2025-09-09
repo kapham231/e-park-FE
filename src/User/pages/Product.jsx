@@ -19,15 +19,7 @@ const Product = () => {
   const fetchProducts = async () => {
     try {
       const tempProducts = await getProducts();
-      setProducts([
-        ...tempProducts,
-        ...tempProducts,
-        ...tempProducts,
-        ...tempProducts,
-        ...tempProducts,
-        ...tempProducts,
-        ...tempProducts,
-      ]);
+      setProducts(tempProducts);
     } catch (error) {
       console.error("Error:", error);
       message.error("Failed to fetch events.");
