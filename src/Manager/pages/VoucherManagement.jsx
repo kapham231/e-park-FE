@@ -19,6 +19,7 @@ import {
 } from '../../ApiService/voucherApi'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
+import VoucherModal from '../components/VoucherModal'
 
 export default function VouchersManagement() {
   const [rows, setRows] = useState([])
@@ -42,26 +43,6 @@ export default function VouchersManagement() {
 
   const [open, setOpen] = useState(false)
   const [editing, setEditing] = useState(null)
-  const [form, setForm] = useState(() => defaultForm())
-
-  function defaultForm() {
-    const now = new Date()
-    const tomorrow = new Date(Date.now() + 24 * 60 * 60 * 1000)
-    return {
-      code: '',
-      type: 'FIXED',
-      discountAmount: 0,
-      maxDiscountAmount: 0,
-      minOrderAmount: 0,
-      maxUsage: 1,
-      perUserLimit: 1,
-      combinable: false,
-      startDate: toLocalInputValue(now),
-      expirationDate: toLocalInputValue(tomorrow),
-      status: 'ACTIVE',
-      description: ''
-    }
-  }
 
   // ---------------- Data load ----------------
   const load = useCallback(async () => {
@@ -82,33 +63,13 @@ export default function VouchersManagement() {
     load()
   }, [load])
 
-  // ---------------- Form helpers ----------------
-  function setField(name, value) {
-    setForm((f) => ({ ...f, [name]: value }))
-  }
-
   function openCreate() {
     setEditing(null)
-    setForm(defaultForm())
     setOpen(true)
   }
 
   function openEdit(v) {
     setEditing(v)
-    setForm({
-      code: v.code || '',
-      type: v.type || 'FIXED',
-      discountAmount: v.discountAmount ?? 0,
-      maxDiscountAmount: v.maxDiscountAmount ?? 0,
-      minOrderAmount: v.minOrderAmount ?? 0,
-      maxUsage: v.maxUsage ?? 1,
-      perUserLimit: v.perUserLimit ?? 1,
-      combinable: !!v.combinable,
-      startDate: toLocalInputValue(new Date(v.startDate)),
-      expirationDate: toLocalInputValue(new Date(v.expirationDate)),
-      status: v.status || 'ACTIVE',
-      description: v.description || ''
-    })
     setOpen(true)
   }
 
@@ -127,9 +88,8 @@ export default function VouchersManagement() {
     return errs
   }
 
-  async function onSubmit(e) {
-    e.preventDefault()
-    const payload = coerceForServer(form)
+  async function onSubmit(data) {
+    const payload = coerceForServer(data)
     const errs = validate(payload)
     if (Object.keys(errs).length) {
       setError(Object.values(errs)[0])
@@ -173,44 +133,50 @@ export default function VouchersManagement() {
             onChange={(e) => setQuery({ ...query, q: e.target.value, page: 1 })}
           />
         </div>
-        <Select
-          className='mt-1 w-full border rounded px-3 py-2'
-          value={query.status || 'ALL'}
-          onValueChange={(v) => setQuery({ ...query, status: v === 'ALL' ? '' : v, page: 1 })}
-        >
-          <SelectTrigger id='status' className='w-full'>
-            <SelectValue placeholder='All' />
-          </SelectTrigger>
+        <div className='grid w-full max-w-sm items-center gap-3'>
+          <Label htmlFor='status'>Status</Label>
+          <Select
+            className='mt-1 w-full border rounded px-3 py-2'
+            value={query.status || 'ALL'}
+            onValueChange={(v) => setQuery({ ...query, status: v === 'ALL' ? '' : v, page: 1 })}
+          >
+            <SelectTrigger id='status' className='w-full'>
+              <SelectValue placeholder='Select status' />
+            </SelectTrigger>
 
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Status</SelectLabel>
-              <SelectItem value='ALL'>All</SelectItem>
-              <SelectItem value='ACTIVE'>Active</SelectItem>
-              <SelectItem value='INACTIVE'>Inactive</SelectItem>
-              <SelectItem value='SCHEDULED'>Scheduled</SelectItem>
-              <SelectItem value='EXPIRED'>Expired</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <Select
-          className='mt-1 w-full border rounded px-3 py-2'
-          value={query.type || 'ALL'}
-          onValueChange={(v) => setQuery({ ...query, type: v === 'ALL' ? '' : v, page: 1 })}
-        >
-          <SelectTrigger id='status' className='w-full'>
-            <SelectValue placeholder='All' />
-          </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Status</SelectLabel>
+                <SelectItem value='ALL'>All</SelectItem>
+                <SelectItem value='ACTIVE'>Active</SelectItem>
+                <SelectItem value='INACTIVE'>Inactive</SelectItem>
+                <SelectItem value='SCHEDULED'>Scheduled</SelectItem>
+                <SelectItem value='EXPIRED'>Expired</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className='grid w-full max-w-sm items-center gap-3'>
+          <Label htmlFor='type'>Type</Label>
+          <Select
+            className='mt-1 w-full border rounded px-3 py-2'
+            value={query.type || 'ALL'}
+            onValueChange={(v) => setQuery({ ...query, type: v === 'ALL' ? '' : v, page: 1 })}
+          >
+            <SelectTrigger id='status' className='w-full'>
+              <SelectValue placeholder='Select type' />
+            </SelectTrigger>
 
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Type</SelectLabel>
-              <SelectItem value='ALL'>All</SelectItem>
-              <SelectItem value='FIXED'>Fixed</SelectItem>
-              <SelectItem value='PERCENT'>Percent</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Type</SelectLabel>
+                <SelectItem value='ALL'>All</SelectItem>
+                <SelectItem value='FIXED'>Fixed</SelectItem>
+                <SelectItem value='PERCENT'>Percent</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
         <div className='flex items-center gap-2 h-10 md:col-span-2'>
           <input
             id='onlyActiveNow'
@@ -245,7 +211,7 @@ export default function VouchersManagement() {
               <tr key={v._id} className='border-t'>
                 <td className='px-3 py-2 font-medium'>{v.code}</td>
                 <td className='px-3 py-2'>
-                  {v.type === 'FIXED' ? `−${v.discountAmount}` : `−${v.discountAmount}%`}
+                  {v.type === 'FIXED' ? `-${v.discountAmount}` : `-${v.discountAmount}%`}
                   {v.type === 'PERCENT' && v.maxDiscountAmount ? ` (cap ${v.maxDiscountAmount})` : ''}
                 </td>
                 <td className='px-3 py-2'>
@@ -259,32 +225,36 @@ export default function VouchersManagement() {
                   <StatusBadge status={v.status} />
                 </td>
                 <td className='flex px-3 py-2 text-left gap-1'>
-                  <button className='px-2 py-1 border rounded' onClick={() => openEdit(v)}>
+                  <button
+                    className='px-2 py-1 border rounded text-blue-400 hover:bg-blue-400 hover:text-white'
+                    onClick={() => openEdit(v)}
+                  >
                     Edit
                   </button>
-                  {v.status === 'ACTIVE' ? (
-                    <button
-                      className='px-2 py-1 border rounded'
-                      onClick={() => toggleVoucherStatus(v._id, 'deactivate').then(load)}
-                    >
-                      Deactivate
-                    </button>
-                  ) : (
-                    <button
-                      className='px-2 py-1 border rounded'
-                      onClick={() => toggleVoucherStatus(v._id, 'activate').then(load)}
-                    >
-                      Activate
-                    </button>
-                  )}
                   <button
-                    className='px-2 py-1 border rounded text-red-600'
+                    className='px-2 py-1 border rounded text-red-400 hover:bg-red-400 hover:text-white'
                     onClick={() => {
                       if (window.confirm('Delete this voucher?')) deleteVoucher(v._id).then(load)
                     }}
                   >
                     Delete
                   </button>
+                  {v.status === 'ACTIVE' && (
+                    <button
+                      className='px-2 py-1 border rounded text-yellow-400 hover:bg-yellow-400 hover:text-white'
+                      onClick={() => toggleVoucherStatus(v._id, 'deactivate').then(load)}
+                    >
+                      Deactivate
+                    </button>
+                  )}
+                  {v.status === 'INACTIVE' && (
+                    <button
+                      className='px-2 py-1 border rounded text-green-500 hover:bg-green-300 hover:text-white'
+                      onClick={() => toggleVoucherStatus(v._id, 'activate').then(load)}
+                    >
+                      Activate
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
@@ -320,172 +290,7 @@ export default function VouchersManagement() {
         </div>
       </div>
 
-      {/* Create/Edit Modal */}
-      {open && (
-        <div className='fixed inset-0 z-50 bg-black/40'>
-          <div className='flex min-h-screen items-center justify-center p-4 overflow-y-auto'>
-            <div
-              className='relative bg-white w-full max-w-lg rounded-xl shadow-xl px-4 pb-4
-                    max-h-[calc(100vh-2rem)] overflow-y-auto'
-            >
-              <div className='sticky top-0 z-10 bg-white flex items-center justify-between mb-3 py-4'>
-                <h2 className='text-lg font-semibold'>{editing ? 'Edit voucher' : 'New voucher'}</h2>
-                <button className='text-gray-500' onClick={() => setOpen(false)}>
-                  ✕
-                </button>
-              </div>
-
-              <form className='space-y-3' onSubmit={onSubmit}>
-                <div>
-                  <label className='block text-sm text-gray-600'>Code</label>
-                  <input
-                    className='mt-1 w-full border rounded px-3 py-2'
-                    value={form.code}
-                    onChange={(e) => setField('code', e.target.value.toUpperCase().replace(/\s+/g, ''))}
-                    placeholder='e.g., SUMMER10'
-                  />
-                </div>
-
-                <div className='grid grid-cols-2 gap-3'>
-                  <div>
-                    <label className='block text-sm text-gray-600'>Type</label>
-                    <select
-                      className='mt-1 w-full border rounded px-3 py-2'
-                      value={form.type}
-                      onChange={(e) => setField('type', e.target.value)}
-                    >
-                      <option value='FIXED'>Fixed</option>
-                      <option value='PERCENT'>Percent</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className='block text-sm text-gray-600'>
-                      {form.type === 'PERCENT' ? 'Percent (%)' : 'Amount'}
-                    </label>
-                    <input
-                      type='number'
-                      className='mt-1 w-full border rounded px-3 py-2'
-                      value={form.discountAmount}
-                      onChange={(e) => setField('discountAmount', e.target.value)}
-                    />
-                  </div>
-                </div>
-
-                {form.type === 'PERCENT' && (
-                  <div>
-                    <label className='block text-sm text-gray-600'>Max discount cap</label>
-                    <input
-                      type='number'
-                      className='mt-1 w-full border rounded px-3 py-2'
-                      value={form.maxDiscountAmount}
-                      onChange={(e) => setField('maxDiscountAmount', e.target.value)}
-                    />
-                  </div>
-                )}
-
-                <div className='grid grid-cols-2 gap-3'>
-                  <div>
-                    <label className='block text-sm text-gray-600'>Min order</label>
-                    <input
-                      type='number'
-                      className='mt-1 w-full border rounded px-3 py-2'
-                      value={form.minOrderAmount}
-                      onChange={(e) => setField('minOrderAmount', e.target.value)}
-                    />
-                  </div>
-                  <div className='flex items-center gap-2 mt-7'>
-                    <input
-                      id='combinable'
-                      type='checkbox'
-                      className='h-4 w-4'
-                      checked={!!form.combinable}
-                      onChange={(e) => setField('combinable', e.target.checked)}
-                    />
-                    <label htmlFor='combinable' className='text-sm'>
-                      Combinable
-                    </label>
-                  </div>
-                </div>
-
-                <div className='grid grid-cols-2 gap-3'>
-                  <div>
-                    <label className='block text-sm text-gray-600'>Max usage (global)</label>
-                    <input
-                      type='number'
-                      className='mt-1 w-full border rounded px-3 py-2'
-                      value={form.maxUsage}
-                      onChange={(e) => setField('maxUsage', e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label className='block text-sm text-gray-600'>Per-user limit</label>
-                    <input
-                      type='number'
-                      className='mt-1 w-full border rounded px-3 py-2'
-                      value={form.perUserLimit}
-                      onChange={(e) => setField('perUserLimit', e.target.value)}
-                    />
-                  </div>
-                </div>
-
-                <div className='grid grid-cols-2 gap-3'>
-                  <div>
-                    <label className='block text-sm text-gray-600'>Start</label>
-                    <input
-                      type='datetime-local'
-                      className='mt-1 w-full border rounded px-3 py-2'
-                      value={form.startDate}
-                      onChange={(e) => setField('startDate', e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label className='block text-sm text-gray-600'>End</label>
-                    <input
-                      type='datetime-local'
-                      className='mt-1 w-full border rounded px-3 py-2'
-                      value={form.expirationDate}
-                      onChange={(e) => setField('expirationDate', e.target.value)}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className='block text-sm text-gray-600'>Status</label>
-                  <select
-                    className='mt-1 w-full border rounded px-3 py-2'
-                    value={form.status}
-                    onChange={(e) => setField('status', e.target.value)}
-                  >
-                    <option value='ACTIVE'>Active</option>
-                    <option value='INACTIVE'>Inactive</option>
-                    <option value='SCHEDULED'>Scheduled</option>
-                    <option value='EXPIRED'>Expired</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className='block text-sm text-gray-600'>Description</label>
-                  <input
-                    className='mt-1 w-full border rounded px-3 py-2'
-                    value={form.description}
-                    onChange={(e) => setField('description', e.target.value)}
-                    placeholder='Optional'
-                  />
-                </div>
-
-                <div className='flex justify-end gap-2 pt-2'>
-                  <button type='button' className='px-3 py-2 border rounded' onClick={() => setOpen(false)}>
-                    Cancel
-                  </button>
-                  <button type='submit' className='px-3 py-2 rounded bg-black text-white'>
-                    {editing ? 'Save changes' : 'Create voucher'}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      )}
+      <VoucherModal visible={open} onClose={() => setOpen(false)} onSubmit={onSubmit} initValue={editing} />
     </div>
   )
 }
@@ -493,7 +298,7 @@ export default function VouchersManagement() {
 function StatusBadge({ status }) {
   const tone = {
     ACTIVE: 'bg-green-100 text-green-700',
-    INACTIVE: 'bg-gray-100 text-gray-700',
+    INACTIVE: 'bg-yellow-100 text-yellow-700',
     SCHEDULED: 'bg-blue-100 text-blue-700',
     EXPIRED: 'bg-red-100 text-red-700'
   }
@@ -504,18 +309,6 @@ function StatusBadge({ status }) {
       {String(status || '')}
     </span>
   )
-}
-
-// --------------- utils ----------------
-function toLocalInputValue(date) {
-  // yyyy-MM-ddThh:mm (local)
-  const pad = (n) => String(n).padStart(2, '0')
-  const y = date.getFullYear()
-  const m = pad(date.getMonth() + 1)
-  const d = pad(date.getDate())
-  const h = pad(date.getHours())
-  const mm = pad(date.getMinutes())
-  return `${y}-${m}-${d}T${h}:${mm}`
 }
 
 function coerceForServer(f) {

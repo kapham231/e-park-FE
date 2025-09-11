@@ -59,7 +59,7 @@ const ProductModal = ({ visible, onClose, onSubmit, initialValues }) => {
             open={visible}
             onOk={handleOk}
             onCancel={handleCancel}
-            okText={initialValues ? "Update" : "Add"}
+            okText={initialValues ? "Modify" : "Add"}
             cancelText="Cancel"
         >
             <Form form={form} layout="vertical">

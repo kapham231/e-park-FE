@@ -1,199 +1,191 @@
-button {
-    position: relative;
-    border: none;
-    background: transparent;
-    padding: 0;
-    cursor: pointer;
-    outline-offset: 4px;
-    transition: filter 250ms;
-    user-select: none;
-    touch-action: manipulation;
+.default-button {
+  position: relative;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  outline-offset: 4px;
+  transition: filter 250ms;
+  user-select: none;
+  touch-action: manipulation;
 }
 
 .shadow {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 12px;
-    background: hsl(0deg 0% 0% / 0.25);
-    will-change: transform;
-    transform: translateY(2px);
-    transition: transform
-    600ms
-    cubic-bezier(.3, .7, .4, 1);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: hsl(0deg 0% 0% / 0.25);
+  will-change: transform;
+  transform: translateY(2px);
+  transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
 }
 
 .edge {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 12px;
-    background: linear-gradient(
-            to left,
-            hsl(340deg 100% 16%) 0%,
-            hsl(340deg 100% 32%) 8%,
-            hsl(340deg 100% 32%) 92%,
-            hsl(340deg 100% 16%) 100%
-    );
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: linear-gradient(
+    to left,
+    hsl(340deg 100% 16%) 0%,
+    hsl(340deg 100% 32%) 8%,
+    hsl(340deg 100% 32%) 92%,
+    hsl(340deg 100% 16%) 100%
+  );
 }
 
 .front {
-    display: block;
-    position: relative;
-    padding: 12px 20px;
-    border-radius: 12px;
-    font-size: 1.1rem;
-    color: white;
-    text-wrap: nowrap;
-    background: hsl(345deg 100% 47%);
-    will-change: transform;
-    transform: translateY(-4px);
-    transition: transform
-    600ms
-    cubic-bezier(.3, .7, .4, 1);
+  display: block;
+  position: relative;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  color: white;
+  text-wrap: nowrap;
+  background: hsl(345deg 100% 47%);
+  will-change: transform;
+  transform: translateY(-4px);
+  transition: transform 600ms cubic-bezier(0.3, 0.7, 0.4, 1);
 }
 
 button:hover {
-    filter: brightness(110%);
+  filter: brightness(110%);
 }
 
 button:hover .front {
-    transform: translateY(-6px);
-    transition: transform
-    250ms
-    cubic-bezier(.3, .7, .4, 1.5);
+  transform: translateY(-6px);
+  transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
 }
 
 button:active .front {
-    transform: translateY(-2px);
-    transition: transform 34ms;
+  transform: translateY(-2px);
+  transition: transform 34ms;
 }
 
 button:hover .shadow {
-    transform: translateY(4px);
-    transition: transform
-    250ms
-    cubic-bezier(.3, .7, .4, 1.5);
+  transform: translateY(4px);
+  transition: transform 250ms cubic-bezier(0.3, 0.7, 0.4, 1.5);
 }
 
 button:active .shadow {
-    transform: translateY(1px);
-    transition: transform 34ms;
+  transform: translateY(1px);
+  transition: transform 34ms;
 }
 
 button:focus:not(:focus-visible) {
-    outline: none;
+  outline: none;
 }
 
 /*danger*/
 .default-button-danger .front {
-    background: hsl(345deg 100% 47%);
+  background: hsl(345deg 100% 47%);
 }
 
 .default-button-danger .edge {
-    background: linear-gradient(
-            to left,
-            hsl(340deg 100% 16%) 0%,
-            hsl(340deg 100% 32%) 8%,
-            hsl(340deg 100% 32%) 92%,
-            hsl(340deg 100% 16%) 100%
-    );
+  background: linear-gradient(
+    to left,
+    hsl(340deg 100% 16%) 0%,
+    hsl(340deg 100% 32%) 8%,
+    hsl(340deg 100% 32%) 92%,
+    hsl(340deg 100% 16%) 100%
+  );
 }
 
 /*primary*/
 .default-button-primary .front {
-    background: hsl(207deg 100% 47%);
+  background: hsl(207deg 100% 47%);
 }
 
 .default-button-primary .edge {
-    background: linear-gradient(
-            to left,
-            hsl(202deg 100% 16%) 0%,
-            hsl(202deg 100% 32%) 8%,
-            hsl(202deg 100% 32%) 92%,
-            hsl(202deg 100% 16%) 100%
-    );
+  background: linear-gradient(
+    to left,
+    hsl(202deg 100% 16%) 0%,
+    hsl(202deg 100% 32%) 8%,
+    hsl(202deg 100% 32%) 92%,
+    hsl(202deg 100% 16%) 100%
+  );
 }
 
 /*secondary*/
 .default-button-secondary .front {
-    background: hsl(45deg 18% 96%);
-    color: #3c486b;
+  background: hsl(45deg 18% 96%);
+  color: #3c486b;
 }
 
 .default-button-secondary .edge {
-    background: linear-gradient(
-            to left,
-            hsl(225deg 28% 16%) 0%,
-            hsl(225deg 28% 32%) 8%,
-            hsl(225deg 28% 32%) 92%,
-            hsl(225deg 28% 16%) 100%
-    );
+  background: linear-gradient(
+    to left,
+    hsl(225deg 28% 16%) 0%,
+    hsl(225deg 28% 32%) 8%,
+    hsl(225deg 28% 32%) 92%,
+    hsl(225deg 28% 16%) 100%
+  );
 }
 
 /*success*/
 .default-button-success .front {
-    background: hsl(150deg 100% 47%);
+  background: hsl(150deg 100% 47%);
 }
 
 .default-button-success .edge {
-    background: linear-gradient(
-            to left,
-            hsl(145deg 100% 16%) 0%,
-            hsl(145deg 100% 32%) 8%,
-            hsl(145deg 100% 32%) 92%,
-            hsl(145deg 100% 16%) 100%
-    );
+  background: linear-gradient(
+    to left,
+    hsl(145deg 100% 16%) 0%,
+    hsl(145deg 100% 32%) 8%,
+    hsl(145deg 100% 32%) 92%,
+    hsl(145deg 100% 16%) 100%
+  );
 }
 
 /*warning*/
 .default-button-warning .front {
-    background: hsl(40deg 100% 47%);
+  background: hsl(40deg 100% 47%);
 }
 
 .default-button-warning .edge {
-    background: linear-gradient(
-            to left,
-            hsl(35deg 100% 16%) 0%,
-            hsl(35deg 100% 32%) 8%,
-            hsl(35deg 100% 32%) 92%,
-            hsl(35deg 100% 16%) 100%
-    );
+  background: linear-gradient(
+    to left,
+    hsl(35deg 100% 16%) 0%,
+    hsl(35deg 100% 32%) 8%,
+    hsl(35deg 100% 32%) 92%,
+    hsl(35deg 100% 16%) 100%
+  );
 }
 
 /*cyan*/
 .default-button-cyan .front {
-    background: hsl(178deg 61% 49%);
+  background: hsl(178deg 61% 49%);
 }
 
 .default-button-cyan .edge {
-    background: linear-gradient(
-            to left,
-            hsl(173deg 61% 16%) 0%,
-            hsl(173deg 61% 32%) 8%,
-            hsl(173deg 61% 32%) 92%,
-            hsl(173deg 61% 16%) 100%
-    );
+  background: linear-gradient(
+    to left,
+    hsl(173deg 61% 16%) 0%,
+    hsl(173deg 61% 32%) 8%,
+    hsl(173deg 61% 32%) 92%,
+    hsl(173deg 61% 16%) 100%
+  );
 }
 
 /*sm*/
 .default-button-sm .front {
-    padding: 8px 12px;
-    font-size: 0.9rem;
+  padding: 8px 12px;
+  font-size: 0.9rem;
 }
 
 /*md*/
 .default-button-md .front {
-    padding: 12px 20px;
-    font-size: 1.1rem;
+  padding: 12px 20px;
+  font-size: 1.1rem;
 }
 
 /*lg*/
 .default-button-lg .front {
-    padding: 16px 26px;
-    font-size: 1.3rem;
+  padding: 16px 26px;
+  font-size: 1.3rem;
 }
