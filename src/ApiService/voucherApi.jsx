@@ -31,7 +31,7 @@ export const createVoucher = async (data) => {
     return res.data
   } catch (err) {
     console.error('Error:', err)
-    message.error('Failed to create voucher')
+    message.error(err.response?.data?.message || 'Failed to create voucher')
     throw err
   }
 }
@@ -43,7 +43,7 @@ export const updateVoucher = async (voucherId, data) => {
     return res.data
   } catch (error) {
     console.error('Error:', error)
-    message.error('Failed to update voucher')
+    message.error(error.response?.data?.message || 'Failed to update voucher')
     throw error
   }
 }

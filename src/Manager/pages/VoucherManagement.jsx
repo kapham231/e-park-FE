@@ -73,37 +73,106 @@ export default function VouchersManagement() {
     setOpen(true)
   }
 
-  function validate(values) {
-    const errs = {}
-    if (!values.code || values.code.trim().length < 3) errs.code = 'Code must be at least 3 chars'
-    if (values.type !== 'FIXED' && values.type !== 'PERCENT') errs.type = 'Type is required'
-    if (Number(values.discountAmount) < 0) errs.discountAmount = 'Discount must be ≥ 0'
-    if (values.type === 'PERCENT' && Number(values.discountAmount) > 100)
-      errs.discountAmount = 'Percent cannot exceed 100'
-    const start = new Date(values.startDate)
-    const end = new Date(values.expirationDate)
-    if (!(start < end)) errs.expirationDate = 'End must be after start'
-    if (Number(values.maxUsage) < 1) errs.maxUsage = 'Max usage must be ≥ 1'
-    if (Number(values.perUserLimit) < 1) errs.perUserLimit = 'Per-user limit must be ≥ 1'
-    return errs
-  }
-
   async function onSubmit(data) {
     const payload = coerceForServer(data)
-    const errs = validate(payload)
-    if (Object.keys(errs).length) {
-      setError(Object.values(errs)[0])
-      return
-    }
+
     try {
       setError('')
       if (editing && editing._id) await updateVoucher(editing._id, payload)
       else await createVoucher(payload)
       setOpen(false)
       load()
-    } catch (err) {
-      setError(String(err.message || err))
+    } catch (err) {}
+  }
+
+  function renderConditions(v) {
+    const c = v?.conditions || {}
+    const badges = []
+
+    // minTickets
+    if (Number(c.minTickets) > 0) {
+      badges.push(
+        <ConditionBadge key='mintk' tone='indigo' title='Minimum tickets required in the order'>
+          ≥ {c.minTickets} ticket{Number(c.minTickets) > 1 ? 's' : ''}
+        </ConditionBadge>
+      )
+    } else {
+      badges.push(
+        <ConditionBadge key='mintk-any' tone='slate' title='No minimum ticket count required'>
+          No min tickets
+        </ConditionBadge>
+      )
     }
+
+    // // ticketTypes
+    // if (Array.isArray(c.ticketTypes) && c.ticketTypes.length > 0) {
+    //   badges.push(
+    //     <ConditionBadge
+    //       key='tkt'
+    //       tone='purple'
+    //       title={`Restricted to ${c.ticketTypes.length} ticket type(s): ${c.ticketTypes
+    //         .map((t) => (typeof t === 'object' ? t?._id || '' : t))
+    //         .filter(Boolean)
+    //         .join(', ')}`}
+    //     >
+    //       {c.ticketTypes.length} type{c.ticketTypes.length > 1 ? 's' : ''}
+    //     </ConditionBadge>
+    //   )
+    // } else {
+    //   badges.push(
+    //     <ConditionBadge key='tkt-any' tone='slate' title='Valid for any ticket type'>
+    //       Any ticket type
+    //     </ConditionBadge>
+    //   )
+    // }
+
+    // minSubtotal (condition-level minimum order subtotal)
+    if (Number(c.minSubtotal) > 0) {
+      badges.push(
+        <ConditionBadge key='minsub' tone='emerald' title='Minimum order subtotal required to use this voucher'>
+          Min subtotal {formatCurrency(c.minSubtotal)}
+        </ConditionBadge>
+      )
+    } else {
+      badges.push(
+        <ConditionBadge key='minsub-any' tone='slate' title='No minimum subtotal required'>
+          No min subtotal
+        </ConditionBadge>
+      )
+    }
+
+    // // allowedMemberRanks
+    // if (Array.isArray(c.allowedMemberRanks) && c.allowedMemberRanks.length > 0) {
+    //   const label = c.allowedMemberRanks.join(', ')
+    //   badges.push(
+    //     <ConditionBadge key='ranks' tone='orange' title={`Allowed member ranks: ${label}`}>
+    //       Ranks: {c.allowedMemberRanks.length}
+    //     </ConditionBadge>
+    //   )
+    // } else {
+    //   badges.push(
+    //     <ConditionBadge key='ranks-any' tone='slate' title='All membership ranks allowed'>
+    //       All ranks
+    //     </ConditionBadge>
+    //   )
+    // }
+
+    // firstPurchaseOnly
+    if (c.firstPurchaseOnly === true) {
+      badges.push(
+        <ConditionBadge key='first' tone='rose' title="Valid only on the customer's first purchase">
+          First purchase only
+        </ConditionBadge>
+      )
+    } else {
+      badges.push(
+        <ConditionBadge key='first-no' tone='slate' title='Valid on any purchase'>
+          In any purchase
+        </ConditionBadge>
+      )
+    }
+
+    return <div className='flex flex-wrap gap-1'>{badges}</div>
   }
 
   // ---------------- Render ----------------
@@ -202,6 +271,7 @@ export default function VouchersManagement() {
               <th className='px-3 py-2 text-left'>Usage</th>
               <th className='px-3 py-2 text-center'>Min Order</th>
               <th className='px-3 py-2 text-left'>Validity</th>
+              <th className='px-3 py-2 text-left'>Conditions</th>
               <th className='px-3 py-2 text-center'>Status</th>
               <th className='px-3 py-2 text-right'>Actions</th>
             </tr>
@@ -212,7 +282,7 @@ export default function VouchersManagement() {
                 <td className='px-3 py-2 font-medium'>{v.code}</td>
                 <td className='px-3 py-2'>
                   {v.type === 'FIXED' ? `-${v.discountAmount}` : `-${v.discountAmount}%`}
-                  {v.type === 'PERCENT' && v.maxDiscountAmount ? ` (cap ${v.maxDiscountAmount})` : ''}
+                  {v.type === 'PERCENT' && v.maxDiscountAmount ? ` (max ${v.maxDiscountAmount})` : ''}
                 </td>
                 <td className='px-3 py-2'>
                   {v.usedCount}/{v.maxUsage} · per user {v.perUserLimit}
@@ -221,40 +291,43 @@ export default function VouchersManagement() {
                 <td className='px-3 py-2'>
                   {new Date(v.startDate).toLocaleDateString()} → {new Date(v.expirationDate).toLocaleDateString()}
                 </td>
+                <td className='px-3 py-2'>{renderConditions(v)}</td>
                 <td className='px-3 py-2 text-center'>
                   <StatusBadge status={v.status} />
                 </td>
-                <td className='flex px-3 py-2 text-left gap-1'>
-                  <button
-                    className='px-2 py-1 border rounded text-blue-400 hover:bg-blue-400 hover:text-white'
-                    onClick={() => openEdit(v)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className='px-2 py-1 border rounded text-red-400 hover:bg-red-400 hover:text-white'
-                    onClick={() => {
-                      if (window.confirm('Delete this voucher?')) deleteVoucher(v._id).then(load)
-                    }}
-                  >
-                    Delete
-                  </button>
-                  {v.status === 'ACTIVE' && (
+                <td className='px-3 py-2 text-left'>
+                  <div className='flex gap-1'>
                     <button
-                      className='px-2 py-1 border rounded text-yellow-400 hover:bg-yellow-400 hover:text-white'
-                      onClick={() => toggleVoucherStatus(v._id, 'deactivate').then(load)}
+                      className='px-2 py-1 border rounded text-blue-400 hover:bg-blue-400 hover:text-white'
+                      onClick={() => openEdit(v)}
                     >
-                      Deactivate
+                      Edit
                     </button>
-                  )}
-                  {v.status === 'INACTIVE' && (
                     <button
-                      className='px-2 py-1 border rounded text-green-500 hover:bg-green-300 hover:text-white'
-                      onClick={() => toggleVoucherStatus(v._id, 'activate').then(load)}
+                      className='px-2 py-1 border rounded text-red-400 hover:bg-red-400 hover:text-white'
+                      onClick={() => {
+                        if (window.confirm('Delete this voucher?')) deleteVoucher(v._id).then(load)
+                      }}
                     >
-                      Activate
+                      Delete
                     </button>
-                  )}
+                    {v.status === 'ACTIVE' && (
+                      <button
+                        className='px-2 py-1 border rounded text-yellow-400 hover:bg-yellow-400 hover:text-white'
+                        onClick={() => toggleVoucherStatus(v._id, 'deactivate').then(load)}
+                      >
+                        Deactivate
+                      </button>
+                    )}
+                    {v.status === 'INACTIVE' && (
+                      <button
+                        className='px-2 py-1 border rounded text-green-500 hover:bg-green-300 hover:text-white'
+                        onClick={() => toggleVoucherStatus(v._id, 'activate').then(load)}
+                      >
+                        Activate
+                      </button>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}
@@ -311,6 +384,35 @@ function StatusBadge({ status }) {
   )
 }
 
+// Small pill badge for conditions
+function ConditionBadge({ children, tone = 'slate', title }) {
+  const toneMap = {
+    slate: 'bg-slate-100 text-slate-700 border-slate-200',
+    indigo: 'bg-indigo-100 text-indigo-700 border-indigo-200',
+    purple: 'bg-purple-100 text-purple-700 border-purple-200',
+    emerald: 'bg-emerald-100 text-emerald-700 border-emerald-200',
+    orange: 'bg-orange-100 text-orange-700 border-orange-200',
+    rose: 'bg-rose-100 text-rose-700 border-rose-200'
+  }
+  return (
+    <span
+      title={title}
+      className={`inline-flex items-center gap-1 border text-[11px] rounded-full px-2 py-0.5 ${toneMap[tone] || toneMap.slate}`}
+    >
+      {children}
+    </span>
+  )
+}
+
+function formatCurrency(x) {
+  const n = Number(x) || 0
+  try {
+    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(n)
+  } catch {
+    return `${n}`
+  }
+}
+
 function coerceForServer(f) {
   return {
     code: (f.code || '').toUpperCase().replace(/\s+/g, ''),
@@ -324,6 +426,13 @@ function coerceForServer(f) {
     startDate: new Date(f.startDate),
     expirationDate: new Date(f.expirationDate),
     status: f.status || 'ACTIVE',
-    description: f.description || ''
+    description: f.description || '',
+    conditions: f.conditions || {
+      minTickets: Number(f.minTickets) || 0,
+      ticketTypes: Array.isArray(f.ticketTypes) ? f.ticketTypes : [],
+      minSubtotal: Number(f.minSubtotal) || 0,
+      allowedMemberRanks: Array.isArray(f.allowedMemberRanks) ? f.allowedMemberRanks : [],
+      firstPurchaseOnly: !!f.firstPurchaseOnly
+    }
   }
 }
