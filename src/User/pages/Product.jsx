@@ -1,70 +1,62 @@
-import { useEffect, useState } from "react";
-import { getProducts } from "../../ApiService/userApi";
-import { message, Select } from "antd";
-import { ShoppingCartOutlined } from "@ant-design/icons";
-import ProductItem from "../components/ProductItem";
+import { useEffect, useState } from 'react'
+import { getProducts } from '../../ApiService/userApi'
+import { message, Select } from 'antd'
+import { ShoppingCartOutlined } from '@ant-design/icons'
+import ProductItem from '../components/ProductItem'
 
-import "../css/Product.css";
-import SearchBar from "../../components/SearchBar";
-import { Link } from "react-router-dom";
+import '../css/Product.css'
+import SearchBar from '../../components/SearchBar'
+import { Link } from 'react-router-dom'
 
 const Product = () => {
-  const [products, setProducts] = useState([]);
-  const [filter, setFilter] = useState("all");
+  const [products, setProducts] = useState([])
+  const [filter, setFilter] = useState('all')
 
   useEffect(() => {
-    fetchProducts();
-  }, [products]);
+    fetchProducts()
+  }, [])
 
   const fetchProducts = async () => {
     try {
-      const tempProducts = await getProducts();
-      setProducts([
-        ...tempProducts,
-        ...tempProducts,
-        ...tempProducts,
-        ...tempProducts,
-        ...tempProducts,
-        ...tempProducts,
-        ...tempProducts,
-      ]);
+      const tempProducts = await getProducts()
+      setProducts(tempProducts)
     } catch (error) {
-      console.error("Error:", error);
-      message.error("Failed to fetch events.");
+      console.error('Error:', error)
+      message.error('Failed to fetch events.')
     }
-  };
+  }
 
   return (
-    <div className="product-container">
-      <div className="product-header">
+    <div className='product-container'>
+      <div className='product-header'>
         <Select
           value={filter}
           onChange={setFilter}
-          className="product-type-filter"
+          className='product-type-filter'
           options={[
-            { value: "all", label: "All" },
-            { value: "food", label: "Food" },
-            { value: "drink", label: "Drink" },
-            { value: "others", label: "Others" },
+            { value: 'all', label: 'All' },
+            { value: 'food', label: 'Food' },
+            { value: 'drink', label: 'Drink' },
+            { value: 'others', label: 'Others' }
           ]}
         />
-        <div className="search-bar-container">
-          <SearchBar placeholder={"Search products..."} />
+        <div className='search-bar-container'>
+          <SearchBar placeholder={'Search products...'} />
         </div>
-        <Link to={"/user/cart"} className="cart-icon-container">
+        {/* <Link to={"/user/cart"} className="cart-icon-container">
           <div className="cart-icon">
             <ShoppingCartOutlined />
             <p>Cart</p>
           </div>
-        </Link>
+        </Link> */}
       </div>
-      <div className="product-list">
+      <div className='product-list'>
         {products.map((product) => (
-          <ProductItem product={product} />
+          <ProductItem product={product} key={product._id} />
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Product;
+export default Product
