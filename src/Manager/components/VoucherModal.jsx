@@ -30,10 +30,10 @@ const VoucherModal = ({ visible, onClose, onSubmit, initValue }) => {
       type: form.type,
       discountAmount: num(form.discountAmount),
       maxDiscountAmount: form.type === 'PERCENT' ? num(form.maxDiscountAmount) : null,
-      minOrderAmount: num(form.minOrderAmount),
+      // minOrderAmount: num(form.minOrderAmount),
       maxUsage: Math.max(1, num(form.maxUsage, 1)),
-      perUserLimit: Math.max(1, num(form.perUserLimit, 1)),
-      combinable: !!form.combinable,
+      // perUserLimit: Math.max(1, num(form.perUserLimit, 1)),
+      // combinable: !!form.combinable,
       startDate: toDate(form.startDate),
       expirationDate: toDate(form.expirationDate),
       status: form.status || undefined, // optional; backend will derive if omitted
@@ -129,7 +129,7 @@ const VoucherModal = ({ visible, onClose, onSubmit, initValue }) => {
 
           {/* Order minimum and limits */}
           <div className='grid grid-cols-3 gap-2'>
-            <div>
+            {/* <div>
               <label className='block text-sm text-gray-600'>Min order amount</label>
               <input
                 type='number'
@@ -139,7 +139,7 @@ const VoucherModal = ({ visible, onClose, onSubmit, initValue }) => {
                 onChange={(e) => setField('minOrderAmount', e.target.value)}
                 placeholder='0 = no min'
               />
-            </div>
+            </div> */}
             <div>
               <label className='block text-sm text-gray-600'>Max usage</label>
               <input
@@ -151,7 +151,7 @@ const VoucherModal = ({ visible, onClose, onSubmit, initValue }) => {
                 placeholder='e.g., 100'
               />
             </div>
-            <div>
+            {/* <div>
               <label className='block text-sm text-gray-600'>Per-user limit</label>
               <input
                 type='number'
@@ -161,11 +161,11 @@ const VoucherModal = ({ visible, onClose, onSubmit, initValue }) => {
                 onChange={(e) => setField('perUserLimit', e.target.value)}
                 placeholder='e.g., 1'
               />
-            </div>
+            </div> */}
           </div>
 
           {/* Combinable */}
-          <div className='flex items-center gap-2 my-3'>
+          {/* <div className='flex items-center gap-2 my-3'>
             <input
               id='combinable'
               type='checkbox'
@@ -176,7 +176,7 @@ const VoucherModal = ({ visible, onClose, onSubmit, initValue }) => {
             <label htmlFor='combinable' className='text-sm'>
               Combinable with other vouchers
             </label>
-          </div>
+          </div> */}
 
           {/* Validity window */}
           <div className='grid grid-cols-2 gap-2'>
@@ -268,7 +268,7 @@ const VoucherModal = ({ visible, onClose, onSubmit, initValue }) => {
           </div> */}
 
           {/* firstPurchaseOnly */}
-          <div className='flex items-center gap-2 my-3'>
+          {/* <div className='flex items-center gap-2 my-3'>
             <input
               id='firstPurchaseOnly'
               type='checkbox'
@@ -279,7 +279,7 @@ const VoucherModal = ({ visible, onClose, onSubmit, initValue }) => {
             <label htmlFor='firstPurchaseOnly' className='text-sm'>
               First purchase only
             </label>
-          </div>
+          </div> */}
         </div>
       </form>
     </Modal>

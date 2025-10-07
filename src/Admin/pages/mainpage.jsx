@@ -1,19 +1,18 @@
-import React from 'react';
+import React from 'react'
 
-import Header from "../../components/header";
-import Sidebar from "../../components/sidebar";
+import Header from '@/components/header'
+import Sidebar from '@/components/sidebar'
 
 const AdminMainPage = () => {
+  return (
+    <>
+      <Header role='admin' />
 
-    return (
-        <>
-            <Header role="admin" />
-
-            <div style={{ display: 'flex' }}>
-                <Sidebar role={'admin'} />
-            </div>
-        </>
-    );
+      <div style={{ display: 'flex' }}>
+        <Sidebar role={'admin'} />
+      </div>
+    </>
+  )
 }
 
-export default AdminMainPage;
+export default AdminMainPage

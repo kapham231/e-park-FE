@@ -6,7 +6,7 @@ import dayjs from 'dayjs'
 // import html2canvas from "html2canvas";
 import { useEffect, useMemo, useState } from 'react'
 // import { getEvent } from "../../ApiService/playgroundmanagerApi";
-import { bookingPrice, createPayOS, getInvoice, applyVoucher, handlePaymentSuccess } from '../../ApiService/userApi'
+import { bookingPrice, createPayOS, getInvoice, applyVoucher, handlePaymentSuccess } from '../../services/userApi'
 import { downloadInvoice } from '../../utils/download-invoice'
 
 import banking from '../../Assets/img/banking.png'

@@ -1,23 +1,26 @@
-import { Tabs } from "antd";
-import ProductTypeList from "../components/producttypelist";
-import ProductList from "../components/productlist";
-
-const { TabPane } = Tabs;
+import { Tabs } from 'antd'
+import ProductTypeList from '../components/producttypelist'
+import ProductList from '../components/productlist'
 
 const ProductManagement = () => {
-    return (
-        <div>
-            <Tabs defaultActiveKey="1">
-                <TabPane tab="Product Type List" key="1" destroyInactiveTabPane={true}>
-                    <ProductTypeList />
-                </TabPane>
-                <TabPane tab="Product List" key="2" destroyInactiveTabPane={true}>
-                    <ProductList />
-                </TabPane>
-            </Tabs>
+  const items = [
+    {
+      key: '1',
+      label: `Product Type List`,
+      children: <ProductTypeList />
+    },
+    {
+      key: '2',
+      label: `Product List`,
+      children: <ProductList />
+    }
+  ]
 
-        </div>
-    );
+  return (
+    <div>
+      <Tabs defaultActiveKey='1' items={items} destroyOnHidden />
+    </div>
+  )
 }
 
-export default ProductManagement;
+export default ProductManagement

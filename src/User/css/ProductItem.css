@@ -8,7 +8,7 @@
 
 .product-item-image {
   width: 100%;
-  height: auto;
+  height: 200px;
   border-radius: 4px;
   object-fit: cover;
 }
@@ -32,7 +32,7 @@
 }
 
 .add-to-cart-button {
-  background-color: #28a745;
+  background-color: #ff6363;
   color: white;
   border: none;
   padding: 10px 15px;

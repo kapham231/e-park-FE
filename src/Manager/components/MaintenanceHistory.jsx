@@ -1,53 +1,51 @@
-import { useEffect, useState } from "react";
-import { Table } from "antd";
-import { getAllInvoiceWithPaidStatus } from "../../ApiService/userApi";
-import moment from "moment/moment";
-import dayjs from "dayjs";
-const DATE_FORMAT = "DD-MM-YYYY";
+import { useEffect, useState } from 'react'
+import { Table } from 'antd'
+import { getAllInvoiceWithPaidStatus } from '../../services/userApi'
+import moment from 'moment/moment'
+import dayjs from 'dayjs'
+const DATE_FORMAT = 'DD-MM-YYYY'
 
 const MaintenanceHistory = () => {
-  const [transactions, setTransactions] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [transactions, setTransactions] = useState([])
+  const [loading, setLoading] = useState(false)
 
   const fetchTransactions = () => {
-    setLoading(true);
+    setLoading(true)
     getAllInvoiceWithPaidStatus()
       .then((res) => {
         if (!res) {
-          setTransactions([]);
-          return;
+          setTransactions([])
+          return
         }
 
-        setTransactions(
-          res.filter((transaction) => transaction.__t === "InvoiceMaintenance")
-        );
-        setLoading(false);
-        console.log(transactions);
+        setTransactions(res.filter((transaction) => transaction.__t === 'InvoiceMaintenance'))
+        setLoading(false)
+        console.log(transactions)
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err)
       })
       .finally(() => {
         // setLoading(false);
-        console.log("Fetch transactions completed");
-      });
-  };
+        console.log('Fetch transactions completed')
+      })
+  }
 
   useEffect(() => {
-    fetchTransactions();
-  }, []);
+    fetchTransactions()
+  }, [])
 
   const renderDate = (date) => {
-    return moment.utc(date).format("DD-MM-YYYY");
+    return moment.utc(date).format('DD-MM-YYYY')
     // return date;
-  };
+  }
 
   const parseWithDayjs = (dateString) => {
-    if (!dateString) return null;
+    if (!dateString) return null
     // Use dayjs.utc() if you want to parse and treat the date as UTC
-    const parsedDate = dayjs(dateString, DATE_FORMAT, true); // true enables strict parsing
-    return parsedDate.isValid() ? parsedDate : null; // Return dayjs object or null
-  };
+    const parsedDate = dayjs(dateString, DATE_FORMAT, true) // true enables strict parsing
+    return parsedDate.isValid() ? parsedDate : null // Return dayjs object or null
+  }
 
   const columns = [
     // {
@@ -59,17 +57,17 @@ const MaintenanceHistory = () => {
     // 	sorter: (a, b) => a.typeName.localeCompare(b.typeName),
     // },
     {
-      title: "ID",
-      dataIndex: "invoiceNumber",
-      key: "invoiceNumber",
-      ellipsis: true,
+      title: 'ID',
+      dataIndex: 'invoiceNumber',
+      key: 'invoiceNumber',
+      ellipsis: true
       // sorter: (a, b) => a.code.localeCompare(b.code),
     },
     {
-      title: "Date",
-      dataIndex: "createdAt",
-      key: "createdAt",
-      render: renderDate,
+      title: 'Date',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: renderDate
       // sorter: (a, b) => {
       // 	const dateA = parseWithDayjs(a.createdAt);
       // 	const dateB = parseWithDayjs(b.createdAt);
@@ -84,40 +82,39 @@ const MaintenanceHistory = () => {
       // },
     },
     {
-      title: "Amount",
-      dataIndex: "subtotal",
-      key: "subtotal",
-      align: "center",
+      title: 'Amount',
+      dataIndex: 'subtotal',
+      key: 'subtotal',
+      align: 'center'
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      ellipsis: true,
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      ellipsis: true
       // sorter: (a, b) => a.code.localeCompare(b.code),
-    },
-  ];
+    }
+  ]
 
   return (
-    <div style={{ margin: "20px" }}>
+    <div style={{ margin: '20px' }}>
       <Table
         columns={columns}
         dataSource={transactions}
         loading={loading}
-        rowKey="id"
+        rowKey='id'
         pagination={{
           pageSize: 10,
           showSizeChanger: true,
           pageSizeOptions: [10],
-          showTotal: (total, range) =>
-            `${range[0]}-${range[1]} of ${total} errors`,
-          style: { marginTop: "16px", textAlign: "right" },
+          showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} errors`,
+          style: { marginTop: '16px', textAlign: 'right' }
         }}
-        scroll={{ x: "max-content" }}
-        style={{ marginTop: "20px" }}
+        scroll={{ x: 'max-content' }}
+        style={{ marginTop: '20px' }}
       />
     </div>
-  );
-};
+  )
+}
 
-export default MaintenanceHistory;
+export default MaintenanceHistory

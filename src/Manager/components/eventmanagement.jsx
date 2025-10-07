@@ -5,7 +5,7 @@ import { Button, DatePicker, Form, Input, message, Popconfirm, Space, Table } fr
 import EditEventModal from './editeventmodal'
 
 import '../css/manager.css'
-import { getAllEvent, createEvent, deleteEventById, updateEventById } from '../../ApiService/playgroundmanagerApi'
+import { getAllEvent, createEvent, deleteEventById, updateEventById } from '../../services/playgroundmanagerApi'
 // import moment from "moment";
 import dayjs from 'dayjs'
 

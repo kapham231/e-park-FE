@@ -16,7 +16,7 @@ import {
   toggleVoucherStatus,
   duplicateVoucher,
   deleteVoucher
-} from '../../ApiService/voucherApi'
+} from '../../services/voucherApi'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import VoucherModal from '../components/VoucherModal'
@@ -158,19 +158,19 @@ export default function VouchersManagement() {
     // }
 
     // firstPurchaseOnly
-    if (c.firstPurchaseOnly === true) {
-      badges.push(
-        <ConditionBadge key='first' tone='rose' title="Valid only on the customer's first purchase">
-          First purchase only
-        </ConditionBadge>
-      )
-    } else {
-      badges.push(
-        <ConditionBadge key='first-no' tone='slate' title='Valid on any purchase'>
-          In any purchase
-        </ConditionBadge>
-      )
-    }
+    // if (c.firstPurchaseOnly === true) {
+    //   badges.push(
+    //     <ConditionBadge key='first' tone='rose' title="Valid only on the customer's first purchase">
+    //       First purchase only
+    //     </ConditionBadge>
+    //   )
+    // } else {
+    //   badges.push(
+    //     <ConditionBadge key='first-no' tone='slate' title='Valid on any purchase'>
+    //       In any purchase
+    //     </ConditionBadge>
+    //   )
+    // }
 
     return <div className='flex flex-wrap gap-1'>{badges}</div>
   }
@@ -184,9 +184,9 @@ export default function VouchersManagement() {
           <button className='px-3 py-2 rounded bg-black text-white' onClick={openCreate}>
             New Voucher
           </button>
-          <button className='px-3 py-2 rounded border' onClick={() => {}}>
+          {/* <button className='px-3 py-2 rounded border' onClick={() => {}}>
             Export CSV
-          </button>
+          </button> */}
         </div>
       </div>
 
@@ -269,7 +269,7 @@ export default function VouchersManagement() {
               <th className='px-3 py-2 text-left'>Code</th>
               <th className='px-3 py-2 text-left'>Type / Value</th>
               <th className='px-3 py-2 text-left'>Usage</th>
-              <th className='px-3 py-2 text-center'>Min Order</th>
+              {/* <th className='px-3 py-2 text-center'>Min Order</th> */}
               <th className='px-3 py-2 text-left'>Validity</th>
               <th className='px-3 py-2 text-left'>Conditions</th>
               <th className='px-3 py-2 text-center'>Status</th>
@@ -285,9 +285,9 @@ export default function VouchersManagement() {
                   {v.type === 'PERCENT' && v.maxDiscountAmount ? ` (max ${v.maxDiscountAmount})` : ''}
                 </td>
                 <td className='px-3 py-2'>
-                  {v.usedCount}/{v.maxUsage} · per user {v.perUserLimit}
+                  {v.usedCount}/{v.maxUsage}
                 </td>
-                <td className='px-3 py-2 text-center'>{v.minOrderAmount}</td>
+                {/* <td className='px-3 py-2 text-center'>{v.minOrderAmount}</td> */}
                 <td className='px-3 py-2'>
                   {new Date(v.startDate).toLocaleDateString()} → {new Date(v.expirationDate).toLocaleDateString()}
                 </td>
