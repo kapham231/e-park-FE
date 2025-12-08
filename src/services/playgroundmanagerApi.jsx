@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { changeInvoiceStatus } from './userApi'
+import { tokenManager } from '../utils/tokenManager'
 
-const baseURL = import.meta.env.VITE_API_BASE_URL
+const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3333/api/';
 
 // EVENT
 export const getAllEvent = async () => {
@@ -149,17 +150,23 @@ export const deleteSupplierById = async (supplierId) => {
 //DEVICE
 export const getAllDevice = async () => {
   try {
-    const response = await axios.get(`${baseURL}/equipment`)
+    const branchId = tokenManager.getUserBranchId()
+    const params = branchId ? { branchId } : {}
+    // console.log('getAllDevice - branchId:', branchId, 'params:', params)
+    const response = await axios.get(`${baseURL}/equipment`, { params })
+    // console.log('getAllDevice response:', response.data)
     return response.data
   } catch (error) {
-    console.error('Error:', error)
+    // console.error('getAllDevice error:', error)
+    // console.error('Error response:', error.response?.data)
     throw error
   }
 }
 
 export const getDevice = async (id) => {
   try {
-    const response = await axios.get(`${baseURL}/equipment/getId/${id}`)
+    const response = await axios.get(`${baseURL}/equipment/getId/${id}`,{
+    })
     return response.data
   } catch (error) {
     console.error('Error:', error)
@@ -169,7 +176,10 @@ export const getDevice = async (id) => {
 
 export const getDeviceByStatus = async (status) => {
   try {
-    const response = await axios.get(`${baseURL}/equipment/status/${status}`)
+    const branchId = tokenManager.getUserBranchId()
+    const params = branchId ? { branchId } : {}
+    const response = await axios.get(`${baseURL}/equipment/status/${status}`, { params })
+    console.log('getDeviceByStatus response:', response.data)
     return response.data
   } catch (error) {
     console.error('Error:', error)
@@ -179,7 +189,10 @@ export const getDeviceByStatus = async (status) => {
 
 export const createDevice = async (newDevice) => {
   try {
-    const response = await axios.post(`${baseURL}/equipment/create`, newDevice)
+    const branchId = tokenManager.getUserBranchId()
+    const devicePayload = branchId ? { ...newDevice, branchId } : newDevice
+    console.log('Creating Device with payload:', devicePayload)
+    const response = await axios.post(`${baseURL}/equipment/create`, devicePayload)
     // console.log('New Device', response.data);
     // console.log(response.data.data.invoice);
 
@@ -196,8 +209,10 @@ export const updateDeviceById = async (deviceId, updatedDevice) => {
   try {
     // console.log('deviceId', deviceId);
     // console.log('updatedDevice', updatedDevice);
+    const branchId = tokenManager.getUserBranchId()
+    const devicePayload = branchId ? { ...updatedDevice, branchId } : updatedDevice
 
-    const response = await axios.put(`${baseURL}/equipment/update/${deviceId}`, updatedDevice)
+    const response = await axios.put(`${baseURL}/equipment/update/${deviceId}`, devicePayload)
     return response.data
   } catch (error) {
     console.error('Error:', error)
@@ -228,7 +243,10 @@ export const getDeviceBySupplierId = async (supplierId) => {
 // DEVICE TYPE
 export const getAllType = async () => {
   try {
-    const response = await axios.get(`${baseURL}/typeEquipment`)
+    const branchId = tokenManager.getUserBranchId()
+    const params = branchId ? { branchId } : {}
+    const response = await axios.get(`${baseURL}/typeEquipment`, { params })
+    console.log('getAllType response:', response.data)
     return response.data
   } catch (error) {
     console.error('Error:', error)
@@ -238,7 +256,10 @@ export const getAllType = async () => {
 
 export const createType = async (newType) => {
   try {
-    const response = await axios.post(`${baseURL}/typeEquipment/create`, newType)
+    const branchId = tokenManager.getUserBranchId()
+    const typePayload = branchId ? { ...newType, branchId } : newType
+    // console.log('Creating Type with payload:', typePayload)
+    const response = await axios.post(`${baseURL}/typeEquipment/create`, typePayload)
     return response.data
   } catch (error) {
     console.error('Error:', error)
@@ -248,7 +269,11 @@ export const createType = async (newType) => {
 
 export const updateTypeById = async (typeId, updatedType) => {
   try {
-    const response = await axios.put(`${baseURL}/typeEquipment/update/${typeId}`, updatedType)
+    // console.log('Type ID:', typeId)
+    const branchId = tokenManager.getUserBranchId()
+    const typePayload = branchId ? { ...updatedType, branchId } : updatedType
+
+    const response = await axios.put(`${baseURL}/typeEquipment/update/${typeId}`, typePayload)
     return response.data
   } catch (error) {
     console.error('Error:', error)
@@ -258,6 +283,7 @@ export const updateTypeById = async (typeId, updatedType) => {
 
 export const deleteTypeById = async (typeId) => {
   try {
+    console.log('Deleting Type with ID:', typeId);
     const response = await axios.delete(`${baseURL}/typeEquipment/${typeId}`)
     return response.data
   } catch (error) {
@@ -268,11 +294,13 @@ export const deleteTypeById = async (typeId) => {
 
 export const calculatePriceMaintenanceEquipment = async (deviceId) => {
   try {
+    const branchId = tokenManager.getUserBranchId()
     const device = await getDevice(deviceId)
     // console.log('device', device);
     const response = await axios.post(`${baseURL}/equipment/calculatePriceMaintenance`, {
       title: `Price Maintenance for ${device.typeName} `,
       supplierId: device.supplierId,
+      branchId: branchId,
       equipments: [
         {
           _id: device._id,
@@ -293,7 +321,9 @@ export const calculatePriceMaintenanceEquipment = async (deviceId) => {
 // PRODUCT TYPE
 export const getAllProductType = async () => {
   try {
-    const response = await axios.get(`${baseURL}/typeProduct`) //Sau sua lai thanh` get type rieng cua product
+    const branchId = tokenManager.getUserBranchId()
+    const params = branchId ? { branchId } : {}
+    const response = await axios.get(`${baseURL}/typeProduct`, {params}) //Sau sua lai thanh` get type rieng cua product
     return response.data
   } catch (error) {
     console.error('Error:', error)
@@ -303,7 +333,9 @@ export const getAllProductType = async () => {
 
 export const createProductType = async (newType) => {
   try {
-    const response = await axios.post(`${baseURL}/typeProduct/create`, newType)
+    const branchId = tokenManager.getUserBranchId()
+    const typePayload = branchId ? { ...newType, branchId } : newType
+    const response = await axios.post(`${baseURL}/typeProduct/create`, typePayload)
     return response.data
   } catch (error) {
     console.error('Error:', error)
@@ -313,7 +345,9 @@ export const createProductType = async (newType) => {
 
 export const updateProductTypeById = async (typeId, updatedType) => {
   try {
-    const response = await axios.put(`${baseURL}/typeProduct/update/${typeId}`, updatedType)
+    const branchId = tokenManager.getUserBranchId()
+    const typePayload = branchId ? { ...updatedType, branchId } : updatedType
+    const response = await axios.put(`${baseURL}/typeProduct/update/${typeId}`, typePayload)
     return response.data
   } catch (error) {
     console.error('Error:', error)
@@ -336,7 +370,9 @@ export const deleteProductTypeById = async (typeId) => {
 // PRODUCT
 export const getAllProduct = async () => {
   try {
-    const response = await axios.get(`${baseURL}/product`)
+    const branchId = tokenManager.getUserBranchId()
+    const params = branchId ? { branchId } : {}
+    const response = await axios.get(`${baseURL}/product`, { params })
     return response.data
   } catch (error) {
     console.error('Error:', error)
@@ -347,7 +383,11 @@ export const getAllProduct = async () => {
 export const createProduct = async (newProduct) => {
   try {
     console.log('New Product', newProduct)
-    const response = await axios.post(`${baseURL}/product/create`, newProduct)
+    const branchId = tokenManager.getUserBranchId()
+    const productPayload = branchId ? { ...newProduct, branchId } : newProduct
+    
+    const response = await axios.post(`${baseURL}/product/create`, productPayload)
+    await changeInvoiceStatus(response.data.data.invoice._id)
     return response.data
   } catch (error) {
     console.error('Error:', error)
@@ -359,7 +399,10 @@ export const updateProductById = async (productId, updatedProduct) => {
   try {
     console.log('Product ID:', productId)
     // console.log('Updated Product:', updatedProduct);
-    const response = await axios.put(`${baseURL}/product/update/${productId}`, updatedProduct)
+    const branchId = tokenManager.getUserBranchId()
+    const productPayload = branchId ? { ...updatedProduct, branchId } : updatedProduct
+    
+    const response = await axios.put(`${baseURL}/product/update/${productId}`, productPayload)
     return response.data
   } catch (error) {
     console.error('Error:', error)

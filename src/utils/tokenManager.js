@@ -1,6 +1,6 @@
-const TOKEN_KEY = 'accessToken'
-const USER_KEY = 'user'
-const REMEMBER_KEY = 'rememberMe'
+const TOKEN_KEY = "accessToken";
+const USER_KEY = "user";
+const REMEMBER_KEY = "rememberMe";
 
 /**
  * Storage Manager
@@ -8,7 +8,7 @@ const REMEMBER_KEY = 'rememberMe'
  */
 class StorageManager {
   constructor() {
-    this.isRemembered = this.checkRememberMe()
+    this.isRemembered = this.checkRememberMe();
   }
 
   /**
@@ -16,7 +16,7 @@ class StorageManager {
    */
   checkRememberMe() {
     // localStorage.getItem luôn persist
-    return localStorage.getItem(REMEMBER_KEY) === 'true'
+    return localStorage.getItem(REMEMBER_KEY) === "true";
   }
 
   /**
@@ -24,26 +24,26 @@ class StorageManager {
    */
   setRememberMe(remember) {
     if (remember) {
-      localStorage.setItem(REMEMBER_KEY, 'true')
+      localStorage.setItem(REMEMBER_KEY, "true");
     } else {
-      localStorage.removeItem(REMEMBER_KEY)
+      localStorage.removeItem(REMEMBER_KEY);
     }
-    this.isRemembered = remember
+    this.isRemembered = remember;
   }
 
   /**
    * Lấy storage dựa trên Remember Me
    */
   getStorage() {
-    return this.isRemembered ? localStorage : sessionStorage
+    return this.isRemembered ? localStorage : sessionStorage;
   }
 
   /**
    * Set item vào storage phù hợp
    */
   setItem(key, value) {
-    const storage = this.getStorage()
-    storage.setItem(key, value)
+    const storage = this.getStorage();
+    storage.setItem(key, value);
   }
 
   /**
@@ -51,20 +51,20 @@ class StorageManager {
    */
   getItem(key) {
     // Thử localStorage trước
-    let value = localStorage.getItem(key)
-    if (value) return value
+    let value = localStorage.getItem(key);
+    if (value) return value;
 
     // Fallback to sessionStorage
-    value = sessionStorage.getItem(key)
-    return value
+    value = sessionStorage.getItem(key);
+    return value;
   }
 
   /**
    * Remove item từ cả 2 storage
    */
   removeItem(key) {
-    localStorage.removeItem(key)
-    sessionStorage.removeItem(key)
+    localStorage.removeItem(key);
+    sessionStorage.removeItem(key);
   }
 
   /**
@@ -72,11 +72,11 @@ class StorageManager {
    */
   clearAll() {
     // Clear auth data nhưng giữ lại remember preference
-    const remember = localStorage.getItem(REMEMBER_KEY)
+    const remember = localStorage.getItem(REMEMBER_KEY);
 
     // Clear tokens
-    this.removeItem(TOKEN_KEY)
-    this.removeItem(USER_KEY)
+    this.removeItem(TOKEN_KEY);
+    this.removeItem(USER_KEY);
 
     // Restore remember preference (optional)
     // if (remember) {
@@ -85,7 +85,7 @@ class StorageManager {
   }
 }
 
-const storageManager = new StorageManager()
+const storageManager = new StorageManager();
 
 /**
  * Token Manager với Remember Me support
@@ -95,44 +95,44 @@ export const tokenManager = {
    * Set token với remember option
    */
   setToken: (token, remember = false) => {
-    storageManager.setRememberMe(remember)
-    storageManager.setItem(TOKEN_KEY, token)
+    storageManager.setRememberMe(remember);
+    storageManager.setItem(TOKEN_KEY, token);
   },
 
   /**
    * Get token từ storage
    */
   getToken: () => {
-    return storageManager.getItem(TOKEN_KEY)
+    return storageManager.getItem(TOKEN_KEY);
   },
 
   /**
    * Remove token
    */
   removeToken: () => {
-    storageManager.removeItem(TOKEN_KEY)
+    storageManager.removeItem(TOKEN_KEY);
   },
 
   /**
    * Set user info với remember option
    */
   setUser: (user, remember = false) => {
-    storageManager.setRememberMe(remember)
-    storageManager.setItem(USER_KEY, JSON.stringify(user))
+    storageManager.setRememberMe(remember);
+    storageManager.setItem(USER_KEY, JSON.stringify(user));
   },
 
   /**
    * Get user info
    */
   getUser: () => {
-    const userStr = storageManager.getItem(USER_KEY)
-    if (!userStr) return null
+    const userStr = storageManager.getItem(USER_KEY);
+    if (!userStr) return null;
 
     try {
-      return JSON.parse(userStr)
+      return JSON.parse(userStr);
     } catch (error) {
-      console.error('Parse user error:', error)
-      return null
+      console.error("Parse user error:", error);
+      return null;
     }
   },
 
@@ -140,31 +140,41 @@ export const tokenManager = {
    * Remove user info
    */
   removeUser: () => {
-    storageManager.removeItem(USER_KEY)
+    storageManager.removeItem(USER_KEY);
   },
 
   /**
    * Check if Remember Me is enabled
    */
   isRemembered: () => {
-    return storageManager.isRemembered
+    return storageManager.isRemembered;
   },
 
   /**
    * Clear all auth data
    */
   clearAll: () => {
-    storageManager.clearAll()
+    storageManager.clearAll();
   },
 
   /**
    * Set both token and user
    */
   setAuth: (token, user, remember = false) => {
-    storageManager.setRememberMe(remember)
-    storageManager.setItem(TOKEN_KEY, token)
-    storageManager.setItem(USER_KEY, JSON.stringify(user))
-  }
-}
+    storageManager.setRememberMe(remember);
+    storageManager.setItem(TOKEN_KEY, token);
+    storageManager.setItem(USER_KEY, JSON.stringify(user));
+  },
 
-export default tokenManager
+  /**
+   * Get current user's branch ID
+   */
+  getUserBranchId: () => {
+    const user = tokenManager.getUser();
+    // console.log('getUserBranchId - user object:', user)
+    console.log("getUserBranchId - branchId:", user?.branchId);
+    return user?.branchId || null;
+  },
+};
+
+export default tokenManager;

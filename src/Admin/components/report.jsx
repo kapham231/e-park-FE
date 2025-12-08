@@ -447,13 +447,6 @@ const ReportContent = () => {
       render: renderAmount,
       align: 'right',
       sorter: (a, b) => a.subtotal - b.subtotal
-    },
-    {
-      title: 'Branch',
-      dataIndex: 'branchname',
-      key: 'branch',
-      render: (text) => text || 'N/A',
-      sorter: (a, b) => (a.branchname || '').localeCompare(b.branchname || '')
     }
   ]
 

@@ -93,6 +93,13 @@ const MaintenanceHistory = () => {
       key: 'status',
       ellipsis: true
       // sorter: (a, b) => a.code.localeCompare(b.code),
+    },
+    {
+      title: 'Branch',
+      dataIndex: 'branchname',
+      key: 'branch',
+      render: (text) => text || 'N/A',
+      sorter: (a, b) => (a.branchname || '').localeCompare(b.branchname || '')
     }
   ]
 

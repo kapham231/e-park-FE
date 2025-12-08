@@ -16,6 +16,15 @@ export const authService = {
     tokenManager.setToken(accessToken)
     tokenManager.setUser(user)
 
+    // Fetch full user data để lấy branchId
+    try {
+      const fullUserData = await authService.getCurrentUser()
+      tokenManager.setUser(fullUserData)
+    } catch (error) {
+      console.error('Error fetching full user data:', error)
+      // Vẫn tiếp tục dù lỗi
+    }
+
     return response.data
   },
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Button, Table, Popconfirm, message } from 'antd'
-import { getAllType, createType, deleteTypeById, updateTypeById } from '../../services/playgroundmanagerApi'
+import { getAllType, createType, deleteTypeById, updateTypeById } from '../../services/adminApi'
 import DeviceTypeModal from './devicetypemodal'
 
 const DeviceTypeManagement = () => {
@@ -28,18 +28,18 @@ const DeviceTypeManagement = () => {
       key: 'quantity',
       sorter: (a, b) => a.quantity - b.quantity
     },
-    {
+        {
       title: 'Action',
       key: 'action',
       align: 'center',
       render: (_, record) => (
         <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
-          <Button type='link' onClick={() => handleEditType(record)}>
+          <Button type='link' onClick={() => handleEditProduct(record)}>
             Edit
           </Button>
           <Popconfirm
-            title='Are you sure to delete this device?'
-            onConfirm={() => handleDeleteType(record.id)}
+            title='Are you sure to delete this product?'
+            onConfirm={() => handleDeleteProduct(record._id)}
             okText='Yes'
             cancelText='No'
           >
@@ -49,6 +49,13 @@ const DeviceTypeManagement = () => {
           </Popconfirm>
         </div>
       )
+    },
+    {
+      title: 'Branch',
+      dataIndex: 'branchname',
+      key: 'branch',
+      render: (text) => text || 'N/A',
+      sorter: (a, b) => (a.branchname || '').localeCompare(b.branchname || '')
     }
   ]
 
@@ -57,16 +64,43 @@ const DeviceTypeManagement = () => {
   }, [])
 
   const fetchTypeList = async () => {
-    const typeList = await getAllType()
-    console.log('typeList: ', typeList)
+    try {
+      const typeList = await getAllType()
+      console.log('typeList: ', typeList)
 
-    if (typeList.length === 0) {
-      console.log('No type found')
+      if (typeList.length === 0) {
+        console.log('No type found')
+        setTypeList([])
+        return
+      }
+
+      // Fetch branch information for each type
+      const typesWithBranch = await Promise.all(
+        typeList.map(async (type) => {
+          try {
+            // Assuming there's a getBranch API function, or we need to create one
+            // For now, we'll use a placeholder or check if branch info is already in the response
+            if (type.branchId) {
+              // You might need to add a getBranch function to playgroundmanagerApi.jsx
+              // const branchResponse = await getBranch(type.branchId)
+              // return { ...type, branch: branchResponse }
+
+              // For now, return type as is - branch info needs to be added to API response
+              return type
+            }
+            return type
+          } catch (error) {
+            console.error('Error fetching branch for type:', type._id, error)
+            return type
+          }
+        })
+      )
+
+      setTypeList(typesWithBranch)
+    } catch (error) {
+      console.error('Error fetching types:', error)
       setTypeList([])
-      return
     }
-
-    setTypeList(typeList)
   }
 
   const handleCreateType = () => {

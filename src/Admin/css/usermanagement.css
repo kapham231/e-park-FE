@@ -9,6 +9,17 @@
     border: #2eebf5 1px solid !important;
 }
 
+.AD-add-branch-button {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.AD-add-branch-button:hover {
+    background-color: white;
+    color: #4CAF50 !important;
+    border: #4CAF50 1px solid !important;
+}
+
 .edit-button {
     background-color: #ffae4c;
     color: white;

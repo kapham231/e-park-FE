@@ -139,7 +139,7 @@ const ReportErrorContent = () => {
       width: 150,
       render: (status) => (
         <Tag color={getStatusTagColor(status)} key={status}>
-          {status || 'Unknown'}
+          {status ? status.charAt(0).toUpperCase() + status.slice(1) : 'Unknown'}
         </Tag>
       )
     },
@@ -157,7 +157,7 @@ const ReportErrorContent = () => {
         <Button
           type='primary'
           danger
-          disabled={record.status !== 'Available'}
+          disabled={record.status?.toLowerCase() !== 'available'}
           onClick={() => {
             Modal.confirm({
               title: 'Confirm',

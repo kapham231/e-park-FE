@@ -6,11 +6,10 @@ import {
   deleteDeviceById,
   updateDeviceById,
   getAllSupplier
-} from '../../services/playgroundmanagerApi'
-import DeviceModal from './devicemodal'
-// import DeviceTypeModal from "./devicetypemodal";
+} from '../../services/adminApi'
+import DeviceModal from '../../Admin/components/devicemodal'
 
-const DeviceManagement = () => {
+const DeviceManagementContent = () => {
   const [deviceList, setDeviceList] = useState([])
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [editingDevice, setEditingDevice] = useState(null)
@@ -19,7 +18,6 @@ const DeviceManagement = () => {
   const getStatusTagColor = (status) => {
     switch (status?.toLowerCase()) {
       case 'available':
-      case 'Available':
         return 'success'
       case 'error':
         return 'error'
@@ -58,7 +56,7 @@ const DeviceManagement = () => {
       dataIndex: 'purchasePrice',
       key: 'price',
       render: (price) => {
-        return `${price.toLocaleString()} VND` // Định dạng giá tiền với dấu phẩy
+        return `${price.toLocaleString()} VND`
       },
       sorter: (a, b) => a.purchasePrice - b.purchasePrice
     },
@@ -68,16 +66,14 @@ const DeviceManagement = () => {
       key: 'status',
       align: 'center',
       filters: [
-        { text: 'Available', value: 'Available' },
+        { text: 'Available', value: 'available' },
         { text: 'Error', value: 'error' },
         { text: 'Maintenance', value: 'maintenance' }
       ],
-      onFilter: (value, record) => record.status?.toLowerCase() === value.toLowerCase(),
-      render: (
-        status // Use render to display the Tag component
-      ) => (
+      onFilter: (value, record) => record.status?.toLowerCase() === value,
+      render: (status) => (
         <Tag color={getStatusTagColor(status)} key={status}>
-          {status ? status.charAt(0).toUpperCase() + status.slice(1) : 'Unknown'}
+          {status || 'Unknown'}
         </Tag>
       )
     },
@@ -112,18 +108,13 @@ const DeviceManagement = () => {
   const fetchDeviceList = async () => {
     try {
       const tmpDeviceList = await getAllDevice()
-      console.log('Devices from API:', tmpDeviceList)
-      
-      const suppliersList = await getAllSupplier() // Lấy danh sách nhà cung cấp
-      console.log('Suppliers from API:', suppliersList)
+      const suppliersList = await getAllSupplier()
 
       if (!tmpDeviceList || tmpDeviceList.length === 0) {
-        console.log("No devices found");
         setDeviceList([])
         return
       }
 
-      // Ánh xạ supplierId sang tên nhà cung cấp
       const supplierMap = suppliersList.reduce((map, supplier) => {
         map[supplier._id] = supplier.name
         return map
@@ -131,10 +122,9 @@ const DeviceManagement = () => {
 
       const devicesWithSupplierName = tmpDeviceList.map((device) => ({
         ...device,
-        supplierName: supplierMap[device.supplierId] || 'N/A' // Gán tên nhà cung cấp hoặc "N/A" nếu không tìm thấy
+        supplierName: supplierMap[device.supplierId] || 'N/A'
       }))
 
-      console.log('Devices with supplier name:', devicesWithSupplierName)
       setDeviceList(devicesWithSupplierName)
     } catch (error) {
       console.error('Error fetching devices:', error)
@@ -143,29 +133,27 @@ const DeviceManagement = () => {
   }
 
   const handleCreateDevice = () => {
-    setEditingDevice(null) // Chế độ thêm mới
+    setEditingDevice(null)
     setIsModalVisible(true)
   }
 
   const handleEditDevice = (device) => {
-    setEditingDevice(device) // Chế độ chỉnh sửa
+    setEditingDevice(device)
     setIsModalVisible(true)
   }
 
   const handleDeleteDevice = async (id) => {
     await deleteDeviceById(id)
-    setDeviceList(deviceList.filter((device) => device.id !== id))
+    setDeviceList(deviceList.filter((device) => device._id !== id))
     message.success('Device deleted successfully!')
   }
 
   const handleSubmitDevice = async (device) => {
     if (editingDevice) {
-      // Chỉnh sửa thiết bị
       await updateDeviceById(editingDevice._id, device)
       fetchDeviceList()
       message.success('Device updated successfully!')
     } else {
-      // Thêm mới thiết bị
       await createDevice(device)
       fetchDeviceList()
       message.success('Device added successfully!')
@@ -182,7 +170,7 @@ const DeviceManagement = () => {
       <Table
         columns={columns}
         dataSource={deviceList}
-        rowKey='id'
+        rowKey='_id'
         pagination={{
           pageSize: 10,
           showSizeChanger: true,
@@ -203,4 +191,4 @@ const DeviceManagement = () => {
   )
 }
 
-export default DeviceManagement
+export default DeviceManagementContent

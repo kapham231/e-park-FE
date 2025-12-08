@@ -72,6 +72,13 @@ const ProductList = () => {
           </Popconfirm>
         </div>
       )
+    },
+        {
+      title: 'Branch',
+      dataIndex: 'branchname',
+      key: 'branch',
+      render: (text) => text || 'N/A',
+      sorter: (a, b) => (a.branchname || '').localeCompare(b.branchname || '')
     }
   ]
 

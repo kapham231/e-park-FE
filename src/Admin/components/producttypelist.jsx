@@ -6,7 +6,7 @@ import {
   deleteProductTypeById,
   getAllProductType,
   updateProductTypeById
-} from '../../services/playgroundmanagerApi'
+} from '../../services/adminApi'
 
 const ProductTypeList = () => {
   const [isModalVisible, setIsModalVisible] = React.useState(false)
@@ -39,18 +39,18 @@ const ProductTypeList = () => {
       key: 'code',
       sorter: (a, b) => a.code.localeCompare(b.code)
     },
-    {
+        {
       title: 'Action',
       key: 'action',
       align: 'center',
       render: (_, record) => (
         <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
-          <Button type='link' onClick={() => handleEditType(record)}>
+          <Button type='link' onClick={() => handleEditProduct(record)}>
             Edit
           </Button>
           <Popconfirm
-            title='Are you sure to delete this device?'
-            onConfirm={() => handleDeleteType(record.id)}
+            title='Are you sure to delete this product?'
+            onConfirm={() => handleDeleteProduct(record._id)}
             okText='Yes'
             cancelText='No'
           >
@@ -60,6 +60,13 @@ const ProductTypeList = () => {
           </Popconfirm>
         </div>
       )
+    },
+    {
+      title: 'Branch',
+      dataIndex: 'branchname',
+      key: 'branch',
+      render: (text) => text || 'N/A',
+      sorter: (a, b) => (a.branchname || '').localeCompare(b.branchname || '')
     }
   ]
 

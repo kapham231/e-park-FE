@@ -16,6 +16,11 @@ import { Button, Layout, Menu, theme } from 'antd'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 
 import UserManagementContent from '../Admin/components/usermanagementcontent'
+import DeviceManagementContentAdmin from '../Admin/components/devicemanagement'
+import ProductManagementAdmin from '../Admin/pages/productmanagement'
+import VoucherManagementAdmin from '../Admin/pages/VoucherManagement'
+import EventManagementContentAdmin from '../Admin/components/eventmanagement'
+import EventDetailAdmin from '../Admin/pages/eventdetail'
 import ReportErrorContent from '../Staff/components/reportcontent'
 import EventContent from '../Staff/components/eventcontent'
 import EventManagementContent from '../Manager/components/eventmanagement'
@@ -38,6 +43,27 @@ const roleBasedItems = {
       icon: <UserOutlined />,
       label: 'User Management'
     },
+    {
+      key: '/admin/event-management',
+      icon: <ContainerOutlined />,
+      label: 'Event'
+    },
+    {
+      key: '/admin/device-management',
+      icon: <ToolOutlined />,
+      label: 'Device Management'
+    },
+    {
+      key: '/admin/product-management',
+      icon: <ProductOutlined />,
+      label: 'Product Management'
+    },
+    {
+      key: '/admin/voucher-management',
+      icon: <TagOutlined />,
+      label: 'Voucher Management'
+    },
+    { key: '/admin/report', icon: <FundViewOutlined />, label: 'Report' },
     {
       key: '/admin/ticket-management',
       icon: <SolutionOutlined />,
@@ -215,7 +241,13 @@ const ContentOfPage = ({ role }) => {
     <Routes>
       <Route index element={<UserManagementContent />} />
       <Route path='/user-management' element={<UserManagementContent />} />
+      <Route path='/event-management' element={<EventManagementContentAdmin />} />
+      <Route path='/event-management/:eventId' element={<EventDetailAdmin />} />
+      <Route path='/device-management' element={<DeviceManagementContentAdmin />} />
+      <Route path='/product-management' element={<ProductManagementAdmin />} />
+      <Route path='/voucher-management' element={<VoucherManagementAdmin />} />
       <Route path='/ticket-management' element={<TicketManagementContent />} />
+      <Route path='/report' element={<ReportContent />} />
     </Routes>
   )
 

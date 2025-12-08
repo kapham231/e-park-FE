@@ -19,7 +19,6 @@ const DeviceManagement = () => {
   const getStatusTagColor = (status) => {
     switch (status?.toLowerCase()) {
       case 'available':
-      case 'Available':
         return 'success'
       case 'error':
         return 'error'
@@ -68,11 +67,11 @@ const DeviceManagement = () => {
       key: 'status',
       align: 'center',
       filters: [
-        { text: 'Available', value: 'Available' },
+        { text: 'Available', value: 'available' },
         { text: 'Error', value: 'error' },
         { text: 'Maintenance', value: 'maintenance' }
       ],
-      onFilter: (value, record) => record.status?.toLowerCase() === value.toLowerCase(),
+      onFilter: (value, record) => record.status?.toLowerCase() === value,
       render: (
         status // Use render to display the Tag component
       ) => (
@@ -102,6 +101,13 @@ const DeviceManagement = () => {
           </Popconfirm>
         </div>
       )
+    },
+        {
+      title: 'Branch',
+      dataIndex: 'branchname',
+      key: 'branch',
+      render: (text) => text || 'N/A',
+      sorter: (a, b) => (a.branchname || '').localeCompare(b.branchname || '')
     }
   ]
 
@@ -156,6 +162,7 @@ const DeviceManagement = () => {
     await deleteDeviceById(id)
     setDeviceList(deviceList.filter((device) => device.id !== id))
     message.success('Device deleted successfully!')
+    window.location.reload() // Reload page after deleting device
   }
 
   const handleSubmitDevice = async (device) => {

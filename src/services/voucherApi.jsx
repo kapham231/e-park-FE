@@ -1,7 +1,7 @@
 import { message } from 'antd'
 import axios from 'axios'
 
-const baseURL = import.meta.env.VITE_API_BASE_URL
+const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3333/api/';
 
 export const getVoucher = async (params) => {
   try {

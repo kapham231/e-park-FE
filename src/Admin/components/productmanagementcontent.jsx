@@ -1,20 +1,20 @@
 import { useCallback, useState, useEffect } from 'react'
-import { Table, Button, Popconfirm } from 'antd'
-import ProductModal from './productModal'
-import { createProduct, deleteProductById, getAllProduct, updateProductById } from '../../services/playgroundmanagerApi'
+import { Table, Button, Popconfirm, message } from 'antd'
+import ProductModal from '../../Admin/components/productModal'
+import { createProduct, deleteProductById, getAllProduct, updateProductById } from '../../services/adminApi'
 
-const ProductList = () => {
-  const [productList, setProductList] = useState(null)
+const ProductManagementContent = () => {
+  const [productList, setProductList] = useState([])
   const [editingProduct, setEditingProduct] = useState(null)
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   const load = useCallback(async () => {
     try {
-      const productList = await getAllProduct()
-      console.log('productList: ', productList)
-      setProductList(productList)
+      const list = await getAllProduct()
+      setProductList(list)
     } catch (error) {
       console.error('Error fetching products:', error)
+      message.error('Failed to load products')
     }
   }, [])
 
@@ -31,8 +31,7 @@ const ProductList = () => {
     {
       title: 'Quantity',
       dataIndex: 'quantity',
-      key: 'quantity',
-      sorter: (a, b) => a.quantity - b.quantity
+      key: 'quantity'
     },
     {
       title: 'Type',
@@ -43,7 +42,6 @@ const ProductList = () => {
       title: 'Sale Price',
       dataIndex: 'purchasePrice',
       key: 'purchasePrice',
-      sorter: (a, b) => a.purchasePrice - b.purchasePrice,
       render: (text) => `${Number(text).toLocaleString('vi-VN')} VND`
     },
     {
@@ -81,49 +79,53 @@ const ProductList = () => {
   }
 
   const handleSubmitProduct = async (values) => {
-    if (editingProduct) {
-      const updatedProduct = await updateProductById(editingProduct._id, values)
-      const newProductList = productList.map((product) =>
-        product._id === editingProduct._id ? { ...product, ...updatedProduct } : product
-      )
-      console.log(newProductList)
-      setProductList(newProductList)
-    } else {
-      const newProduct = await createProduct(values)
-      setProductList([...productList, newProduct])
+    try {
+      if (editingProduct) {
+        await updateProductById(editingProduct._id, values)
+        await load()
+        message.success('Product updated successfully!')
+      } else {
+        await createProduct(values)
+        await load()
+        message.success('Product created successfully!')
+      }
+    } catch (error) {
+      console.error('Error saving product:', error)
+      message.error('Failed to save product')
+    } finally {
+      setIsModalVisible(false)
+      setEditingProduct(null)
     }
-    setIsModalVisible(false)
-    setEditingProduct(null)
   }
 
   const handleEditProduct = (record) => {
     setEditingProduct(record)
     setIsModalVisible(true)
   }
+
   const handleDeleteProduct = async (id) => {
-    await deleteProductById(id)
-    load() // Reload the product list after deletion
+    try {
+      await deleteProductById(id)
+      setProductList((prev) => prev.filter((p) => p._id !== id))
+      message.success('Product deleted')
+      window.location.reload() // Reload page after deleting product
+    } catch (error) {
+      console.error('Delete product error:', error)
+      message.error('Failed to delete product')
+    }
   }
 
   return (
-    <div>
-      <Button
-        style={{ backgroundColor: '#3b71ca', color: 'white', marginBottom: '16px' }}
-        onClick={handleCreateProduct}
-      >
+    <div style={{ margin: '20px' }}>
+      <Button style={{ backgroundColor: '#3b71ca', color: 'white', marginBottom: '16px' }} onClick={handleCreateProduct}>
         Add New Product
       </Button>
 
-      <Table dataSource={productList} columns={columns} />
+      <Table dataSource={productList} columns={columns} rowKey='_id' />
 
-      <ProductModal
-        visible={isModalVisible}
-        onClose={() => setIsModalVisible(false)}
-        onSubmit={handleSubmitProduct}
-        initialValues={editingProduct}
-      />
+      <ProductModal visible={isModalVisible} onClose={() => setIsModalVisible(false)} onSubmit={handleSubmitProduct} initialValues={editingProduct} />
     </div>
   )
 }
 
-export default ProductList
+export default ProductManagementContent

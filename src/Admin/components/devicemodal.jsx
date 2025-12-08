@@ -83,19 +83,17 @@ const DeviceModal = ({ visible, onClose, onSubmit, initialValues }) => {
             ))}
           </Select>
         </Form.Item>
-        {initialValues && (
-          <Form.Item
-            label='Code'
-            name='code'
-            rules={[{ required: true, message: 'Please enter the device code!' }]}
-          >
-            <InputNumber
-              placeholder='Enter device code'
-              style={{ width: '100%' }}
-              min={0}
-            />
-          </Form.Item>
-        )}
+        <Form.Item
+          label='Code'
+          name='code'
+          rules={[{ required: true, message: 'Please enter the device code!' }]}
+        >
+          <InputNumber
+            placeholder='Enter device code'
+            style={{ width: '100%' }}
+            min={0}
+          />
+        </Form.Item>
         <Form.Item label='Type' name='typeName' rules={[{ required: true, message: 'Please select a device type!' }]}>
           <Select placeholder='Select a device type'>
             {typeList.map((type) => (
@@ -125,7 +123,7 @@ const DeviceModal = ({ visible, onClose, onSubmit, initialValues }) => {
           rules={[{ required: true, message: 'Please select a status!' }]}
         >
           <Select placeholder='Select a status'>
-            <Option value='Available'>Available</Option>
+            <Option value='available'>Available</Option>
             <Option value='maintenance'>Maintenance</Option>
             <Option value='error'>Error</Option>
           </Select>

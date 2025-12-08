@@ -1,7 +1,8 @@
 import { message } from 'antd'
 import axios from 'axios'
+import { tokenManager } from '../utils/tokenManager'
 
-const baseURL = import.meta.env.VITE_API_BASE_URL
+const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3333/api/';
 
 export const bookingPrice = async (tickets, customerId, date) => {
   try {
@@ -49,7 +50,10 @@ export const getAllInvoice = async () => {
 
 export const getAllInvoiceWithPaidStatus = async () => {
   try {
-    const response = await axios.get(`${baseURL}/invoice`)
+    const branchId = tokenManager.getUserBranchId()
+    const params = branchId ? { branchId } : {}
+    console.log('Fetching invoices with params:', params)
+    const response = await axios.get(`${baseURL}/invoice`, { params })
     const invoices = response.data
     const paidInvoices = invoices.filter((invoice) => invoice.status === 'PAID')
     return paidInvoices
@@ -131,7 +135,10 @@ export const createPayOS = async (invoiceId, cancelUrl, returnUrl) => {
 
 export const getProducts = async () => {
   try {
-    const response = await axios.get(`${baseURL}/product`)
+    const branchId = tokenManager.getUserBranchId()
+    const params = branchId ? { branchId } : {}
+    console.log('Fetching products with params:', params)
+    const response = await axios.get(`${baseURL}/product`, { params })
     return response.data
   } catch (error) {
     console.error('Error fetching products:', error)

@@ -6,7 +6,7 @@ import {
   getAllSupplier,
   getDeviceByStatus,
   updateDeviceById
-} from '../../services/playgroundmanagerApi'
+} from '../../services/adminApi'
 import { updateInvoice } from '../../services/userApi'
 // import DeviceModal from "./devicemodal";
 
@@ -96,29 +96,36 @@ const DeviceReportsTab = () => {
       ellipsis: true,
       sorter: (a, b) => a.supplierName.localeCompare(b.supplierName)
     },
+    // {
+    //   title: 'Action',
+    //   key: 'action',
+    //   align: 'center',
+    //   render: (_, record) => (
+    //     <Button
+    //       type='primary'
+    //       onClick={() => {
+    //         Modal.confirm({
+    //           title: 'Confirm',
+    //           content: 'Are you sure to confirm error of this device?',
+    //           onOk() {
+    //             handleConfirm(record._id)
+    //           },
+    //           onCancel() {
+    //             handleClose()
+    //           }
+    //         })
+    //       }}
+    //     >
+    //       Confirm
+    //     </Button>
+    //   )
+    // },
     {
-      title: 'Action',
-      key: 'action',
-      align: 'center',
-      render: (_, record) => (
-        <Button
-          type='primary'
-          onClick={() => {
-            Modal.confirm({
-              title: 'Confirm',
-              content: 'Are you sure to confirm error of this device?',
-              onOk() {
-                handleConfirm(record._id)
-              },
-              onCancel() {
-                handleClose()
-              }
-            })
-          }}
-        >
-          Confirm
-        </Button>
-      )
+      title: 'Branch',
+      dataIndex: 'branchname',
+      key: 'branch',
+      render: (text) => text || 'N/A',
+      sorter: (a, b) => (a.branchname || '').localeCompare(b.branchname || '')
     }
   ]
 
