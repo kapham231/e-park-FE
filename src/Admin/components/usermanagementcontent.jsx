@@ -2,18 +2,23 @@ import { Button, Table, Space, message, Popconfirm, Select, Tag } from 'antd'
 import { useEffect, useState } from 'react'
 import AddUserModal from './addusermodal'
 import ForgotPasswordModal from './forgotpasswordmodal'
+import AssignBranchModal from './AssignBranchModal'
 
 import '../css/usermanagement.css'
-import { deleteUserbyId, getAllUserWithRole } from '../../services/adminApi'
+import { deleteUserbyId, getAllUserWithRole, getAllBranch, transferBranch, addUserToBranch } from '../../services/adminApi'
 
 const { Option } = Select
 const UserManagementContent = () => {
   const [users, setUsers] = useState([])
+  const [branches, setBranches] = useState([])
+  const [loadingBranches, setLoadingBranches] = useState(true)
   const [selectedUser, setSelectedUser] = useState(null)
   const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] = useState(false)
+  const [isAssignBranchModalOpen, setIsAssignBranchModalOpen] = useState(false)
   const [roleFilter, setRoleFilter] = useState('All')
   useEffect(() => {
     fetchUsers()
+    fetchBranches()
   }, [roleFilter])
   const fetchUsers = async () => {
     try {
@@ -27,8 +32,26 @@ const UserManagementContent = () => {
       console.error('Error:', error)
     }
   }
+
+  const fetchBranches = async () => {
+    try {
+      const response = await getAllBranch()
+      setBranches(Array.isArray(response) ? response : [])
+      // console.log('Branches state set to:', Array.isArray(response) ? response : [])
+    } catch (error) {
+      // console.error('Error fetching branches:', error)
+      setBranches([])
+    }
+  }
+
   const handleRoleFilterChange = (value) => {
     setRoleFilter(value)
+  }
+
+  const getBranchName = (branchId) => {
+    if (!branches || !Array.isArray(branches)) return 'N/A'
+    const branch = branches.find(b => b._id === branchId)
+    return branch ? branch.name : 'N/A'
   }
 
   const columns = [
@@ -80,12 +103,26 @@ const UserManagementContent = () => {
       }
     },
     {
+      title: 'Branch',
+      dataIndex: 'branchId',
+      key: 'branch',
+      render: (branchId) => {
+        return getBranchName(branchId)
+      }
+    },
+    {
       title: 'Action',
       key: 'action',
       render: (_, record) => (
         <Space size='middle'>
           <Button className='edit-button' onClick={() => showEditUserModal(record)}>
             Edit
+          </Button>
+          <Button className='assign-branch-button' onClick={() => handleAssignBranch(record)}>
+            Assign Branch
+          </Button>
+          <Button className='transfer-branch-button' onClick={() => handleTransferBranch(record)}>
+            Transfer Branch
           </Button>
           <Button className='recoverpassword-button' onClick={() => handleRecoverPassword(record)}>
             Recover Password
@@ -159,6 +196,34 @@ const UserManagementContent = () => {
     setSelectedUser(null) // Xóa thông tin người dùng được chọn
   }
 
+  const handleAssignBranch = (user) => {
+    setSelectedUser(user)
+    setIsAssignBranchModalOpen(true)
+  }
+
+  const handleTransferBranch = (user) => {
+    setSelectedUser(user)
+    setIsAssignBranchModalOpen(true)
+  }
+
+  const handleAssignBranchModalClose = () => {
+    setIsAssignBranchModalOpen(false)
+    setSelectedUser(null)
+  }
+
+  const handleAssignBranchSuccess = async (userId, branchId) => {
+    try {
+      const assignedBranchId = await addUserToBranch(userId, branchId)
+      console.log('Branch assigned successfully, branchId:', assignedBranchId)
+      await fetchUsers()
+      message.success('Branch assigned successfully!')
+      handleAssignBranchModalClose()
+    } catch (error) {
+      console.error('Error assigning branch:', error)
+      message.error('Failed to assign branch')
+    }
+  }
+
   const handleDeleteUser = async (id, confirm) => {
     try {
       if (confirm) {
@@ -217,6 +282,13 @@ const UserManagementContent = () => {
         visible={isForgotPasswordModalOpen}
         onClose={handleForgotPasswordModalClose}
         initialValues={selectedUser}
+      />
+
+      <AssignBranchModal
+        open={isAssignBranchModalOpen}
+        onClose={handleAssignBranchModalClose}
+        user={selectedUser}
+        onAssign={handleAssignBranchSuccess}
       />
     </>
   )

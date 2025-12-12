@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Modal, Form, Input, Select, DatePicker, message, Space, Button } from 'antd'
 import dayjs from 'dayjs'
-import { addUserWithRole, updateUserbyId } from '../../services/adminApi'
+import { addUserWithRole, updateUserbyId, getAllBranch } from '../../services/adminApi'
 
 const { Option } = Select
 
 const AddUserModal = ({ isModalOpen, onClose, onAddUser, onEditUser, editingUser }) => {
   const [form] = Form.useForm()
   const [changedFields, setChangedFields] = useState({})
+  const [branches, setBranches] = useState([])
   React.useEffect(() => {
     if (editingUser) {
       editingUser = {
@@ -20,6 +21,33 @@ const AddUserModal = ({ isModalOpen, onClose, onAddUser, onEditUser, editingUser
       form.resetFields()
     }
   }, [editingUser])
+
+  // Fetch branches when modal opens
+  useEffect(() => {
+    const fetchBranches = async () => {
+      try {
+        const response = await getAllBranch()
+        // console.log('Branches response:', response)
+        let branchesData = []
+        if (Array.isArray(response)) {
+          branchesData = response
+        } else if (response && Array.isArray(response.data)) {
+          branchesData = response.data
+        } else if (response && response.data && Array.isArray(response.data.data)) {
+          branchesData = response.data.data
+        }
+        setBranches(branchesData)
+      } catch (error) {
+        console.error('Error fetching branches:', error)
+        setBranches([])
+        message.error('Failed to load branches')
+      }
+    }
+
+    if (isModalOpen) {
+      fetchBranches()
+    }
+  }, [isModalOpen])
 
   // Helper function to convert field names to labels
   function fieldNameToLabel(fieldName) {
@@ -34,7 +62,7 @@ const AddUserModal = ({ isModalOpen, onClose, onAddUser, onEditUser, editingUser
 
   const handleFieldChange = (changedValues) => {
     const field = Object.keys(changedValues)[0]
-    if (changedValues[field] !== editingUser[field]) {
+    if (!editingUser || changedValues[field] !== editingUser[field]) {
       setChangedFields((pre) => ({
         ...pre,
         [field]: changedValues[field]
@@ -288,6 +316,19 @@ const AddUserModal = ({ isModalOpen, onClose, onAddUser, onEditUser, editingUser
               <Option value='Customer'>Customer</Option>
             </Select>
           </Form.Item>
+
+          {/* Branch selection only for adding user */}
+          {!editingUser && (
+            <Form.Item label='Branch' name='branchId' rules={[{ required: true, message: 'Please select a branch!' }]}>
+              <Select placeholder='Select a branch'>
+                {branches.map((branch) => (
+                  <Option key={branch._id} value={branch._id}>
+                    {branch.name}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+          )}
 
           {/* Hiển thị trường Position chỉ khi role là Manager hoặc Staff */}
           <Form.Item noStyle shouldUpdate={(prevValues, currentValues) => prevValues.role !== currentValues.role}>

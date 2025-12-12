@@ -31,6 +31,28 @@
     border: #ffae4c 1px solid !important;
 }
 
+.assign-branch-button {
+    background-color: #FFCC66;
+    color: white;
+}
+
+.assign-branch-button:hover {
+    background-color: white;
+    color: #FFCC66 !important;
+    border: #FFCC66 1px solid !important;
+}
+
+.transfer-branch-button{
+    background-color: #00CC33;
+    color: white;
+}
+
+.transfer-branch-button:hover {
+    background-color: rgb(18, 211, 11);
+    color: #00CC33 !important;
+    border: #00CC33 1px solid !important;
+}
+
 .recoverpassword-button {
     background-color: #a09e9e;
     color: white;
@@ -51,4 +73,15 @@
     background-color: white;
     color: #f66e6e !important;
     border: #f66e6e 1px solid !important;
+}
+
+.view-button {
+    background-color: #3399ff;
+    color: white;
+}
+
+.view-button:hover {
+    background-color: white;
+    color: #3399ff !important;
+    border: #3399ff 1px solid !important;
 }

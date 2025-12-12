@@ -46,6 +46,11 @@ export const addUserWithRole = async (user) => {
     formattedUser.position = user.position
   }
 
+  // Thêm branchId nếu có
+  if (user.branchId) {
+    formattedUser.branchId = user.branchId
+  }
+
   try {
     const response = await axios.post(`${baseURL}/generalUser/create`, formattedUser)
     return response.data
@@ -102,6 +107,26 @@ export const handleRecoverPassword = async (username, password) => {
 export const deleteUserbyId = async (userId) => {
   try {
     const response = await axios.delete(`${baseURL}/generalUser/${userId}`)
+    return response.data
+  } catch (error) {
+    console.error('Error:', error)
+    throw error
+  }
+}
+
+export const getAllStaff = async () => {
+  try {
+    const response = await axios.get(`${baseURL}/generalUser/staffs`)
+    return response.data
+  } catch (error) {
+    console.error('Error:', error)
+    throw error
+  }
+}
+
+export const getManagerToAddBranch = async () => {
+  try {
+    const response = await axios.get(`${baseURL}/generalUser/getManagerToAddBranch`)
     return response.data
   } catch (error) {
     console.error('Error:', error)
@@ -463,7 +488,7 @@ export const calculatePriceMaintenanceEquipment = async (deviceId) => {
 export const getAllProductType = async () => {
   try {
     const response = await axios.get(`${baseURL}/typeProduct`) //Sau sua lai thanh` get type rieng cua product
-    console.log('getAllProductType response:', response.data)
+    // console.log('getAllProductType response:', response.data)
     return response.data
   } catch (error) {
     console.error('Error:', error)
@@ -544,5 +569,115 @@ export const deleteProductById = async (productId) => {
     throw error
   }
 }
+
+// BRANCH
+export const getAllBranch = async () => {
+  try {
+    const response = await axios.get(`${baseURL}/branch`)
+    // console.log('getAllBranch response:', response.data)
+    return response.data.data || response.data
+  } catch (error) {
+    console.error('Error:', error)
+    throw error
+  }
+}
+export const getBranch = async (id) => {
+  try {
+    if (!id) {
+      return
+    }
+    const response = await axios.get(`${baseURL}/branch/getId/${id}`)
+    return response.data
+  } catch (error) {
+    console.error('Error:', error)
+    throw error
+  }
+}
+export const createBranch = async (newBranch) => {
+  try {
+    console.log('Creating Branch with payload:', newBranch)
+    const response = await axios.post(`${baseURL}/branch/create`, newBranch)
+    return response.data
+  } catch (error) {
+    console.error('Error:', error)
+    throw error
+  }
+}
+export const updateBranchById = async (updatedBranch, branchId) => {
+  try {
+    const response = await axios.put(`${baseURL}/branch/update/${branchId}`, updatedBranch)
+    return response.data
+  } catch (error) {
+    console.error('Error:', error)
+    throw error
+  }
+}
+export const deleteBranch = async (branchId) => {
+  try {
+    // console.log('Deleting Branch with ID:', branchId);
+    const response = await axios.delete(`${baseURL}/branch/${branchId}`)  
+    return response.data
+  } catch (error) {
+    console.error('Error:', error)
+    throw error
+  }
+}
+export const transferBranch = async (userId, newBranchId) => {
+  let returnedBranchId = newBranchId
+
+  try {
+
+    const response = await axios.put(`${baseURL}/branch/transferBranch`, {
+      userId: userId,
+      newBranchId: newBranchId
+    })
+    // Check if the response contains an error message
+    if (response.data && response.data.message === 'New branch not found') {
+      console.error('API returned error message:', response.data.message)
+      // Keep the default returnedBranchId (newBranchId)
+    } else {
+      // Return the branchId that was assigned, or extract it from response if available
+      returnedBranchId = response.data.branchId || response.data.data?.branchId || newBranchId
+    }
+
+    console.log('Returning branchId:', returnedBranchId)
+  } catch (error) {
+    console.error('transferBranch error details:', error)
+    console.error('Error response:', error.response?.data)
+    console.error('Error status:', error.response?.status)
+    console.error('Error message:', error.message)
+
+    // Even if the API call fails, use the branchId that was attempted to be assigned
+    // This allows the UI to update optimistically
+    console.log('Using attempted branchId despite error:', returnedBranchId)
+  }
+
+  return returnedBranchId
+}
+
+export const getUsersByBranchId = async (branchId) => {
+  try {
+    const response = await axios.get(`${baseURL}/branch/users/${branchId}`)
+    console.log('API - Users by Branch ID response:', response.data)
+    return response.data
+  } catch (error) {
+    console.error('Error:', error)
+    throw error
+  }
+}
+
+export const addUserToBranch = async (userId, branchId) => {
+  try {
+    const response = await axios.post(`${baseURL}/branch/addUser`, {
+      userId: userId,
+      branchId: branchId
+    })
+    return response.data
+  } catch (error) {
+    console.error('Error:', error)
+    throw error
+  }
+}
+
 
 

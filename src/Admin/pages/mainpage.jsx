@@ -7,10 +7,7 @@ const AdminMainPage = () => {
   return (
     <>
       <Header role='admin' />
-
-      <div style={{ display: 'flex' }}>
-        <Sidebar role={'admin'} />
-      </div>
+      <Sidebar role={'admin'} />
     </>
   )
 }

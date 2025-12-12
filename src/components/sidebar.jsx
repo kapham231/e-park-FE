@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react'
 import {
   BugOutlined,
@@ -10,12 +11,14 @@ import {
   UserOutlined,
   SolutionOutlined,
   ProductOutlined,
-  TagOutlined
+  TagOutlined,
+  ShopOutlined
 } from '@ant-design/icons'
 import { Button, Layout, Menu, theme } from 'antd'
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 
 import UserManagementContent from '../Admin/components/usermanagementcontent'
+import BranchManagementContent from '../Admin/components/branchmanagementcontent'
 import DeviceManagementContentAdmin from '../Admin/components/devicemanagement'
 import ProductManagementAdmin from '../Admin/pages/productmanagement'
 import VoucherManagementAdmin from '../Admin/pages/VoucherManagement'
@@ -42,6 +45,11 @@ const roleBasedItems = {
       key: '/admin/user-management',
       icon: <UserOutlined />,
       label: 'User Management'
+    },
+    {
+      key: '/admin/branch-management',
+      icon: <ShopOutlined />,
+      label: 'Branch Management'
     },
     {
       key: '/admin/event-management',
@@ -241,6 +249,7 @@ const ContentOfPage = ({ role }) => {
     <Routes>
       <Route index element={<UserManagementContent />} />
       <Route path='/user-management' element={<UserManagementContent />} />
+      <Route path='/branch-management' element={<BranchManagementContent />} />
       <Route path='/event-management' element={<EventManagementContentAdmin />} />
       <Route path='/event-management/:eventId' element={<EventDetailAdmin />} />
       <Route path='/device-management' element={<DeviceManagementContentAdmin />} />
@@ -263,13 +272,13 @@ const ContentOfPage = ({ role }) => {
   const managerContent = (
     <Routes>
       <Route index element={<EventManagementContent />} />
-      <Route index path='/event-management' element={<EventManagementContent />} />
-      <Route path='/event-management/:eventId' element={<EventDetail />} />
-      <Route path='/device-management' element={<DeviceManagementContent />} />
-      {/* <Route path='/manager-dashboard' element={<ManagerDashboardContent />} /> */}
-      <Route path='/product-management' element={<ProductManagement />} />
-      <Route path='/voucher-management' element={<VouchersManagement />} />
-      <Route path='/report' element={<ReportContent />} />
+      <Route index path='event-management' element={<EventManagementContent />} />
+      <Route path='event-management/:eventId' element={<EventDetail />} />
+      <Route path='device-management' element={<DeviceManagementContent />} />
+      {/* <Route path='manager-dashboard' element={<ManagerDashboardContent />} /> */}
+      <Route path='product-management' element={<ProductManagement />} />
+      <Route path='voucher-management' element={<VouchersManagement />} />
+      <Route path='report' element={<ReportContent />} />
     </Routes>
   )
 
