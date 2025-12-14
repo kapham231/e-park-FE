@@ -423,7 +423,9 @@ export const deleteProductById = async (productId) => {
 // TICKET MANAGEMENT
 export const getAllTicket = async () => {
   try {
-    const response = await axios.get(`${baseURL}/ticket`)
+    const branchId = tokenManager.getUserBranchId()
+    const params = branchId ? { branchId } : {}
+    const response = await axios.get(`${baseURL}/ticket`, { params })
     return response.data
   } catch (error) {
     console.error('Error:', error)
@@ -433,7 +435,9 @@ export const getAllTicket = async () => {
 
 export const createTicket = async (ticket) => {
   try {
-    const response = await axios.post(`${baseURL}/ticket/create`, ticket)
+    const branchId = tokenManager.getUserBranchId()
+    const ticketPayload = branchId ? { ...ticket, branchId } : ticket
+    const response = await axios.post(`${baseURL}/ticket/create`, ticketPayload)
     return response.data
   } catch (error) {
     console.error('Error:', error)

@@ -24,7 +24,10 @@ const ForgotPasswordModal = ({ visible, onClose, initialValues }) => {
 
       // Gọi API để gửi mật khẩu tạm thời
       const newPassword = await handleRecoverPassword(initialValues.username, tmppassword)
-      alert('Your password has been changed to: ' + newPassword.tempPassword)
+      Modal.info({
+        title: 'Password changed',
+        content: `Your password has been changed to: ${newPassword.tempPassword}`
+      })
 
       // Reset form và đóng modal
       form.resetFields()

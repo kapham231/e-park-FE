@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Table, Popconfirm, message, Tag } from 'antd'
+import { Button, Table, Popconfirm, message, Tag, Input } from 'antd'
 import {
   getAllDevice,
   createDevice,
   deleteDeviceById,
   updateDeviceById,
   getAllSupplier
-} from '../../services/playgroundmanagerApi'
+} from '../../services/adminApi'
 import DeviceModal from './devicemodal'
 // import DeviceTypeModal from "./devicetypemodal";
 
@@ -14,6 +14,8 @@ const DeviceManagement = () => {
   const [deviceList, setDeviceList] = useState([])
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [editingDevice, setEditingDevice] = useState(null)
+  const [searchText, setSearchText] = useState('')
+  const [loading, setLoading] = useState(false)
 
   // Determine tag color based on status
   const getStatusTagColor = (status) => {
@@ -180,15 +182,28 @@ const DeviceManagement = () => {
     setIsModalVisible(false)
   }
 
+  const filteredDevices = deviceList.filter(device =>
+    (device.typeName || '').toLowerCase().includes(searchText.toLowerCase()) ||
+    (device.code || '').toLowerCase().includes(searchText.toLowerCase()) ||
+    (device.supplierName || '').toLowerCase().includes(searchText.toLowerCase())
+  )
+
   return (
     <div style={{ margin: '20px' }}>
       {/* <Button style={{ backgroundColor: '#3b71ca', color: 'white', marginBottom: '16px' }} onClick={handleCreateDevice}>
         Add Device
       </Button> */}
-
+      <Input
+          placeholder='Search device...'
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          style={{ width: 300 }}
+       />
       <Table
         columns={columns}
-        dataSource={deviceList}
+        // dataSource={deviceList}
+        dataSource={filteredDevices}
+        loading={loading}
         rowKey='id'
         pagination={{
           pageSize: 10,

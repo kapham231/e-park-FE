@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
-import { Button, Table, Popconfirm, message } from 'antd'
+import { Button, Table, Popconfirm, message, Input } from 'antd'
 import { getAllType, createType, deleteTypeById, updateTypeById } from '../../services/playgroundmanagerApi'
+import {PlusOutlined} from '@ant-design/icons'
 import DeviceTypeModal from './devicetypemodal'
 
 const DeviceTypeManagement = () => {
   const [typeList, setTypeList] = useState([])
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [editingType, setEditingType] = useState(null)
-
+  const [searchText, setSearchText] = useState('')
+  const [loading, setLoading] = useState(false)
   const columns = [
     {
       title: 'Device Type',
@@ -100,12 +102,25 @@ const DeviceTypeManagement = () => {
     setIsModalVisible(false)
   }
 
+  const filteredTypes = typeList.filter((type) =>
+    type.typeName.toLowerCase().includes(searchText.toLowerCase()) ||
+    type.code.toLowerCase().includes(searchText.toLowerCase())
+  )
+
   return (
-    <div style={{ margin: '20px' }}>
-      <Button style={{ backgroundColor: '#3b71ca', color: 'white', marginBottom: '16px' }} onClick={handleCreateType}>
+    <div >
+      <Button style={{ backgroundColor: '#3b71ca', color: 'white', marginBottom: '16px' }}
+      icon={<PlusOutlined />}
+      onClick={handleCreateType}>
         Add Device Type
       </Button>
-      <Table columns={columns} dataSource={typeList} rowKey='id' />
+      <Input
+        placeholder='Search device types...'
+        value={searchText}
+        onChange={(e) => setSearchText(e.target.value)}
+        style={{ width: 300, marginLeft: 20 }}
+      />
+      <Table columns={columns} dataSource={filteredTypes} loading={loading} rowKey='id' />
       <DeviceTypeModal
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}

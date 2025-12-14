@@ -20,6 +20,11 @@ const gradientOptions = [
 const AddTicketModal = ({ isModalOpen, handleModalClose, handleSaveTicket, tickets, editingTicket }) => {
     const [form] = Form.useForm();
 
+    const existingTickets = tickets || []
+    const hasNormal = existingTickets.some(t => t.ticketType === 'Normal')
+    const hasWeekend = existingTickets.some(t => t.ticketType === 'Weekend')
+    const disableAdd = !editingTicket && hasNormal && hasWeekend
+
     useEffect(() => {
         if (editingTicket) {
             form.setFieldsValue({
@@ -69,6 +74,7 @@ const AddTicketModal = ({ isModalOpen, handleModalClose, handleSaveTicket, ticke
             onOk={handleOk}
             onCancel={handleModalClose}
             okText={editingTicket ? "Save" : "Add"}
+            okButtonProps={{ disabled: disableAdd }}
             centered
             styles={{
                 body: {
@@ -82,9 +88,16 @@ const AddTicketModal = ({ isModalOpen, handleModalClose, handleSaveTicket, ticke
                 <Form.Item
                     label="Ticket Type"
                     name="ticketType"
-                    rules={[{ required: true, message: 'Please enter ticket type!' }]}
+                    rules={[{ required: true, message: 'Please select ticket type!' }]}
                 >
-                    <Input maxLength={11} placeholder="Enter ticket type" />
+                    <Select placeholder="Select ticket type">
+                        <Option value="Normal" disabled={hasNormal && !editingTicket}>
+                            Normal
+                        </Option>
+                        <Option value="Weekend" disabled={hasWeekend && !editingTicket}>
+                            Weekend
+                        </Option>
+                    </Select>
                 </Form.Item>
 
                 <Form.Item label="Ticket Price (VND)" name="price" rules={[{ required: true, message: "Please type ticket type!" }]}>

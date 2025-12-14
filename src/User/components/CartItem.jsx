@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Modal } from 'antd'
 
 const CartItem = ({ cartItem, onUpdateQuantity, onRemove, disabled = false }) => {
   const [quantity, setQuantity] = useState(cartItem.quantity)
@@ -83,21 +84,25 @@ const CartItem = ({ cartItem, onUpdateQuantity, onRemove, disabled = false }) =>
   /**
    * Handle remove item
    */
-  const handleRemove = async () => {
+  const handleRemove = () => {
     if (disabled || isUpdating) return
 
-    console.log(1)
-
-    if (!window.confirm(`Remove "${cartItem.name}" from your cart?`)) return
-
-    setIsUpdating(true)
-    try {
-      await onRemove(cartItem.productId._id)
-    } catch (error) {
-      console.error('Remove error:', error)
-    } finally {
-      setIsUpdating(false)
-    }
+    Modal.confirm({
+      title: 'Confirm',
+      content: `Remove "${cartItem.name}" from your cart?`,
+      okText: 'Yes',
+      cancelText: 'No',
+      onOk: async () => {
+        setIsUpdating(true)
+        try {
+          await onRemove(cartItem.productId._id)
+        } catch (error) {
+          console.error('Remove error:', error)
+        } finally {
+          setIsUpdating(false)
+        }
+      }
+    })
   }
 
   return (

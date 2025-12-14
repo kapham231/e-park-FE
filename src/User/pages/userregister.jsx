@@ -1,10 +1,10 @@
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Alert, Button, Card, DatePicker, Form, Input, InputNumber, Typography } from 'antd'
+import { Alert, Button, Card, DatePicker, Form, Input, InputNumber, Typography, message } from 'antd'
 import { UserOutlined, PhoneOutlined, MailOutlined, UsergroupAddOutlined } from '@ant-design/icons'
 import { useEffect, useState } from 'react'
 import moment from 'moment'
 import dayjs from 'dayjs'
-import { getAllTicket } from '../../services/adminApi'
+import { getAllTicket } from '../../services/playgroundmanagerApi'
 import '../css/userregister.css'
 import { useAuth } from '@/contexts/authContext'
 
@@ -58,7 +58,7 @@ const UserRegister = () => {
       console.log('Form values:', values)
 
       if (!selectedTicket) {
-        alert('Please select a date to book a ticket.')
+        message.warning('Please select a date to book a ticket.')
         return
       }
 
@@ -81,7 +81,7 @@ const UserRegister = () => {
       }
 
       if (order.quantity === 0) {
-        alert('Please select at least one ticket.')
+        message.warning('Please select at least one ticket.')
         return
       }
 

@@ -1,5 +1,5 @@
 import { useCallback, useState, useEffect } from 'react'
-import { Table, Button, Popconfirm } from 'antd'
+import { Table, Button, Popconfirm, Input } from 'antd'
 import ProductModal from './productModal'
 import { createProduct, deleteProductById, getAllProduct, updateProductById } from '../../services/playgroundmanagerApi'
 
@@ -7,6 +7,8 @@ const ProductList = () => {
   const [productList, setProductList] = useState([])
   const [editingProduct, setEditingProduct] = useState(null)
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const [searchText, setSearchText] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const load = useCallback(async () => {
     try {
@@ -117,6 +119,12 @@ const ProductList = () => {
     load() // Reload the product list after deletion
   }
 
+  const filteredProducts = productList?.filter(product =>
+    product.name.toLowerCase().includes(searchText.toLowerCase()) ||
+    product.typeName.toLowerCase().includes(searchText.toLowerCase()) ||
+    (product.branchname || '').toLowerCase().includes(searchText.toLowerCase())
+  )
+
   return (
     <div>
       {/* <Button
@@ -125,8 +133,19 @@ const ProductList = () => {
       >
         Add New Product
       </Button> */}
-
-      <Table dataSource={productList} columns={columns} />
+      <Input
+        placeholder='Search products...'
+        value={searchText}
+        onChange={(e) => setSearchText(e.target.value)}
+        style={{ width: 300}}
+      />
+      <Table 
+        dataSource={filteredProducts} 
+        loading={loading}
+        columns={columns}
+        scroll={{ x: 'max-content' }}
+        style={{ marginTop: '16px' }} 
+      />
 
       <ProductModal
         visible={isModalVisible}

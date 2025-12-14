@@ -1,4 +1,4 @@
-import { Button, Table, Space, message, Popconfirm, Select, Tag } from 'antd'
+import { Button, Table, Space, message, Popconfirm, Select, Tag, Input } from 'antd'
 import { useEffect, useState } from 'react'
 import AddUserModal from './addusermodal'
 import ForgotPasswordModal from './forgotpasswordmodal'
@@ -11,10 +11,12 @@ const { Option } = Select
 const UserManagementContent = () => {
   const [users, setUsers] = useState([])
   const [branches, setBranches] = useState([])
+  const [loading, setLoading] = useState(false)
   const [loadingBranches, setLoadingBranches] = useState(true)
   const [selectedUser, setSelectedUser] = useState(null)
   const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] = useState(false)
   const [isAssignBranchModalOpen, setIsAssignBranchModalOpen] = useState(false)
+  const [searchText, setSearchText] = useState('')
   const [roleFilter, setRoleFilter] = useState('All')
   useEffect(() => {
     fetchUsers()
@@ -239,6 +241,12 @@ const UserManagementContent = () => {
     }
   }
 
+const filteredUsers = users.filter(user =>
+    (user.name || '').toLowerCase().includes(searchText.toLowerCase()) ||
+    (user.address || '').toLowerCase().includes(searchText.toLowerCase()) ||
+    (user.email || '').toLowerCase().includes(searchText.toLowerCase())
+  )
+
   return (
     <>
       <div>
@@ -251,6 +259,12 @@ const UserManagementContent = () => {
           <Option value='Staff'>Staff</Option>
           <Option value='Customer'>Customer</Option>
         </Select>
+        <Input
+          placeholder='Search user...'
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          style={{ width: 300, marginLeft: 20 }}
+        />
       </div>
 
       <div
@@ -261,7 +275,8 @@ const UserManagementContent = () => {
       >
         <Table
           columns={columns}
-          dataSource={users}
+          dataSource={filteredUsers}
+          loading={loading}
           rowKey='username'
           scroll={{
             x: 'max-content'

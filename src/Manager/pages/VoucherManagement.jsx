@@ -20,6 +20,7 @@ import {
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import VoucherModal from '../components/VoucherModal'
+import { Modal } from 'antd'
 
 export default function VouchersManagement() {
   const [rows, setRows] = useState([])
@@ -306,7 +307,13 @@ export default function VouchersManagement() {
                     <button
                       className='px-2 py-1 border rounded text-red-400 hover:bg-red-400 hover:text-white'
                       onClick={() => {
-                        if (window.confirm('Delete this voucher?')) deleteVoucher(v._id).then(load)
+                        Modal.confirm({
+                          title: 'Confirm',
+                          content: 'Delete this voucher?',
+                          okText: 'Yes',
+                          cancelText: 'No',
+                          onOk: () => deleteVoucher(v._id).then(load)
+                        })
                       }}
                     >
                       Delete

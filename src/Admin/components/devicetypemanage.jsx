@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Table, Popconfirm, message } from 'antd'
+import { Button, Table, Popconfirm, message, Input } from 'antd'
 import { getAllType, createType, deleteTypeById, updateTypeById } from '../../services/adminApi'
 import DeviceTypeModal from './devicetypemodal'
 
@@ -7,6 +7,8 @@ const DeviceTypeManagement = () => {
   const [typeList, setTypeList] = useState([])
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [editingType, setEditingType] = useState(null)
+  const [searchText, setSearchText] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const columns = [
     {
@@ -134,12 +136,28 @@ const DeviceTypeManagement = () => {
     setIsModalVisible(false)
   }
 
+  const filteredTypes = typeList.filter(type =>
+    (type.typeName || '').toLowerCase().includes(searchText.toLowerCase())
+  )
+
   return (
     <div style={{ margin: '20px' }}>
       {/* <Button style={{ backgroundColor: '#3b71ca', color: 'white', marginBottom: '16px' }} onClick={handleCreateType}>
         Add Device Type
       </Button> */}
-      <Table columns={columns} dataSource={typeList} rowKey='id' />
+      <Input
+          placeholder='Search device type...'
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          style={{ width: 300 }}
+       />
+      <Table 
+        columns={columns} 
+        dataSource={filteredTypes} 
+        loading={loading} rowKey='id'         
+        scroll={{ x: 'max-content' }}
+        style={{ marginTop: '16px' }}
+      />
       <DeviceTypeModal
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}

@@ -32,6 +32,8 @@ const EventManagementContent = () => {
   const [form] = Form.useForm()
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingEvent, setEditingEvent] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [searchText, setSearchText] = useState('')
   // const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
   // const [selectedEvent, setSelectedEvent] = useState(null);
 
@@ -194,6 +196,10 @@ const EventManagementContent = () => {
     message.success('Event deleted successfully!')
   }
 
+  const filteredEvents = events.filter(event =>
+    (event.eventTitle || '').toLowerCase().includes(searchText.toLowerCase())
+  )
+
   return (
     <>
       <Form
@@ -289,6 +295,12 @@ const EventManagementContent = () => {
             Create
           </Button>
         </Form.Item>
+        <Input
+          placeholder='Search event...'
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          style={{ width: isMobile ? '100%' : 300, marginBottom: 16 }}
+        />
       </Form>
 
       <div
@@ -300,7 +312,8 @@ const EventManagementContent = () => {
         <Table
           rowKey='_id'
           columns={columns}
-          dataSource={events}
+          dataSource={filteredEvents}
+          loading={loading}
           size='middle'
           scroll={{
             x: 'max-content'

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Table, Popconfirm, message, Tag } from 'antd'
+import { Button, Table, Popconfirm, message, Tag, Input } from 'antd'
 import {
   getAllDevice,
   createDevice,
@@ -7,6 +7,7 @@ import {
   updateDeviceById,
   getAllSupplier
 } from '../../services/playgroundmanagerApi'
+import {PlusOutlined} from '@ant-design/icons'
 import DeviceModal from './devicemodal'
 // import DeviceTypeModal from "./devicetypemodal";
 
@@ -14,6 +15,8 @@ const DeviceManagement = () => {
   const [deviceList, setDeviceList] = useState([])
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [editingDevice, setEditingDevice] = useState(null)
+  const [searchText, setSearchText] = useState('')
+  const [loading, setLoading] = useState(false)
 
   // Determine tag color based on status
   const getStatusTagColor = (status) => {
@@ -173,15 +176,29 @@ const DeviceManagement = () => {
     setIsModalVisible(false)
   }
 
+  const filteredTypes = deviceList.filter((device) =>
+    device.typeName.toLowerCase().includes(searchText.toLowerCase()) ||
+    device.code.toLowerCase().includes(searchText.toLowerCase()) ||
+    device.supplierName.toLowerCase().includes(searchText.toLowerCase())
+  )
+
   return (
-    <div style={{ margin: '20px' }}>
-      <Button style={{ backgroundColor: '#3b71ca', color: 'white', marginBottom: '16px' }} onClick={handleCreateDevice}>
+    <div >
+      <Button style={{ backgroundColor: '#3b71ca', color: 'white', marginBottom: '16px' }} 
+      icon={<PlusOutlined />}
+      onClick={handleCreateDevice}>
         Add Device
       </Button>
-
+      <Input
+        placeholder='Search devices...'
+        value={searchText}
+        onChange={(e) => setSearchText(e.target.value)}
+        style={{ width: 300, marginLeft: 20 }}
+      />
       <Table
         columns={columns}
-        dataSource={deviceList}
+        dataSource={filteredTypes}
+        loading={loading}
         rowKey='id'
         pagination={{
           pageSize: 10,
@@ -191,7 +208,7 @@ const DeviceManagement = () => {
           style: { marginTop: '16px', textAlign: 'right' }
         }}
         scroll={{ x: 'max-content' }}
-        style={{ marginTop: '20px' }}
+        // style={{ marginTop: '20px' }}
       />
       <DeviceModal
         visible={isModalVisible}

@@ -1,5 +1,6 @@
 import React from 'react'
-import { Button, Table, Popconfirm } from 'antd'
+import { Button, Table, Popconfirm, Input } from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
 import ProductTypeModal from './productTypeModal'
 import {
   createProductType,
@@ -11,6 +12,8 @@ import {
 const ProductTypeList = () => {
   const [isModalVisible, setIsModalVisible] = React.useState(false)
   const [editingType, setEditingType] = React.useState(null)
+  const [filterText, setFilterText] = React.useState('')
+  const [loading, setLoading] = React.useState(false)
 
   const [productTypeList, setProductTypeList] = React.useState(null)
   React.useEffect(() => {
@@ -108,13 +111,23 @@ const ProductTypeList = () => {
     }
   }
 
+  const filteredProducts = productTypeList?.filter((type) =>
+    type.typeName.toLowerCase().includes(filterText.toLowerCase())
+  )
+
   return (
     <div>
-      <Button style={{ backgroundColor: '#3b71ca', color: 'white', marginBottom: '16px' }} onClick={handleCreateType}>
+      <Button style={{ backgroundColor: '#3b71ca', color: 'white', marginBottom: '16px' }} onClick={handleCreateType}> 
+        <PlusOutlined />
         Add Type
       </Button>
-
-      <Table columns={columns} dataSource={productTypeList} rowKey='id' />
+      <Input
+        placeholder='Search product types...'
+        value={filterText}
+        onChange={(e) => setFilterText(e.target.value)}
+        style={{ width: 300, marginLeft: '16px', marginLeft: '16px' }}
+      />
+      <Table columns={columns} dataSource={filteredProducts} loading={loading} rowKey='id' />
 
       <ProductTypeModal
         visible={isModalVisible}

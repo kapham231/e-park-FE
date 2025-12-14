@@ -99,14 +99,14 @@ const BranchManagementContent = () => {
       key: 'actions',
       render: (_, record) => (
         <Space size='middle'>
-          <Button
+          {/* <Button
             className='view-button' onClick={() => {
               setSelectedBranch(record)
               setIsDetailModalOpen(true)
             }}
           >
             View
-          </Button>
+          </Button> */}
           <Button
             className='edit-button' onClick={() => {
               setEditingBranch(record)
@@ -130,6 +130,11 @@ const BranchManagementContent = () => {
       )
     }
   ]
+
+  const handleRowClick = (record) => {
+    setSelectedBranch(record)
+    setIsDetailModalOpen(true)
+  }
 
   return (
     <div>
@@ -158,6 +163,9 @@ const BranchManagementContent = () => {
         dataSource={filteredBranches}
         rowKey='_id'
         loading={loading}
+        onRow={(record) => ({
+          onClick: () => handleRowClick(record)
+        })}
         pagination={{
           pageSize: 10,
           showSizeChanger: true,

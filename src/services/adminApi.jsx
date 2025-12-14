@@ -342,7 +342,7 @@ export const deleteSupplierById = async (supplierId) => {
 //DEVICE
 export const getAllDevice = async () => {
   try {
-    const response = await axios.get(`${baseURL}/equipment`, { params })
+    const response = await axios.get(`${baseURL}/equipment`)
     // console.log('getAllDevice response:', response.data)
     return response.data
   } catch (error) {

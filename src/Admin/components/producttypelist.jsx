@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Table, Popconfirm } from 'antd'
+import { Button, Table, Popconfirm, Input } from 'antd'
 import ProductTypeModal from './productTypeModal'
 import {
   createProductType,
@@ -11,6 +11,8 @@ import {
 const ProductTypeList = () => {
   const [isModalVisible, setIsModalVisible] = React.useState(false)
   const [editingType, setEditingType] = React.useState(null)
+  const [searchText, setSearchText] = React.useState('')
+  const [loading, setLoading] = React.useState(false)
 
   const [productTypeList, setProductTypeList] = React.useState(null)
   React.useEffect(() => {
@@ -115,13 +117,31 @@ const ProductTypeList = () => {
     }
   }
 
+  const filteredTypes = productTypeList?.filter(type =>
+    type.typeName.toLowerCase().includes(searchText.toLowerCase()) ||
+    type.code.toLowerCase().includes(searchText.toLowerCase()) ||
+    (type.branchname || '').toLowerCase().includes(searchText.toLowerCase())
+  )
+
   return (
     <div>
       {/* <Button style={{ backgroundColor: '#3b71ca', color: 'white', marginBottom: '16px' }} onClick={handleCreateType}>
         Add Type
       </Button> */}
-
-      <Table columns={columns} dataSource={productTypeList} rowKey='id' />
+      <Input
+          placeholder='Search product type...'
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          style={{ width: 300 }}
+        />
+      <Table 
+        columns={columns} 
+        dataSource={filteredTypes}
+        loading={loading} 
+        rowKey='id'
+        scroll={{ x: 'max-content' }}
+        style={{ marginTop: '16px' }} 
+      />
 
       <ProductTypeModal
         visible={isModalVisible}

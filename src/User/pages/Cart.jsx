@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import cartService from '@/services/cartService'
-import { message } from 'antd'
+import { message, Modal } from 'antd'
 import CartItem from '../components/CartItem'
 import { createPayOS } from '@/services/userApi'
 import { downloadProductInvoice } from '@/utils/download-product-invoice'
@@ -80,20 +80,26 @@ const Cart = () => {
   /**
    * Clear entire cart
    */
-  const handleClearCart = async () => {
-    if (!window.confirm('Are you sure to remove all cart items?')) return
-
-    try {
-      setUpdating(true)
-      await cartService.clearCart()
-      await fetchCart()
-      message.success('All cart items removed')
-    } catch (error) {
-      console.error('Clear cart error:', error)
-      message.error('Cannot clear cart')
-    } finally {
-      setUpdating(false)
-    }
+  const handleClearCart = () => {
+    Modal.confirm({
+      title: 'Confirm',
+      content: 'Are you sure to remove all cart items?',
+      okText: 'Yes',
+      cancelText: 'No',
+      onOk: async () => {
+        try {
+          setUpdating(true)
+          await cartService.clearCart()
+          await fetchCart()
+          message.success('All cart items removed')
+        } catch (error) {
+          console.error('Clear cart error:', error)
+          message.error('Cannot clear cart')
+        } finally {
+          setUpdating(false)
+        }
+      }
+    })
   }
 
   /**
