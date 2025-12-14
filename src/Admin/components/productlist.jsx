@@ -4,7 +4,7 @@ import ProductModal from './productModal'
 import { createProduct, deleteProductById, getAllProduct, updateProductById } from '../../services/playgroundmanagerApi'
 
 const ProductList = () => {
-  const [productList, setProductList] = useState(null)
+  const [productList, setProductList] = useState([])
   const [editingProduct, setEditingProduct] = useState(null)
   const [isModalVisible, setIsModalVisible] = useState(false)
 
@@ -43,36 +43,36 @@ const ProductList = () => {
       title: 'Sale Price',
       dataIndex: 'purchasePrice',
       key: 'purchasePrice',
-      sorter: (a, b) => a.purchasePrice - b.purchasePrice,
-      render: (text) => `${Number(text).toLocaleString('vi-VN')} VND`
+      sorter: (a, b) => (a.purchasePrice || 0) - (b.purchasePrice || 0),
+      render: (text) => text ? `${Number(text).toLocaleString('vi-VN')} VND` : '0 VND'
     },
     {
       title: 'Description',
       dataIndex: 'description',
       key: 'description'
     },
-    {
-      title: 'Action',
-      key: 'action',
-      align: 'center',
-      render: (_, record) => (
-        <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
-          <Button type='link' onClick={() => handleEditProduct(record)}>
-            Edit
-          </Button>
-          <Popconfirm
-            title='Are you sure to delete this product?'
-            onConfirm={() => handleDeleteProduct(record._id)}
-            okText='Yes'
-            cancelText='No'
-          >
-            <Button type='link' danger>
-              Delete
-            </Button>
-          </Popconfirm>
-        </div>
-      )
-    },
+    // {
+    //   title: 'Action',
+    //   key: 'action',
+    //   align: 'center',
+    //   render: (_, record) => (
+    //     <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+    //       <Button type='link' onClick={() => handleEditProduct(record)}>
+    //         Edit
+    //       </Button>
+    //       <Popconfirm
+    //         title='Are you sure to delete this product?'
+    //         onConfirm={() => handleDeleteProduct(record._id)}
+    //         okText='Yes'
+    //         cancelText='No'
+    //       >
+    //         <Button type='link' danger>
+    //           Delete
+    //         </Button>
+    //       </Popconfirm>
+    //     </div>
+    //   )
+    // },
         {
       title: 'Branch',
       dataIndex: 'branchname',
@@ -89,15 +89,20 @@ const ProductList = () => {
 
   const handleSubmitProduct = async (values) => {
     if (editingProduct) {
-      const updatedProduct = await updateProductById(editingProduct._id, values)
+      const updatedProduct = await updateProductById(editingBranch._id, values)
       const newProductList = productList.map((product) =>
         product._id === editingProduct._id ? { ...product, ...updatedProduct } : product
       )
       console.log(newProductList)
       setProductList(newProductList)
     } else {
-      const newProduct = await createProduct(values)
+      const response = await createProduct(values)
+      console.log('createProduct response:', response)
+      // Handle both { data: {...} } and direct object response
+      const newProduct = (response && response.data) ? response.data : response
+      console.log('newProduct to add:', newProduct)
       setProductList([...productList, newProduct])
+      await load()
     }
     setIsModalVisible(false)
     setEditingProduct(null)
@@ -114,12 +119,12 @@ const ProductList = () => {
 
   return (
     <div>
-      <Button
+      {/* <Button
         style={{ backgroundColor: '#3b71ca', color: 'white', marginBottom: '16px' }}
         onClick={handleCreateProduct}
       >
         Add New Product
-      </Button>
+      </Button> */}
 
       <Table dataSource={productList} columns={columns} />
 

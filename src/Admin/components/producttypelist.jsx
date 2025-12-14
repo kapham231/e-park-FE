@@ -39,28 +39,28 @@ const ProductTypeList = () => {
       key: 'code',
       sorter: (a, b) => a.code.localeCompare(b.code)
     },
-        {
-      title: 'Action',
-      key: 'action',
-      align: 'center',
-      render: (_, record) => (
-        <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
-          <Button type='link' onClick={() => handleEditProduct(record)}>
-            Edit
-          </Button>
-          <Popconfirm
-            title='Are you sure to delete this product?'
-            onConfirm={() => handleDeleteProduct(record._id)}
-            okText='Yes'
-            cancelText='No'
-          >
-            <Button type='link' danger>
-              Delete
-            </Button>
-          </Popconfirm>
-        </div>
-      )
-    },
+    //     {
+    //   title: 'Action',
+    //   key: 'action',
+    //   align: 'center',
+    //   render: (_, record) => (
+    //     <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+    //       <Button type='link' onClick={() => handleEditProduct(record)}>
+    //         Edit
+    //       </Button>
+    //       <Popconfirm
+    //         title='Are you sure to delete this product?'
+    //         onConfirm={() => handleDeleteProduct(record._id)}
+    //         okText='Yes'
+    //         cancelText='No'
+    //       >
+    //         <Button type='link' danger>
+    //           Delete
+    //         </Button>
+    //       </Popconfirm>
+    //     </div>
+    //   )
+    // },
     {
       title: 'Branch',
       dataIndex: 'branchname',
@@ -117,9 +117,9 @@ const ProductTypeList = () => {
 
   return (
     <div>
-      <Button style={{ backgroundColor: '#3b71ca', color: 'white', marginBottom: '16px' }} onClick={handleCreateType}>
+      {/* <Button style={{ backgroundColor: '#3b71ca', color: 'white', marginBottom: '16px' }} onClick={handleCreateType}>
         Add Type
-      </Button>
+      </Button> */}
 
       <Table columns={columns} dataSource={productTypeList} rowKey='id' />
 

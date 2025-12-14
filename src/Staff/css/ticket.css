@@ -1,0 +1,24 @@
+.ticket-card {
+  width: 260px;
+}
+
+.ticket-content h3 {
+  margin: 0 0 8px 0;
+}
+
+.ticket-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.ticket-pdf-button {
+    background-color: #2563EB;
+    color: white !important;
+}
+
+.ticket-pdf-button:hover {
+    background-color: #1D4ED8;
+    color: #2563EB !important;
+    border: #2563EB 1px solid !important;
+}

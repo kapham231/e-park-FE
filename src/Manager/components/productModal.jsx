@@ -128,8 +128,11 @@ const ProductModal = ({ visible, onClose, onSubmit, initialValues }) => {
           rules={[{ required: true, message: 'Please input the sale price!' }]}
         >
           <InputNumber
+            placeholder='Enter product price'
             min={0}
-            formatter={(value) => (value ? `${Number(value).toLocaleString('vi-VN')} VND` : '')}
+            // formatter={(value) => (value ? `${Number(value).toLocaleString('vi-VN')} VND` : '')}
+            addonAfter='VND' // Hiển thị "VND" cố định ở cuối khung nhập
+            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')} // Định dạng số với dấu phẩy
             parser={(value) => (value ? value.replace(/[^\d]/g, '') : '')}
             style={{ width: '100%' }}
           />

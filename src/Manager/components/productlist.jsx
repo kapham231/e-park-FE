@@ -4,7 +4,7 @@ import ProductModal from './productModal'
 import { createProduct, deleteProductById, getAllProduct, updateProductById } from '../../services/playgroundmanagerApi'
 
 const ProductList = () => {
-  const [productList, setProductList] = useState(null)
+  const [productList, setProductList] = useState([])
   const [editingProduct, setEditingProduct] = useState(null)
   const [isModalVisible, setIsModalVisible] = useState(false)
 
@@ -43,8 +43,8 @@ const ProductList = () => {
       title: 'Sale Price',
       dataIndex: 'purchasePrice',
       key: 'purchasePrice',
-      sorter: (a, b) => a.purchasePrice - b.purchasePrice,
-      render: (text) => `${Number(text).toLocaleString('vi-VN')} VND`
+      sorter: (a, b) => (a.purchasePrice || 0) - (b.purchasePrice || 0),
+      render: (text) => text ? `${Number(text).toLocaleString('vi-VN')} VND` : '0 VND'
     },
     {
       title: 'Description',
@@ -91,6 +91,7 @@ const ProductList = () => {
     } else {
       const newProduct = await createProduct(values)
       setProductList([...productList, newProduct])
+      await load()
     }
     setIsModalVisible(false)
     setEditingProduct(null)

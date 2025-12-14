@@ -66,7 +66,7 @@ const SuppliersTab = () => {
 
   return (
     <>
-      <Button
+      {/* <Button
         style={{ backgroundColor: '#3b71ca', color: 'white', marginBottom: 16 }}
         icon={<PlusOutlined />}
         onClick={() => {
@@ -75,7 +75,7 @@ const SuppliersTab = () => {
         }}
       >
         Add Supplier
-      </Button>
+      </Button> */}
       <Flex wrap='wrap' gap='large' justify='center'>
         {suppliers.map((supplier) => (
           <Card
@@ -110,7 +110,7 @@ const SuppliersTab = () => {
             <Text>{supplier.phoneNumber}</Text>
 
             {/* Action buttons */}
-            <Flex justify='flex-end' gap='small' style={{ marginTop: 16 }}>
+            {/* <Flex justify='flex-end' gap='small' style={{ marginTop: 16 }}>
               <Button
                 icon={<EditOutlined />}
                 onClick={() => {
@@ -136,7 +136,7 @@ const SuppliersTab = () => {
                   Delete
                 </Button>
               </Popconfirm>
-            </Flex>
+            </Flex> */}
           </Card>
         ))}
       </Flex>

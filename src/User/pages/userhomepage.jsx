@@ -15,6 +15,7 @@ import PaymentSuccess from "./paymentsuccess";
 import UserFAQ from "./userfaq";
 import UserTerm from "./userterm";
 import Product from "./Product";
+import ProductDetail from "./ProductDetail";
 import Cart from "./Cart";
 // import PaymentSuccess from "./paymentsuccess";
 
@@ -42,6 +43,7 @@ const UserHomepage = () => {
         <Route path="faq" element={<UserFAQ />} />
         <Route path="term" element={<UserTerm />} />
         <Route path="product" element={<Product />} />
+        <Route path="product/:id" element={<ProductDetail />} />
         <Route path="cart" element={<Cart />} />
         <Route path="*" element={<Navigate to="homepage" />} />{" "}
         {/* Mặc định chuyển đến Homepage */}

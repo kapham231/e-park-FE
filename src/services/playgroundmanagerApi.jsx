@@ -419,3 +419,65 @@ export const deleteProductById = async (productId) => {
     throw error
   }
 }
+
+// TICKET MANAGEMENT
+export const getAllTicket = async () => {
+  try {
+    const response = await axios.get(`${baseURL}/ticket`)
+    return response.data
+  } catch (error) {
+    console.error('Error:', error)
+    throw error
+  }
+}
+
+export const createTicket = async (ticket) => {
+  try {
+    const response = await axios.post(`${baseURL}/ticket/create`, ticket)
+    return response.data
+  } catch (error) {
+    console.error('Error:', error)
+    throw error
+  }
+}
+
+export const updateTicketbyId = async (ticketId, updatedticket) => {
+  try {
+    const response = await axios.put(`${baseURL}/ticket/update/${ticketId}`, updatedticket)
+    return response.data
+  } catch (error) {
+    console.error('Error:', error)
+    throw error
+  }
+}
+
+export const deleteTicketbyId = async (ticketID) => {
+  try {
+    const response = await axios.delete(`${baseURL}/ticket/${ticketID}`)
+    return response.data
+  } catch (error) {
+    console.error('Error:', error)
+    throw error
+  }
+}
+
+export const createTicketForNewMember = async (ticket, quantity, bonus) => {
+  // console.log(ticket, quantity, bonus);
+  try {
+    const response = await axios.post(`${baseURL}/ticket/calculateForNewMember`, {
+      tickets: [
+        {
+          ticketId: ticket._id,
+          quantity: quantity,
+          bonus: bonus
+        }
+      ]
+    })
+    console.log(response.data)
+
+    return response.data.data
+  } catch (error) {
+    console.error('Error:', error)
+    throw error
+  }
+}

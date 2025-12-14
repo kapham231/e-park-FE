@@ -113,3 +113,27 @@
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
+
+/* Product Detail */
+.product-detail-wrapper {
+  padding: 24px 16px;
+}
+.product-detail-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 6px 18px rgba(16,24,40,0.06);
+}
+.product-detail-image {
+  width: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+}
+.product-detail-info h1 {
+  font-size: 28px;
+  margin-bottom: 6px;
+}
+.product-detail-info p {
+  margin: 6px 0;
+}
+

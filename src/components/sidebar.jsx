@@ -37,6 +37,9 @@ import CheckTicket from '../Staff/components/checkticket'
 import { useAuth } from '../contexts/authContext'
 import ProductManagement from '../Manager/pages/productmanagement'
 import VouchersManagement from '../Manager/pages/VoucherManagement'
+import TicketManagementContentManager from '../Manager/components/ticketmanagementcontent'
+import TicketManagementContentStaff from '../Staff/components/ticketmanagementcontent'
+
 
 const { Header, Content, Sider } = Layout
 const roleBasedItems = {
@@ -97,6 +100,11 @@ const roleBasedItems = {
       label: 'Check Ticket'
     },
     {
+      key: '/staff/ticket-management',
+      icon: <SolutionOutlined />,
+      label: 'Ticket Management'
+    },
+    {
       key: 'logout',
       icon: <LogoutOutlined />,
       label: 'Logout',
@@ -126,6 +134,11 @@ const roleBasedItems = {
       label: 'Voucher Management'
     },
     { key: '/manager/report', icon: <FundViewOutlined />, label: 'Report' },
+    {
+      key: '/manager/ticket-management',
+      icon: <SolutionOutlined />,
+      label: 'Ticket Management'
+    },
     {
       key: 'logout',
       icon: <LogoutOutlined />,
@@ -266,6 +279,7 @@ const ContentOfPage = ({ role }) => {
       <Route path='/event' element={<EventContent />} />
       <Route path='/report-error' element={<ReportErrorContent />} />
       <Route path='/check-ticket' element={<CheckTicket />} />
+      <Route path='/ticket-management' element={<TicketManagementContentStaff />} />
     </Routes>
   )
 
@@ -279,6 +293,7 @@ const ContentOfPage = ({ role }) => {
       <Route path='product-management' element={<ProductManagement />} />
       <Route path='voucher-management' element={<VouchersManagement />} />
       <Route path='report' element={<ReportContent />} />
+      <Route path='/ticket-management' element={<TicketManagementContentManager />} />
     </Routes>
   )
 

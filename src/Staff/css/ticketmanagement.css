@@ -1,0 +1,14 @@
+.ticket-title {
+  margin-top: 20px;
+}
+
+.ticket-list {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.AD-add-user-button {
+  margin-bottom: 12px;
+}

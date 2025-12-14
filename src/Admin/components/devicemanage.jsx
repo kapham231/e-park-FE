@@ -80,28 +80,28 @@ const DeviceManagement = () => {
         </Tag>
       )
     },
-    {
-      title: 'Action',
-      key: 'action',
-      align: 'center',
-      render: (_, record) => (
-        <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
-          <Button type='link' onClick={() => handleEditDevice(record)}>
-            Edit
-          </Button>
-          <Popconfirm
-            title='Are you sure to delete this device?'
-            onConfirm={() => handleDeleteDevice(record._id)}
-            okText='Yes'
-            cancelText='No'
-          >
-            <Button type='link' danger>
-              Delete
-            </Button>
-          </Popconfirm>
-        </div>
-      )
-    },
+    // {
+    //   title: 'Action',
+    //   key: 'action',
+    //   align: 'center',
+    //   render: (_, record) => (
+    //     <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+    //       <Button type='link' onClick={() => handleEditDevice(record)}>
+    //         Edit
+    //       </Button>
+    //       <Popconfirm
+    //         title='Are you sure to delete this device?'
+    //         onConfirm={() => handleDeleteDevice(record._id)}
+    //         okText='Yes'
+    //         cancelText='No'
+    //       >
+    //         <Button type='link' danger>
+    //           Delete
+    //         </Button>
+    //       </Popconfirm>
+    //     </div>
+    //   )
+    // },
         {
       title: 'Branch',
       dataIndex: 'branchname',
@@ -182,9 +182,9 @@ const DeviceManagement = () => {
 
   return (
     <div style={{ margin: '20px' }}>
-      <Button style={{ backgroundColor: '#3b71ca', color: 'white', marginBottom: '16px' }} onClick={handleCreateDevice}>
+      {/* <Button style={{ backgroundColor: '#3b71ca', color: 'white', marginBottom: '16px' }} onClick={handleCreateDevice}>
         Add Device
-      </Button>
+      </Button> */}
 
       <Table
         columns={columns}

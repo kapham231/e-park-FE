@@ -146,6 +146,17 @@ export const getProducts = async () => {
   }
 }
 
+export const getProductById = async (id) => {
+  try {
+    if (!id) return null
+    const response = await axios.get(`${baseURL}/product/getId/${id}`)
+    return response.data
+  } catch (error) {
+    console.error('Error fetching product by id:', error)
+    throw error
+  }
+}
+
 export const handlePaymentSuccess = async (invoiceId) => {
   try {
     const response = await axios.post(`${baseURL}/payment/webhook/success`, {
