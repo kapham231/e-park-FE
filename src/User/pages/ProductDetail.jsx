@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { getProductById } from '@/services/userApi'
 import { Button, message } from 'antd'
+import { ShoppingCartOutlined, ArrowLeftOutlined } from '@ant-design/icons'
 import { useAuth } from '@/contexts/AuthContext'
 import cartService from '@/services/cartService'
 import '../css/Product.css'
@@ -78,10 +79,25 @@ const ProductDetail = () => {
           </div>
 
           <div style={{ marginTop: 22, display: 'flex', gap: 12 }}>
-            <Button type='primary' size='large' loading={adding} onClick={handleAddToCart}>
+            <Button
+              type='primary'
+              danger
+              size='large'
+              loading={adding}
+              icon={<ShoppingCartOutlined />}
+              onClick={handleAddToCart}
+              style={{ borderRadius: 8, fontWeight: 600 }}
+            >
               Add to Cart
             </Button>
-            <Button onClick={() => navigate(-1)} size='large'>Back</Button>
+            <Button
+              size='large'
+              icon={<ArrowLeftOutlined />}
+              onClick={() => navigate(-1)}
+              style={{ borderRadius: 8 }}
+            >
+              Back
+            </Button>
           </div>
         </div>
       </div>

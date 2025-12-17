@@ -1,5 +1,6 @@
 import { useAuth } from '@/contexts/AuthContext'
-import { message } from 'antd'
+import { message, Button } from 'antd'
+import { ShoppingCartOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 
 const ProductItem = ({ product, onAddToCart }) => {
@@ -20,13 +21,16 @@ const ProductItem = ({ product, onAddToCart }) => {
           {product.name}
         </Link>
       </div>
-      <div className='flex justify-between items-center mt-auto px-[2px]'>
+      <div className='flex justify-between items-center mt-auto px-[2px] gap-2'>
         <div>
           <p className='text-sm text-gray-500 mb-1'>Price</p>
           <p className='text-xl font-semibold text-green-600'>₫{product.purchasePrice.toLocaleString('vi-VN')}</p>
         </div>
-        <div
-          className='bg-[#ff6363] hover:bg-[#ff4444] cursor-pointer text-white font-semibold rounded-2xl px-3 py-2 transition-colors whitespace-nowrap'
+        <Button
+          type='primary'
+          danger
+          size='middle'
+          icon={<ShoppingCartOutlined />}
           onClick={() => {
             if (auth.isAuthenticated) {
               onAddToCart(product._id)
@@ -34,9 +38,11 @@ const ProductItem = ({ product, onAddToCart }) => {
               message.info('Please log in to add items to your cart.')
             }
           }}
+          className='whitespace-nowrap'
+          style={{ borderRadius: 8 }}
         >
-          Add to Cart
-        </div>
+          Add
+        </Button>
       </div>
     </div>
   )

@@ -20,7 +20,7 @@ import {
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import VoucherModal from '../components/VoucherModal'
-import { Modal } from 'antd'
+import { Modal, message, Popconfirm } from 'antd'
 
 export default function VouchersManagement() {
   const [rows, setRows] = useState([])
@@ -182,9 +182,9 @@ export default function VouchersManagement() {
       <div className='flex items-center justify-between'>
         <h1 className='text-2xl font-bold'>Vouchers</h1>
         <div className='flex items-center gap-2'>
-          <button className='px-3 py-2 rounded bg-black text-white' onClick={openCreate}>
+          {/* <button className='px-3 py-2 rounded bg-black text-white' onClick={openCreate}>
             New Voucher
-          </button>
+          </button> */}
           {/* <button className='px-3 py-2 rounded border' onClick={() => {}}>
             Export CSV
           </button> */}
@@ -274,7 +274,7 @@ export default function VouchersManagement() {
               <th className='px-3 py-2 text-left'>Validity</th>
               <th className='px-3 py-2 text-left'>Conditions</th>
               <th className='px-3 py-2 text-center'>Status</th>
-              <th className='px-3 py-2 text-right'>Actions</th>
+              {/* <th className='px-3 py-2 text-right'>Actions</th> */}
             </tr>
           </thead>
           <tbody>
@@ -296,7 +296,7 @@ export default function VouchersManagement() {
                 <td className='px-3 py-2 text-center'>
                   <StatusBadge status={v.status} />
                 </td>
-                <td className='px-3 py-2 text-left'>
+                {/* <td className='px-3 py-2 text-left'>
                   <div className='flex gap-1'>
                     <button
                       className='px-2 py-1 border rounded text-blue-400 hover:bg-blue-400 hover:text-white'
@@ -304,20 +304,27 @@ export default function VouchersManagement() {
                     >
                       Edit
                     </button>
+                  <Popconfirm
+                    title="Delete this voucher?"
+                    okText="Yes"
+                    cancelText="No"
+                    placement="top"
+                    onConfirm={async () => {
+                      try {
+                        await deleteVoucher(v._id)
+                        // message.success('Voucher deleted successfully')
+                        load()
+                      } catch (error) {
+                        // message.error('Failed to delete voucher')
+                      }
+                    }}
+                  >
                     <button
                       className='px-2 py-1 border rounded text-red-400 hover:bg-red-400 hover:text-white'
-                      onClick={() => {
-                        Modal.confirm({
-                          title: 'Confirm',
-                          content: 'Delete this voucher?',
-                          okText: 'Yes',
-                          cancelText: 'No',
-                          onOk: () => deleteVoucher(v._id).then(load)
-                        })
-                      }}
                     >
                       Delete
                     </button>
+                  </Popconfirm>
                     {v.status === 'ACTIVE' && (
                       <button
                         className='px-2 py-1 border rounded text-yellow-400 hover:bg-yellow-400 hover:text-white'
@@ -335,7 +342,7 @@ export default function VouchersManagement() {
                       </button>
                     )}
                   </div>
-                </td>
+                </td> */}
               </tr>
             ))}
             {rows.length === 0 && (

@@ -13,7 +13,8 @@ const PaymentSuccess = () => {
   const [invoice, setInvoice] = useState(null)
   const [membershipDiscount, setMembershipDiscount] = useState(0)
   const [eventDiscountPrice, setEventDiscountPrice] = useState(0)
-  const { user } = useAuth()
+  const auth = useAuth()
+  const user = auth?.user || {}
 
   const [searchParams] = useSearchParams()
   useEffect(() => {
@@ -82,9 +83,9 @@ const PaymentSuccess = () => {
         eventDiscountPrice: eventDiscountPrice,
         subtotal: invoice.subtotal,
         qrCode: invoice.qrCode,
-        name: user?.firstName + ' ' + user?.lastName,
-        phone: user?.phoneNumber,
-        email: user?.email,
+        name: user?.firstName ? (user.firstName + ' ' + user.lastName) : 'Guest',
+        phone: user?.phoneNumber || '',
+        email: user?.email || '',
         bookingDate: invoice.bookingDate
       })
     }
@@ -115,9 +116,9 @@ const PaymentSuccess = () => {
             eventDiscountPrice: eventDiscountPrice,
             subtotal: invoice.subtotal,
             qrCode: invoice.qrCode,
-            name: user?.firstName + ' ' + user?.lastName,
-            phone: user?.phoneNumber,
-            email: user?.email,
+            name: user?.firstName ? (user.firstName + ' ' + user.lastName) : 'Guest',
+            phone: user?.phoneNumber || '',
+            email: user?.email || '',
             bookingDate: invoice.bookingDate
           })
         }

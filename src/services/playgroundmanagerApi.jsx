@@ -468,6 +468,7 @@ export const deleteTicketbyId = async (ticketID) => {
 export const createTicketForNewMember = async (ticket, quantity, bonus) => {
   // console.log(ticket, quantity, bonus);
   try {
+    const branchId = tokenManager.getUserBranchId()
     const response = await axios.post(`${baseURL}/ticket/calculateForNewMember`, {
       tickets: [
         {
@@ -476,6 +477,7 @@ export const createTicketForNewMember = async (ticket, quantity, bonus) => {
           bonus: bonus
         }
       ]
+      , branchId
     })
     console.log(response.data)
 

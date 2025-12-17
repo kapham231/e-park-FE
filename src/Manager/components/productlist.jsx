@@ -111,6 +111,10 @@ const ProductList = () => {
   const filteredTypes = productList.filter((product) =>
     product.name.toLowerCase().includes(searchText.toLowerCase())
   )
+  const handleRowClick = (record) => {
+    setEditingProduct(record)
+    setIsModalVisible(true)
+  }
   return (
     <div>
       <Button
@@ -126,7 +130,12 @@ const ProductList = () => {
         onChange={(e) => setSearchText(e.target.value)}
         style={{ width: 300, marginLeft: '16px' }}
       />
-      <Table dataSource={filteredTypes} loading={loading} columns={columns} />
+      <Table 
+        dataSource={filteredTypes} 
+        loading={loading} 
+        columns={columns} 
+        onRow={(record) => ({ onClick: () => handleRowClick(record) })}
+      />
 
       <ProductModal
         visible={isModalVisible}

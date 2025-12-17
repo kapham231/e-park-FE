@@ -101,26 +101,26 @@ const EventManagementContent = () => {
       render: (text) => <span>{text}%</span>,
       sorter: (a, b) => a.discountRate - b.discountRate
     },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (_, record) => (
-        <Space size='middle'>
-          <Button className='edit-button' onClick={() => showEditEventModal(record)}>
-            Edit
-          </Button>
-          {/* <Button className="assign-button" onClick={() => showAssignModal(record)}>Assign</Button> */}
-          <Popconfirm
-            title='Are you sure to delete this event?'
-            onConfirm={() => handleDeleteEvent(record._id)}
-            okText='Yes'
-            cancelText='No'
-          >
-            <Button className='delete-button'>Delete</Button>
-          </Popconfirm>
-        </Space>
-      )
-    }
+    // {
+    //   title: 'Action',
+    //   key: 'action',
+    //   render: (_, record) => (
+    //     <Space size='middle'>
+    //       <Button className='edit-button' onClick={() => showEditEventModal(record)}>
+    //         Edit
+    //       </Button>
+    //       {/* <Button className="assign-button" onClick={() => showAssignModal(record)}>Assign</Button> */}
+    //       <Popconfirm
+    //         title='Are you sure to delete this event?'
+    //         onConfirm={() => handleDeleteEvent(record._id)}
+    //         okText='Yes'
+    //         cancelText='No'
+    //       >
+    //         <Button className='delete-button'>Delete</Button>
+    //       </Popconfirm>
+    //     </Space>
+    //   )
+    // }
   ]
 
   // const handleNavigateToDetail = (event) => {

@@ -125,7 +125,7 @@ const ProductTypeList = () => {
         placeholder='Search product types...'
         value={filterText}
         onChange={(e) => setFilterText(e.target.value)}
-        style={{ width: 300, marginLeft: '16px', marginLeft: '16px' }}
+        style={{ width: 300, marginLeft: '16px'}}
       />
       <Table columns={columns} dataSource={filteredProducts} loading={loading} rowKey='id' />
 

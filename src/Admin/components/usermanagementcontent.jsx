@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import AddUserModal from './addusermodal'
 import ForgotPasswordModal from './forgotpasswordmodal'
 import AssignBranchModal from './AssignBranchModal'
+import TransferBranchModal from './TransferBranchModal'
 
 import '../css/usermanagement.css'
 import { deleteUserbyId, getAllUserWithRole, getAllBranch, transferBranch, addUserToBranch } from '../../services/adminApi'
@@ -16,6 +17,7 @@ const UserManagementContent = () => {
   const [selectedUser, setSelectedUser] = useState(null)
   const [isForgotPasswordModalOpen, setIsForgotPasswordModalOpen] = useState(false)
   const [isAssignBranchModalOpen, setIsAssignBranchModalOpen] = useState(false)
+  const [isTransferBranchModalOpen, setIsTransferBranchModalOpen] = useState(false)
   const [searchText, setSearchText] = useState('')
   const [roleFilter, setRoleFilter] = useState('All')
   useEffect(() => {
@@ -205,11 +207,29 @@ const UserManagementContent = () => {
 
   const handleTransferBranch = (user) => {
     setSelectedUser(user)
-    setIsAssignBranchModalOpen(true)
+    setIsTransferBranchModalOpen(true)
   }
 
   const handleAssignBranchModalClose = () => {
     setIsAssignBranchModalOpen(false)
+    setSelectedUser(null)
+  }
+
+  const handleTransferBranchSuccess = async (userId, branchId) => {
+    try {
+      const transferredBranchId = await transferBranch(userId, branchId)
+      console.log('Branch transferred successfully, branchId:', transferredBranchId)
+      await fetchUsers()
+      message.success('Branch transferred successfully!')
+      handleTransferBranchModalClose()
+    } catch (error) {
+      console.error('Error transferring branch:', error)
+      message.error('Failed to transfer branch')
+    }
+  }
+
+  const handleTransferBranchModalClose = () => {
+    setIsTransferBranchModalOpen(false)
     setSelectedUser(null)
   }
 
@@ -304,6 +324,13 @@ const filteredUsers = users.filter(user =>
         onClose={handleAssignBranchModalClose}
         user={selectedUser}
         onAssign={handleAssignBranchSuccess}
+      />
+
+      <TransferBranchModal
+        open={isTransferBranchModalOpen}
+        onClose={handleTransferBranchModalClose}
+        user={selectedUser}
+        onTransfer={handleTransferBranchSuccess}
       />
     </>
   )

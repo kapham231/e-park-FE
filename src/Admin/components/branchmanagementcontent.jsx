@@ -89,24 +89,28 @@ const BranchManagementContent = () => {
       dataIndex: 'address',
       key: 'address'
     },
-    // {
-    //   title: 'Manager',
-    //   dataIndex: 'manager',
-    //   key: 'manager'
-    // },
+    {
+      title: 'Manager',
+      dataIndex: 'managerId',
+      key: 'managerId',
+      render: (_, record) => {
+        const manager = record.managerId
+        return manager ? `${manager.firstName} ${manager.lastName}` : 'N/A'
+      }
+    },
     {
       title: 'Actions',
       key: 'actions',
       render: (_, record) => (
         <Space size='middle'>
-          {/* <Button
+          <Button
             className='view-button' onClick={() => {
               setSelectedBranch(record)
               setIsDetailModalOpen(true)
             }}
           >
             View
-          </Button> */}
+          </Button>
           <Button
             className='edit-button' onClick={() => {
               setEditingBranch(record)
@@ -163,9 +167,9 @@ const BranchManagementContent = () => {
         dataSource={filteredBranches}
         rowKey='_id'
         loading={loading}
-        onRow={(record) => ({
-          onClick: () => handleRowClick(record)
-        })}
+        // onRow={(record) => ({
+        //   onClick: () => handleRowClick(record)
+        // })}
         pagination={{
           pageSize: 10,
           showSizeChanger: true,

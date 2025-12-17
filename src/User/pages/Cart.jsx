@@ -148,6 +148,10 @@ const Cart = () => {
       } else {
         downloadProductInvoice(invoice)
         message.success('Checkout successful. Please check your orders.')
+        // Refresh page sau 1.5 giây để user thấy message
+        setTimeout(() => {
+          window.location.reload()
+        }, 1500)
       }
     } catch (error) {
       console.error('Checkout error:', error)

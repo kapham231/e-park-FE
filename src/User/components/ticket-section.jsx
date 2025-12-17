@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 // import { useNavigate } from "react-router-dom";
-import { getAllTicket } from '../../services/adminApi'
+import { getAllTicket } from '../../services/playgroundmanagerApi'
 
 import '../css/ticket-section.css'
 

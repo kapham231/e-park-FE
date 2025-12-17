@@ -206,7 +206,7 @@ const AddBranchModal = ({ isModalOpen, onClose, onAddBranch, onEditBranch, editi
         <Form.Item
           label='Manager'
           name='managerId'
-          rules={[{ required: true, message: 'Please select a manager!' }]}
+          rules={[{ message: 'Please select a manager!' }]}
         >
           <Select placeholder='Select a manager'>
             {manager.map((mgr) => (

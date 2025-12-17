@@ -123,26 +123,26 @@ const TicketManagementContent = () => {
       key: 'branch',
       render: (text) => text || 'N/A',
       sorter: (a, b) => (a.branchname || '').localeCompare(b.branchname || '')
-    },
-            {
-              title: 'Actions',
-              key: 'action',
-              render: (_, record) => (
-                <div style={{ display: 'flex', gap: 8 }}>
-                  <Button type='link' onClick={() => handleEdit(record)}>
-                    Edit
-                  </Button>
-                  <Popconfirm title='Are you sure to delete this ticket?' onConfirm={() => handleDelete(record)} okText='Yes' cancelText='No'>
-                    <Button type='link' danger>
-                      Delete
-                    </Button>
-                  </Popconfirm>
-                  <Button type='link' onClick={() => openCreateModal(record)}>
+    }
+            // {
+            //   title: 'Actions',
+            //   key: 'action',
+            //   render: (_, record) => (
+            //     <div style={{ display: 'flex', gap: 8 }}>
+            //       <Button type='link' onClick={() => handleEdit(record)}>
+            //         Edit
+            //       </Button>
+            //       <Popconfirm title='Are you sure to delete this ticket?' onConfirm={() => handleDelete(record)} okText='Yes' cancelText='No'>
+            //         <Button type='link' danger>
+            //           Delete
+            //         </Button>
+            //       </Popconfirm>
+                  /* <Button type='link' onClick={() => openCreateModal(record)}>
                     Create
-                  </Button>
-                </div>
-              )
-            }
+                  </Button> */
+            //     </div>
+            //   )
+            // }
           ]}
         />
 

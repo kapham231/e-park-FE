@@ -159,8 +159,8 @@ export const getProductById = async (id) => {
 
 export const handlePaymentSuccess = async (invoiceId) => {
   try {
-    const response = await axios.post(`${baseURL}/payment/webhook/success`, {
-      invoiceId
+    const response = await axios.post(`${baseURL}/payment/webhook`, {
+      invoiceId, status: 'PAID'
     })
     return response.data
   } catch (error) {

@@ -20,6 +20,7 @@ import {
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import VoucherModal from '../components/VoucherModal'
+import { Modal, message, Popconfirm } from 'antd'
 
 export default function VouchersManagement() {
   const [rows, setRows] = useState([])
@@ -303,14 +304,27 @@ export default function VouchersManagement() {
                     >
                       Edit
                     </button>
+                  <Popconfirm
+                    title="Delete this voucher?"
+                    okText="Yes"
+                    cancelText="No"
+                    placement="top"
+                    onConfirm={async () => {
+                      try {
+                        await deleteVoucher(v._id)
+                        // message.success('Voucher deleted successfully')
+                        load()
+                      } catch (error) {
+                        // message.error('Failed to delete voucher')
+                      }
+                    }}
+                  >
                     <button
                       className='px-2 py-1 border rounded text-red-400 hover:bg-red-400 hover:text-white'
-                      onClick={() => {
-                        if (window.confirm('Delete this voucher?')) deleteVoucher(v._id).then(load)
-                      }}
                     >
                       Delete
                     </button>
+                  </Popconfirm>
                     {v.status === 'ACTIVE' && (
                       <button
                         className='px-2 py-1 border rounded text-yellow-400 hover:bg-yellow-400 hover:text-white'

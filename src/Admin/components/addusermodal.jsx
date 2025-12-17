@@ -92,6 +92,7 @@ const AddUserModal = ({ isModalOpen, onClose, onAddUser, onEditUser, editingUser
     } catch (error) {
       if (error.response?.status === 400) {
         const errorMsg = error.response.data?.message || 'Validation failed'
+        let handled = false
 
         if (errorMsg.startsWith('Customer validation failed:')) {
           const errorsString = errorMsg.replace('Customer validation failed:', '').trim()
@@ -111,6 +112,7 @@ const AddUserModal = ({ isModalOpen, onClose, onAddUser, onEditUser, editingUser
           if (fieldErrors.length) {
             form.setFields(fieldErrors)
             message.error(fieldErrors[0].errors)
+            handled = true
           }
         }
 
@@ -135,9 +137,11 @@ const AddUserModal = ({ isModalOpen, onClose, onAddUser, onEditUser, editingUser
                 errors: [`This ${fieldName} is already in use`]
               }
             ])
+            handled = true
           } else {
             // Fallback for unexpected format
             message.error('This value is already in use. Please try another one.')
+            handled = true
           }
         }
 
@@ -149,6 +153,12 @@ const AddUserModal = ({ isModalOpen, onClose, onAddUser, onEditUser, editingUser
               errors: ['Phone number must be a valid Vietnamese phone number']
             }
           ])
+          handled = true
+        }
+
+        // Show server message if none of the above handled it
+        if (!handled && errorMsg) {
+          message.error(errorMsg)
         }
 
         return
@@ -319,7 +329,7 @@ const AddUserModal = ({ isModalOpen, onClose, onAddUser, onEditUser, editingUser
 
           {/* Branch selection only for adding user */}
           {!editingUser && (
-            <Form.Item label='Branch' name='branchId' rules={[{ required: true, message: 'Please select a branch!' }]}>
+            <Form.Item label='Branch' name='branchId' rules={[{ required: false, message: 'Please select a branch!' }]}>
               <Select placeholder='Select a branch'>
                 {branches.map((branch) => (
                   <Option key={branch._id} value={branch._id}>
