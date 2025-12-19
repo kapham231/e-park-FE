@@ -49,9 +49,13 @@ export const downloadInvoice = (invoiceData) => {
   doc.text("Customer Information", 20, 60);
   doc.setFontSize(12);
   doc.setFont("helvetica", "normal");
-  doc.text(`Customer Name: ${invoiceData.name}`, 20, 70);
-  doc.text(`Phone: ${invoiceData.phone}`, 20, 78);
-  doc.text(`Email: ${invoiceData.email}`, 20, 86);
+  doc.text(
+    `Customer Name: ${invoiceData.customer.firstName ? invoiceData.customer.firstName + " " + invoiceData.customer.lastName : "Guest"}`,
+    20,
+    70
+  );
+  doc.text(`Phone: ${invoiceData.customer.phoneNumber}`, 20, 78);
+  doc.text(`Email: ${invoiceData.customer.email}`, 20, 86);
   doc.text(`Booking Date: ${today}`, 20, 94);
   doc.text(
     `Location: Central E-park, Vincom Vo Van Ngan, Thu Duc, Ho Chi Minh`,
@@ -126,11 +130,17 @@ export const downloadInvoice = (invoiceData) => {
   startY += 10;
 
   // Tổng discount
+  const voucherDiscount = invoiceData.voucher
+    ? invoiceData.voucher.discountAmount
+    : 0;
+  const eventDiscountPrice = invoiceData.eventDiscountPrice
+    ? invoiceData.eventDiscountPrice
+    : 0;
   doc.setFontSize(14);
   doc.setFont("helvetica", "normal");
   doc.text("Total Discount", 20, startY);
   doc.text(
-    `- ${formatCurrencyForPDF(invoiceData.eventDiscountPrice + invoiceData.membershipDiscount + invoiceData.voucherDiscount)}`,
+    `- ${formatCurrencyForPDF(eventDiscountPrice + invoiceData.membershipDiscount + voucherDiscount || 0)}`,
     190,
     startY,
     { align: "right" }

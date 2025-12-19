@@ -7,12 +7,15 @@ import { changeInvoiceStatus, findInvoice } from '../../services/userApi'
 import { useAuth } from '../../auth/authContext'
 import DefaultButton from '../../components/DefaultButton'
 import { downloadInvoice } from '../../utils/download-invoice'
+import { downloadProductInvoice } from '@/utils/download-product-invoice'
+import { getUserNameById } from '@/services/adminApi'
 
 const PaymentSuccess = () => {
   const navigate = useNavigate()
   const [invoice, setInvoice] = useState(null)
   const [membershipDiscount, setMembershipDiscount] = useState(0)
   const [eventDiscountPrice, setEventDiscountPrice] = useState(0)
+  const [userName, setUserName] = useState('')
   const auth = useAuth()
   const user = auth?.user || {}
 
@@ -21,29 +24,35 @@ const PaymentSuccess = () => {
     const fetchInvoice = async () => {
       try {
         const orderCode = searchParams.get('orderCode')
-        console.log(orderCode)
+        // console.log(orderCode)
 
         let invoice = await findInvoice(orderCode)
-        console.log(invoice)
+        // console.log(invoice)
 
         await changeInvoiceStatus(invoice._id)
         // console.log(orderCode);
 
         invoice = await findInvoice(orderCode)
-
-        console.log('invoice', invoice)
-
-        if (invoice) {
-          setInvoice(invoice)
-          const a =
-            (parseInt(invoice.membershipDiscount) / 100) *
-            ((invoice.tickets[0].originalPrice - invoice.tickets[0].priceAfterEventDiscount) *
-              invoice.tickets[0].quantity +
-              invoice.tickets[0].bonusAmount)
+        const userName = await getUserNameById(invoice.customer)
+        setUserName(userName)
+        // console.log('username', userName)
+        const invoiceData = { ...invoice, customer: userName }
+        // console.log('invoice', invoiceData.name)
+        
+        if (invoice.__t === "InvoiceBooking") {
+          setInvoice(invoiceData)
+          const discountRate = Number(invoiceData.customer.discount) || 0
+          const rawMembershipDiscount = (1 - discountRate) * (invoice.tickets[0].originalPrice - invoice.tickets[0].priceAfterEventDiscount) * invoice.tickets[0].quantity
+          const a = Math.round(rawMembershipDiscount)
           const b = invoice.tickets[0].priceAfterEventDiscount * invoice.tickets[0].quantity
+          console.log('membership discount', a)
           console.log(a, b)
           setMembershipDiscount(a)
           setEventDiscountPrice(b)
+        }
+        else if (invoice.__t === "InvoiceProduct") {
+          // console.log('Product invoice')
+          setInvoice(invoiceData)
         }
       } catch (error) {
         console.error('Error fetching invoice:', error)
@@ -62,6 +71,7 @@ const PaymentSuccess = () => {
 
   const formatISOTime = (time) => {
     return new Date(time).toLocaleString('en-US', {
+      timeZone: 'UTC',
       year: 'numeric',
       month: 'long',
       day: 'numeric',
@@ -77,15 +87,27 @@ const PaymentSuccess = () => {
 
   useEffect(() => {
     if (invoice) {
+      // console.log('Downloading invoice automatically', invoice)
+      if (invoice.__t === "InvoiceProduct") {
+        return downloadProductInvoice({
+          ...invoice,
+          subtotal: invoice.subtotal,
+          qrCode: invoice.qrCode,
+          name: invoice.customer.firstName ? (invoice.customer.firstName + ' ' + invoice.customer.lastName) : 'Guest',
+          phone: invoice.customer.phoneNumber || '',
+          email: invoice.customer.email || '',
+          bookingDate: invoice.bookingDate
+        })
+      }
       downloadInvoice({
         ...invoice,
         membershipDiscount: membershipDiscount,
         eventDiscountPrice: eventDiscountPrice,
         subtotal: invoice.subtotal,
         qrCode: invoice.qrCode,
-        name: user?.firstName ? (user.firstName + ' ' + user.lastName) : 'Guest',
-        phone: user?.phoneNumber || '',
-        email: user?.email || '',
+        name: invoice.customer.firstName ? (invoice.customer.firstName + ' ' + invoice.customer.lastName) : 'Guest',
+        phone: invoice.customer.phoneNumber || '',
+        email: invoice.customer.email || '',
         bookingDate: invoice.bookingDate
       })
     }
@@ -110,16 +132,25 @@ const PaymentSuccess = () => {
         type='danger'
         style={{ marginTop: '20px' }}
         onClick={() =>
+          invoice?.__t === "InvoiceProduct" ? downloadProductInvoice({
+            ...invoice,
+            subtotal: invoice.subtotal,
+            qrCode: invoice.qrCode,
+            name: invoice.customer.firstName ? (invoice.customer.firstName + ' ' + invoice.customer.lastName) : 'Guest',
+            phone: invoice.customer.phoneNumber || '',
+            email: invoice.customer.email || '',
+            bookingDate: invoice.bookingDate
+          }) :
           downloadInvoice({
             ...invoice,
             membershipDiscount: membershipDiscount,
             eventDiscountPrice: eventDiscountPrice,
             subtotal: invoice.subtotal,
             qrCode: invoice.qrCode,
-            name: user?.firstName ? (user.firstName + ' ' + user.lastName) : 'Guest',
-            phone: user?.phoneNumber || '',
-            email: user?.email || '',
-            bookingDate: invoice.bookingDate
+            name: invoice.customer.firstName ? (invoice.customer.firstName + ' ' + invoice.customer.lastName) : 'Guest',
+            phone: invoice.customer.phoneNumber || '',
+            email: invoice.customer.email || '',
+            bookingDate: invoice.bookingDate,
           })
         }
       >

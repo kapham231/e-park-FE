@@ -50,7 +50,7 @@ export const downloadProductInvoice = (invoiceData) => {
   doc.setFontSize(12);
   doc.setFont("times", "normal");
   doc.text(
-    `Customer Name: ${invoiceData.customer.firstName + " " + invoiceData.customer.lastName}`,
+    `Customer Name: ${invoiceData.customer.firstName ? invoiceData.customer.firstName + " " + invoiceData.customer.lastName : "Guest"}`,
     20,
     70
   );
