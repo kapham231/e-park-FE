@@ -48,6 +48,16 @@ export const getAllInvoice = async () => {
   }
 }
 
+export const getInvoicesByCustomer = async (customerId) => {
+  try {
+    const response = await axios.get(`${baseURL}/invoice/customer/${customerId}`)
+    return response.data
+  } catch (error) {
+    console.error('Error:', error)
+    throw error
+  }
+}
+
 export const getAllInvoiceWithPaidStatus = async () => {
   try {
     const branchId = tokenManager.getUserBranchId()

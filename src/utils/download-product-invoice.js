@@ -5,6 +5,18 @@ const formatCurrencyForPDF = (amount) => {
   return amount.toLocaleString("vi-VN") + " VND";
 };
 
+const formatISOTime = (time) => {
+  return new Date(time).toLocaleString("en-US", {
+    timeZone: "UTC",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+};
+
 export const downloadProductInvoice = (invoiceData) => {
   // Tạo một instance của jsPDF
   const doc = new jsPDF();
@@ -22,7 +34,9 @@ export const downloadProductInvoice = (invoiceData) => {
   // Ngày tạo hóa đơn
   doc.setFontSize(12);
   doc.setFont("times", "normal");
-  const today = new Date().toLocaleDateString("vi-VN");
+  const today = formatISOTime(invoiceData?.createdAt);
+
+  console.log(invoiceData);
   // doc.text(`Date: ${today}`, 20, 50);
 
   // Trạng thái thanh toán

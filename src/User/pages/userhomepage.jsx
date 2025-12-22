@@ -4,8 +4,10 @@ import UserHeader from "../components/userheader";
 import UserEventContent from "../components/usereventcontent";
 import UserProfileContent from "../components/userprofilecontent";
 import UserHistoryContent from "../components/userhistorycontent";
+import UserInformationContent from "../components/userinformationcontent";
 import UserHomepageContent from "../components/userhomepagecontent";
 import UserEventDetail from "./usereventdetail";
+import UserInvoiceDetail from "./userinvoicedetail";
 import UserRegister from "./userregister";
 import UserPayment from "./userpayment";
 import AboutUs from "./useraboutus";
@@ -35,6 +37,8 @@ const UserHomepage = () => {
         <Route path="about-us" element={<AboutUs />} />
         <Route path="profile" element={<UserProfileContent />} />
         <Route path="history" element={<UserHistoryContent />} />
+        <Route path="information" element={<UserInformationContent />} />
+        <Route path="invoice/:id" element={<UserInvoiceDetail />} />
         <Route path="register" element={<UserRegister />} />
         <Route path="event/:id" element={<UserEventDetail />} />
         <Route path="register/payment" element={<UserPayment />} />

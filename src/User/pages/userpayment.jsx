@@ -8,6 +8,7 @@ import { useEffect, useMemo, useState } from 'react'
 // import { getEvent } from "../../ApiService/playgroundmanagerApi";
 import { bookingPrice, createPayOS, getInvoice, applyVoucher, handlePaymentSuccess } from '../../services/userApi'
 import { downloadInvoice } from '../../utils/download-invoice'
+import { getUserNameById } from '@/services/adminApi'
 
 import banking from '../../Assets/img/banking.png'
 
@@ -134,12 +135,15 @@ const UserPayment = () => {
   const handlePlaceOrder = async (invoiceId) => {
     const success = await handlePaymentSuccess(invoiceId)
     const invoice = await getInvoice(invoiceId)
-
+    console.log(order.customerId)
+    const customer = await getUserNameById(order.customerId)
+    // console.log(user)
     console.log('invoice', invoice)
 
     if (paymentMethod === 'Cod') {
       downloadInvoice({
         ...invoice,
+        customer: customer,
         qrCode: qrCode,
         name: order.name,
         phone: order.phone,

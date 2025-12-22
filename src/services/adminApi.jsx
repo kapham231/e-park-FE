@@ -17,7 +17,7 @@ export const getAllUserWithRole = async () => {
 export const getUserNameById = async (userId) => {
   try {
     const response = await axios.get(`${baseURL}/generalUser/getId/${userId}`)
-    console.log(response.data.data)
+    // console.log(response.data.data)
 
     return response.data.data
   } catch (error) {

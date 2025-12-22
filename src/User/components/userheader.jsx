@@ -24,7 +24,9 @@ const UserHeader = () => {
     { key: 'homepage', label: <Link to='/user/homepage'>Homepage</Link> },
     { key: 'event', label: <Link to='/user/event'>Event</Link> },
     { key: 'product', label: <Link to='/user/product'>Product</Link> },
-    { key: 'about-us', label: <Link to='/user/about-us'>About Us</Link> }
+    { key: 'about-us', label: <Link to='/user/about-us'>About Us</Link> },
+    { key: 'history', label: <Link to='/user/history'>History</Link> },
+    // { key: 'information', label: <Link to='/user/information'>Information</Link> }
   ]
 
   return (
@@ -63,9 +65,15 @@ const UserHeader = () => {
             <Link to='/user/product' className={`nav-link ${activeTab === '/user/product' ? 'us-active-link' : ''}`}>
               Product
             </Link>
+            <Link to='/user/history' className={`nav-link ${activeTab === '/user/history' ? 'us-active-link' : ''}`}>
+              History
+            </Link>
             <Link to='/user/about-us' className={`nav-link ${activeTab === '/user/about-us' ? 'us-active-link' : ''}`}>
               About Us
             </Link>
+            {/* <Link to='/user/information' className={`nav-link ${activeTab === '/user/information' ? 'us-active-link' : ''}`}> */}
+              {/* Information */}
+            {/* </Link> */}
           </div>
 
           {!!isAuthenticated ? (
@@ -115,45 +123,62 @@ const UserHeader = () => {
           ) : null}
 
           {isAuthenticated ? (
-            <Dropdown
-              menu={{
-                items: [
-                  {
-                    key: '1',
-                    label: (
-                      <Button onClick={() => auth.logout()} type='text' style={{ color: 'red' }}>
-                        Log out
-                      </Button>
-                    )
-                  },
-                  ...(isMobile
-                    ? [
-                        {
-                          key: '2',
-                          label: (
-                            <Tag
-                              color={
-                                membershipTier === 'Gold'
-                                  ? 'gold'
-                                  : membershipTier === 'Platinum'
-                                    ? 'cyan' // Màu cho Platinum
-                                    : 'silver'
-                              }
-                            >
-                              {membershipTier}
-                            </Tag>
-                          )
-                        },
-                        {
-                          key: '3',
-                          label: <Tag color='green'>{loyaltyPoints} Points</Tag>
-                        }
-                      ]
-                    : [])
-                ]
-              }}
-              placement='bottomLeft'
-            >
+              <Dropdown
+                menu={{
+                  items: [
+                    {
+                      key: '1',
+                      label: (
+                        <Button onClick={() => navigate('/user/information')} type='text'>
+                          My Profile
+                        </Button>
+                      )
+                    },
+                    {
+                      key: '2',
+                      label: (
+                        <Button onClick={() => navigate('/user/history')} type='text'>
+                          History
+                        </Button>
+                      )
+                    },
+                    {
+                      key: '3',
+                      label: (
+                        <Button onClick={() => auth.logout()} type='text' style={{ color: 'red' }}>
+                          Log out
+                        </Button>
+                      )
+                    },
+
+                    ...(isMobile
+                      ? [
+                          {
+                            key: '4',
+                            label: (
+                              <Tag
+                                color={
+                                  membershipTier === 'Gold'
+                                    ? 'gold'
+                                    : membershipTier === 'Platinum'
+                                      ? 'cyan' // Màu cho Platinum
+                                      : 'silver'
+                                }
+                              >
+                                {membershipTier}
+                              </Tag>
+                            )
+                          },
+                          {
+                            key: '5',
+                            label: <Tag color='green'>{loyaltyPoints} Points</Tag>
+                          }
+                        ]
+                      : [])
+                  ]
+                }}
+                placement='bottomLeft'
+              >
               <div className='d-flex align-items-center'>
                 <i className='fas fa-bell me-3' size='lg' style={{ cursor: 'pointer' }} />
                 <span style={{ whiteSpace: 'nowrap' }}>Hello {user.name}</span>
