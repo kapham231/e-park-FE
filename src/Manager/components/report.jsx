@@ -6,6 +6,7 @@ import moment from 'moment'
 import useCheckMobile from '../../hooks/useCheckMobile'
 import { getAllInvoiceWithPaidStatus } from '../../services/userApi'
 import { getSupplier } from '../../services/playgroundmanagerApi'
+import { getUserNameById } from '@/services/adminApi'
 import dayjs from 'dayjs'
 
 const { Text } = Typography
@@ -15,6 +16,7 @@ const ReportContent = () => {
   const isMobile = useCheckMobile()
   const [transactions, setTransactions] = useState([])
   const [supplierName, setSupplierName] = useState('')
+  const [userName, setUserName] = useState('')
   const [visible, setVisible] = useState(false)
   const [selectedTransaction, setSelectedTransaction] = useState(null)
   const [filterRange, setFilterRange] = useState(null)
@@ -32,6 +34,22 @@ const ReportContent = () => {
       }
     } else {
       setSupplierName('')
+    }
+    if (selectedTransaction && selectedTransaction.__t.toLowerCase() === 'invoicebooking') {
+      const customerId = selectedTransaction.customer
+      if (customerId) {
+        fetchUser(customerId)
+      }
+    } else {
+      setUserName('')
+    }
+    if (selectedTransaction && selectedTransaction.__t.toLowerCase() === 'invoiceproduct') {
+      const customerId = selectedTransaction.customer
+      if (customerId) {
+        fetchUser(customerId)
+      }
+    } else {
+      setUserName('')
     }
   }, [selectedTransaction])
 
@@ -160,6 +178,18 @@ const ReportContent = () => {
     }
   }
 
+  const formatISOTime = (time) => {
+  return new Date(time).toLocaleString("en-US", {
+    timeZone: "UTC",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+};
+
   const fetchSupplier = (id) => {
     getSupplier(id)
       .then((res) => {
@@ -178,6 +208,24 @@ const ReportContent = () => {
       })
   }
 
+  const fetchUser = (id) => {
+    getUserNameById(id)
+      .then((res) => {
+        console.log(res)
+        if (!res) {
+          setUserName('')
+          return
+        }
+        setUserName(res.firstName + ' ' + res.lastName)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+      .finally(() => {
+        console.log('Fetch user completed')
+      })
+  }
+
   const renderMaintenance = (selectInvoice) => {
     const { invoiceNumber, __t, status, createdAt, totalItems, subtotal, supplierId, title, equipments } = selectInvoice
     // console.log(supplierId);
@@ -193,7 +241,7 @@ const ReportContent = () => {
           <strong>Status:</strong> {renderStatus(status)}
         </p>
         <p>
-          <strong>Date:</strong> {createdAt}
+          <strong>Date:</strong> {formatISOTime(createdAt)}
         </p>
         <p>
           <strong>Total items:</strong> {totalItems}
@@ -238,8 +286,8 @@ const ReportContent = () => {
     )
   }
 
-  const renderBooking = (selectInvoice) => {
-    const { invoiceNumber, __t, status, createdAt, totalItems, subtotal, customer, tickets } = selectInvoice
+const renderBooking = (selectInvoice) => {
+    const { invoiceNumber, __t, status, createdAt, totalItems, subtotal, customer, tickets } = selectInvoice;
     return (
       <div>
         <p>
@@ -252,7 +300,7 @@ const ReportContent = () => {
           <strong>Status:</strong> {renderStatus(status)}
         </p>
         <p>
-          <strong>Date:</strong> {createdAt}
+          <strong>Date:</strong> {formatISOTime(createdAt)}
         </p>
         <p>
           <strong>Total tickets:</strong> {totalItems}
@@ -261,7 +309,7 @@ const ReportContent = () => {
           <strong>Amount:</strong> {renderAmount(subtotal)}
         </p>
         <p>
-          <strong>Customer:</strong> {customer}
+          <strong>Customer:</strong> {userName || customer}
         </p>
         <div>
           <strong>Tickets:</strong>
@@ -306,7 +354,7 @@ const ReportContent = () => {
           <strong>Status:</strong> {renderStatus(status)}
         </p>
         <p>
-          <strong>Date:</strong> {createdAt}
+          <strong>Date:</strong> {formatISOTime(createdAt)}
         </p>
         <p>
           <strong>Total items:</strong> {totalItems}
@@ -356,7 +404,7 @@ const ReportContent = () => {
           <strong>Status:</strong> {renderStatus(status)}
         </p>
         <p>
-          <strong>Date:</strong> {createdAt}
+          <strong>Date:</strong> {formatISOTime(createdAt)}
         </p>
         <p>
           <strong>Total items:</strong> {totalItems}
@@ -365,7 +413,7 @@ const ReportContent = () => {
           <strong>Amount:</strong> {renderAmount(subtotal)}
         </p>
         <p>
-          <strong>Customer:</strong> {customer}
+          <strong>Customer:</strong> {userName || customer}
         </p>
         <div>
           <strong>Products:</strong>

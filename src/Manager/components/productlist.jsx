@@ -109,7 +109,7 @@ const ProductList = () => {
     load() // Reload the product list after deletion
   }
   const filteredTypes = productList.filter((product) =>
-    product.name.toLowerCase().includes(searchText.toLowerCase())
+    (product.name || '').toLowerCase().includes(searchText.toLowerCase())
   )
   const handleRowClick = (record) => {
     setEditingProduct(record)
